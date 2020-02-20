@@ -16,6 +16,10 @@ CFLAGS=\
 $(EXEC): $(OBJS)
 	$(CC) -o $(EXEC) $(CFLAGS) $(OBJS)
 
+doc:
+	doxygen -g
+	doxygen
+
 clean:
 	rm -rf $(OBJS) *.3d
 	
