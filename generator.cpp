@@ -151,7 +151,62 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
 void print_cone(float radius,float height,float slices,float stacks,char* file_name){
     FILE *fd = fopen(file_name,"w");
     if (fd){
-        //definir xml
+          // 1 slice vai dividir o cone em 8 partes 
+        float alfa = 2*M_PI / (slices*8);
+        float rR = 1/stacks ; // multipicador do raio
+
+        float d = 1; // d é o tamanho de cada divisao
+        if(stacks > 1) d = height/stacks;  // caso 1 stack a divisao por 0
+
+        //fade
+        float fade = 1;
+
+
+        ///////////////////////////////////////  Criação da base ////////////////////////////////////////////
+
+        // desenhar a base 
+        // iniciar no eixo do Z
+        for(int i=0;i<(slices*8);i++){
+
+            fprintf(fd, "glColor3f(%f,0,0);\n" ,fade);
+            fprintf(fd, "glVertex3f(%f,0,%f);\n", sin(alfa*i)*radius, cos(alfa*i)*radius);
+            //ponto fixo do centro
+            fprintf(fd, "glVertex3f(0,0,0);\n");
+            fprintf(fd, "glVertex3f(%f,0,%f);\n", sin(alfa*(i+1))*radius, cos(alfa*(i+1))*radius);
+            
+        }
+
+        /////////////////////////////////////// Criação do corpo //////////////////////////////////////////////
+        fade = 1;
+        for(int j=0; j < stacks-1; j++){ // camadas 
+            //começamos da base e vamos subindo i é a camada inferior
+            for(int i=0;i<(slices*8);i++) { // circunferencia
+                fprintf(fd, "glColor3f(%f,0,0);\n", fade);
+                                                                          // 1-(rR*0) = 1 primeira camada
+                fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*i)*radius*(1-(rR*j))  ,j*d, cos(alfa*i)*radius*(1-(rR*j))); // canto inferior esquerdo
+                fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*(i+1))*radius*(1-(rR*j)),j*d, cos(alfa*(i+1))*radius*(1-(rR*j))); // canto inferior direito
+                fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*(i+1))*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*(i+1))*radius*(1-(rR*(j+1)))); // canto superior direito
+
+                fprintf(fd, "glColor3f(0,0,%f);\n", fade);
+                fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*(i+1))*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*(i+1))*radius*(1-(rR*(j+1)))); // canto superior direito
+                fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*i)*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*i)*radius*(1-(rR*(j+1)))); // canto superior esquerdo
+                fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*i)*radius*(1-(rR*j)),j*d, cos(alfa*i)*radius*(1-(rR*j))); // canto inferior esquerdo
+            }
+        }
+
+        //////////////////////////////////////// Criação da ponta //////////////////////////////////////////////
+
+        fade = 1;
+        for(int i=0;i<(slices*8);i++){
+            fprintf(fd, "glColor3f(%f,0,0);\n", fade);
+
+            fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*i)*radius*rR, height - d, cos(alfa*i)*radius*rR);
+            fprintf(fd, "glVertex3f(%f,%f,%f);\n", sin(alfa*(i+1))*radius*rR, height - d , cos(alfa*(i+1))*radius*rR);
+            //ponto fixo do centro
+            fprintf(fd, "glVertex3f(0,%f,0);\n",height);
+        }
+
+
     }
     fclose(fd);
 
