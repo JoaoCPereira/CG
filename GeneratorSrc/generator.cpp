@@ -7,7 +7,7 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
         float beta = (M_PI/2) / stacks;
         float d = (radius/2) / stacks;
 
-        fprintf(fd, "%d\n", (int)(slices*4*6+(stacks-1)*slices*4)); // numero total de pontos
+        fprintf(fd, "%d\n", (int)(slices*4*6+(stacks-1)*slices*4*12)); // numero total de pontos
 
         // desenhar topo e base
         for(int i=0; i< (slices*4) ; i++){

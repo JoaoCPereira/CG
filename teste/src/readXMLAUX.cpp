@@ -42,7 +42,8 @@ Modelo* read3d(char *filename){
 				printf("Number of lines not defined!!\n");
 				erro = true;
 			}
-
+			free(line);
+			line=NULL;
 		}
 
 		if (!erro){
@@ -59,6 +60,8 @@ Modelo* read3d(char *filename){
 		       	}
 		       	else {
 		       		++counterP;
+		       		free(line);
+					line=NULL;
 		       	}
 		    }
 		}
@@ -98,5 +101,8 @@ void write3d(Modelo *model){
 		printf("(%f,%f,%f)\n", model->vector[i].x,model->vector[i].y,model->vector[i].z);
 	}
 
+	free(model->vector);
+	model->vector=NULL;
+	free(model);
 
 }
