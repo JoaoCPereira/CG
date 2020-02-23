@@ -1,0 +1,72 @@
+\hypertarget{generator_8h}{}\section{generator.\+h File Reference}
+\label{generator_8h}\index{generator.\+h@{generator.\+h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+Include dependency graph for generator.\+h\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{generator_8h_a62b738b4b46b842f076abd3ca637cbc6}{print\+\_\+sphere} (float radius, float slices, float stacks, char $\ast$file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Write the dots to draw a sphere. \end{DoxyCompactList}\item 
+void \hyperlink{generator_8h_a1c1c83989807a430ea3a0d831026ebd3}{print\+\_\+plane} (float, char $\ast$)
+\item 
+void \hyperlink{generator_8h_af95df016b4e80afc7fdba217a706fa41}{print\+\_\+box} (float, float, float, float, char $\ast$)
+\item 
+void \hyperlink{generator_8h_a12031be7db48d542d5e0e66ddb7345ef}{print\+\_\+cone} (float, float, float, float, char $\ast$)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{generator_8h_af95df016b4e80afc7fdba217a706fa41}\label{generator_8h_af95df016b4e80afc7fdba217a706fa41}} 
+\index{generator.\+h@{generator.\+h}!print\+\_\+box@{print\+\_\+box}}
+\index{print\+\_\+box@{print\+\_\+box}!generator.\+h@{generator.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+box()}{print\_box()}}
+{\footnotesize\ttfamily void print\+\_\+box (\begin{DoxyParamCaption}\item[{float}]{,  }\item[{float}]{,  }\item[{float}]{,  }\item[{float}]{,  }\item[{char $\ast$}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+A box 
+\end{DoxyReturn}
+\mbox{\Hypertarget{generator_8h_a12031be7db48d542d5e0e66ddb7345ef}\label{generator_8h_a12031be7db48d542d5e0e66ddb7345ef}} 
+\index{generator.\+h@{generator.\+h}!print\+\_\+cone@{print\+\_\+cone}}
+\index{print\+\_\+cone@{print\+\_\+cone}!generator.\+h@{generator.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+cone()}{print\_cone()}}
+{\footnotesize\ttfamily void print\+\_\+cone (\begin{DoxyParamCaption}\item[{float}]{,  }\item[{float}]{,  }\item[{float}]{,  }\item[{float}]{,  }\item[{char $\ast$}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+A cone 
+\end{DoxyReturn}
+\mbox{\Hypertarget{generator_8h_a1c1c83989807a430ea3a0d831026ebd3}\label{generator_8h_a1c1c83989807a430ea3a0d831026ebd3}} 
+\index{generator.\+h@{generator.\+h}!print\+\_\+plane@{print\+\_\+plane}}
+\index{print\+\_\+plane@{print\+\_\+plane}!generator.\+h@{generator.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+plane()}{print\_plane()}}
+{\footnotesize\ttfamily void print\+\_\+plane (\begin{DoxyParamCaption}\item[{float}]{,  }\item[{char $\ast$}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+A plane 
+\end{DoxyReturn}
+\mbox{\Hypertarget{generator_8h_a62b738b4b46b842f076abd3ca637cbc6}\label{generator_8h_a62b738b4b46b842f076abd3ca637cbc6}} 
+\index{generator.\+h@{generator.\+h}!print\+\_\+sphere@{print\+\_\+sphere}}
+\index{print\+\_\+sphere@{print\+\_\+sphere}!generator.\+h@{generator.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+sphere()}{print\_sphere()}}
+{\footnotesize\ttfamily void print\+\_\+sphere (\begin{DoxyParamCaption}\item[{float}]{radius,  }\item[{float}]{slices,  }\item[{float}]{stacks,  }\item[{char $\ast$}]{file\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Write the dots to draw a sphere. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em radius} & Size of radius \\
+\hline
+{\em slices} & Number of slices \\
+\hline
+{\em stacks} & Number of stacks \\
+\hline
+{\em file\+\_\+name} & File name where to write the dots \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A file with the dots to draw a sphere with the given parameters 
+\end{DoxyReturn}
