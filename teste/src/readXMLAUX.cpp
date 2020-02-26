@@ -97,12 +97,15 @@ void readXML(char *filename){
 
 void write3d(Modelo *model){
 
-	for(int i=0; i< model->numPoints; i++){
-		printf("(%f,%f,%f)\n", model->vector[i].x,model->vector[i].y,model->vector[i].z);
+	if (model){
+	
+		for(int i=0; i< model->numPoints; i++){
+			printf("(%f,%f,%f)\n", model->vector[i].x,model->vector[i].y,model->vector[i].z);
+		}
+	
+		free(model->vector);
+		model->vector=NULL;
+		free(model);
 	}
-
-	free(model->vector);
-	model->vector=NULL;
-	free(model);
 
 }

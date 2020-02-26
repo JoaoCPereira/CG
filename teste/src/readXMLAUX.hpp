@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "tinyxml.h"
+#include "tinystr.h"
 
 struct point;
 struct modelo;
