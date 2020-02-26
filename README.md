@@ -8,7 +8,7 @@ Computação Gráfica 19/20
     - [x] Sphere
     - [x] Cone
   - [ ] \**Engine that reads configuration file
-    - [ ] Reader XML
+    - [x] Reader XML
     - [x] Reader .3d
     - [x] *Draw .3d
   - [ ] Relatório
