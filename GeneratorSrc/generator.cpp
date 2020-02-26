@@ -175,7 +175,7 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
         float d = 1; // d é o tamanho de cada divisao
         if(stacks > 1) d = height/stacks;  // caso 1 stack a divisao por 0
 
-        fprintf(fd, "%d\n", (int)(slices*3+(stacks-1)*slices*3));
+        fprintf(fd, "%d\n", (int)(slices*3*6+(stacks-1)*slices*3*6));
 
         ///////////////////////////////////////  Criação da base ////////////////////////////////////////////
 
@@ -198,7 +198,7 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
         /////////////////////////////////////// Criação do corpo //////////////////////////////////////////////
         for(int j=0; j < stacks-1; j++){ // camadas 
             //começamos da base e vamos subindo i é a camada inferior
-            for(int i=0;i<(slices*3);i++) { // circunferencia
+            for(int i=0;i < slices*3;i++) { // circunferencia
                                                                           // 1-(rR*0) = 1 primeira camada
                 fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*(1-(rR*j))  ,j*d, cos(alfa*i)*radius*(1-(rR*j))); // canto inferior esquerdo
                 fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*(1-(rR*j)),j*d, cos(alfa*(i+1))*radius*(1-(rR*j))); // canto inferior direito

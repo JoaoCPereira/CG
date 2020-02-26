@@ -19,7 +19,7 @@ int main(int argc, char* argv[]){
     }
     else if (!strcmp(argv[1],"box")){
             if(argc < 6) {
-                printf("Invalid arguments!! : \'./Generator plane \"width\" \"name_file\"\' \n ");
+                printf("Invalid arguments!! : \'./Generator box \"X\" \"Y\" \"Z\" ?\"divisions\" \"name_file\"\' \n ");
                 return -1;
             }
             if(argc == 6){
@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
     }
     else if (!strcmp(argv[1],"cone")){
             if(argc < 7) {
+                printf("Invalid arguments!! : \'./Generator cone \"radius\" \"height\" \"slices\" \"stacks\" \"name_file\"\' \n ");
                 return -1;
             }
             print_cone(atof(argv[2]),atof(argv[3]),atof(argv[4]),atof(argv[5]),argv[6]);
