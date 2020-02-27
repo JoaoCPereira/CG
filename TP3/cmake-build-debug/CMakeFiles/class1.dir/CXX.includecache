@@ -24,10 +24,6 @@ unistd.h
 limits.h
 -
 
-/home/joao/Documents/Joao/LCC/github/CG/TP3/readXMLAUX.cpp
-readXMLAUX.hpp
-/home/joao/Documents/Joao/LCC/github/CG/TP3/readXMLAUX.hpp
-
 /home/joao/Documents/Joao/LCC/github/CG/TP3/readXMLAUX.hpp
 stdio.h
 -
@@ -42,25 +38,11 @@ tinystr.h
 GL/glut.h
 -
 
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinystr.cpp
-tinystr.h
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinystr.h
-
 /home/joao/Documents/Joao/LCC/github/CG/TP3/tinystr.h
 assert.h
 -
 string.h
 -
-
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinyxml.cpp
-ctype.h
--
-sstream
--
-iostream
--
-tinyxml.h
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinyxml.h
 
 /home/joao/Documents/Joao/LCC/github/CG/TP3/tinyxml.h
 ctype.h
@@ -81,18 +63,4 @@ sstream
 -
 tinystr.h
 /home/joao/Documents/Joao/LCC/github/CG/TP3/tinystr.h
-
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinyxmlerror.cpp
-tinyxml.h
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinyxml.h
-
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinyxmlparser.cpp
-ctype.h
--
-stddef.h
--
-tinyxml.h
-/home/joao/Documents/Joao/LCC/github/CG/TP3/tinyxml.h
-windows.h
--
 

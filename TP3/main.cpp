@@ -183,9 +183,6 @@ void renderScene(void) {
         while (model) {
             // l_pForename->Attribute("file");
             char *name3D = (char *) model->Attribute("file");
-            // parse do nome
-            name3D = name3D + 3;
-            name3D[strlen(name3D) - 3] = '\0';
 
             Modelo *modelo = NULL;
 
