@@ -9,26 +9,26 @@ int main(int argc, char* argv[]){
 
 		// abrir ficheiro xml
 		TiXmlDocument doc( pFilename );
-		doc.LoadFile();
- 
-		TiXmlElement *scene = doc.RootElement();
+		bool loadOkay = doc.LoadFile();
 
-		TiXmlElement *model = scene->FirstChildElement( "model" );
-
-		while( model ){
-			char* name3D = (char*)model->Attribute("file");
-			// parse do nome
-
-			name3D = name3D+3;
-			name3D[strlen(name3D)-3] = '\0';
-
-			Modelo *modelo=NULL;
+		if (loadOkay){
+		 
+			TiXmlElement *scene = doc.RootElement();
 		
-			modelo = read3d(name3D);
+			TiXmlElement *model = scene->FirstChildElement( "model" );
 		
-	    	write3d(modelo);
-
-	    	model = model->NextSiblingElement( "model" );
+			while( model ){
+				char* name3D = (char*)model->Attribute("file");
+				// parse do nome
+		
+				Modelo *modelo=NULL;
+				
+				modelo = read3d(name3D);
+				
+			   	write3d(modelo);
+		
+			   	model = model->NextSiblingElement( "model" );
+			}
 		}
 
 	}
