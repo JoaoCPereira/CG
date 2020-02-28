@@ -12,11 +12,16 @@
 #include <unistd.h>
 #include <limits.h>
 
+
+const int tamArrayModelos=16;
 float scale = 1;
 float angle = 0.0f;
 float x_x=0,z=0;
 float angleBeta = 0.0f,angleAlfa = 0.0f;
 float distanciaCamera = 10.0f;
+
+
+modelo *(modelos[tamArrayModelos]);
 
 void changeSize(int w, int h) {
 
@@ -65,30 +70,10 @@ void renderScene(void) {
 // put drawing instructions here
 
     glBegin(GL_TRIANGLES);
-    
-    char *pFilename = (char*)"demo.xml";
 
-    // abrir ficheiro xml
-    TiXmlDocument doc( pFilename );
-    bool loadOkay = doc.LoadFile();
-
-    if (loadOkay) {
-        TiXmlElement *l_pRootElement = doc.RootElement();
-
-        TiXmlElement *model = l_pRootElement->FirstChildElement("model");
-
-        while (model) {
-            char *name3D = (char *) model->Attribute("file");
-
-            Modelo *modelo = NULL;
-            modelo = read3d(name3D);
-            write3d(modelo);
-            freeModel(modelo);
-
-            model = model->NextSiblingElement("model");
-        }
+    for(int i=0; i<tamArrayModelos ; i++){
+        write3d(modelos[i]);
     }
-
 
     glEnd();
 
@@ -171,6 +156,32 @@ void processKeys(unsigned char key, int x, int y) {
 
 int main(int argc, char **argv) {
 
+    int i=0;
+    char *pFilename = (char*)"demo.xml";
+
+    // abrir ficheiro xml
+    TiXmlDocument doc( pFilename );
+    bool loadOkay = doc.LoadFile();
+
+    if (loadOkay) {
+        TiXmlElement *l_pRootElement = doc.RootElement();
+
+        TiXmlElement *model = l_pRootElement->FirstChildElement("model");
+
+        while (model) {
+            char *name3D = (char *) model->Attribute("file");
+
+            Modelo *modelo = NULL;
+            modelo = read3d(name3D);
+
+            if(i < (tamArrayModelos)){
+                modelos[i++]=modelo;
+            }
+
+            model = model->NextSiblingElement("model");
+        }
+    }
+
 // init GLUT and the window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
@@ -195,6 +206,10 @@ int main(int argc, char **argv) {
 
 // enter GLUT's main cycle
     glutMainLoop();
+
+    for(int i=0; i<tamArrayModelos ; i++){
+        write3d(modelos[i]);
+    }
 
     return 1;
 }
