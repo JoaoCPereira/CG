@@ -1,3 +1,0 @@
-/home/joao/Documents/Joao/LCC/github/CG/TP3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/joao/Documents/Joao/LCC/github/CG/TP3/cmake-build-debug/CMakeFiles/class1.dir
-/home/joao/Documents/Joao/LCC/github/CG/TP3/cmake-build-debug/CMakeFiles/edit_cache.dir
