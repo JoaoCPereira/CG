@@ -13,15 +13,14 @@
 #include <limits.h>
 
 
-const int tamArrayModelos=16;
+// variáveis globais
+const int models_array_size=32;
 float scale = 1;
 float angle = 0.0f;
 float x_x=0,z=0;
 float angleBeta = 0.0f,angleAlfa = 0.0f;
 float distanciaCamera = 10.0f;
-
-
-modelo *(modelos[tamArrayModelos]);
+modelo *(models_array[models_array_size]);
 
 void changeSize(int w, int h) {
 
@@ -48,8 +47,6 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-
-
 void renderScene(void) {
 
     // clear buffers
@@ -71,8 +68,8 @@ void renderScene(void) {
 
     glBegin(GL_TRIANGLES);
 
-    for(int i=0; i<tamArrayModelos ; i++){
-        write3d(modelos[i]);
+    for(int i=0; i<models_array_size ; i++){
+        write3d(models_array[i]);
     }
 
     glEnd();
@@ -130,7 +127,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 void processKeys(unsigned char key, int x, int y) {
 
     switch (key) {
-        case 'a' :
+        /*case 'a' :
             x_x -= 1;
             break;
         case 'd' :
@@ -142,22 +139,30 @@ void processKeys(unsigned char key, int x, int y) {
         case 'w' :
             z += 1;
             break;
+*/
         case 'r' :
             distanciaCamera += 1;
             break;
         case 'f' :
             distanciaCamera -=1;
             break;
+        case '1' :
+            glPolygonMode(GL_FRONT,GL_LINE);
+            break;
+        case '2' :
+            glPolygonMode(GL_FRONT,GL_FILL);
+            break;
     }
 
     glutPostRedisplay();
+
 }
 
 
 int main(int argc, char **argv) {
 
     int i=0;
-    char *pFilename = (char*)"demo.xml";
+    char *pFilename = (char*) "demo.xml";
 
     // abrir ficheiro xml
     TiXmlDocument doc( pFilename );
@@ -174,9 +179,11 @@ int main(int argc, char **argv) {
             Modelo *modelo = NULL;
             modelo = read3d(name3D);
 
-            if(i < (tamArrayModelos)){
-                modelos[i++]=modelo;
+
+            if(i < (models_array_size)){
+                models_array[i++]=modelo;
             }
+
 
             model = model->NextSiblingElement("model");
         }
@@ -206,10 +213,6 @@ int main(int argc, char **argv) {
 
 // enter GLUT's main cycle
     glutMainLoop();
-
-    for(int i=0; i<tamArrayModelos ; i++){
-        write3d(modelos[i]);
-    }
 
     return 1;
 }

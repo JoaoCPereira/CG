@@ -8,6 +8,7 @@
 #include "tinystr.h"
 #include <GL/glut.h>
 
+
 struct point;
 struct modelo;
 

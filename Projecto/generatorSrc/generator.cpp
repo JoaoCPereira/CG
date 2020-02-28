@@ -56,7 +56,7 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
 void print_plane(float x,char* file_name){
     FILE *fd = fopen(file_name,"w");
     if (fd){
-        fprintf(fd, "6\n"); // numero total de pontos
+        fprintf(fd, "12\n"); // numero total de pontos
 
         float l = x/2;
         // primeiro triangulo
@@ -68,6 +68,15 @@ void print_plane(float x,char* file_name){
         fprintf(fd,"%f 0 %f\n",l,-l);
         fprintf(fd,"%f 0 %f\n",-l,-l);
         fprintf(fd,"%f 0 %f\n",-l,l);
+
+        fprintf(fd,"%f 0 %f\n",-l,l);
+        fprintf(fd,"%f 0 %f\n",-l,-l);
+        fprintf(fd,"%f 0 %f\n",l,l);
+
+        fprintf(fd,"%f 0 %f\n",-l,-l);
+        fprintf(fd,"%f 0 %f\n",l,-l);
+        fprintf(fd,"%f 0 %f\n",l,l);
+
     }
     fclose(fd);
 }
