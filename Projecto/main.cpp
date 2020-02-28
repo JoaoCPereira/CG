@@ -11,16 +11,19 @@
 #include "readXMLAUX.hpp"
 #include <unistd.h>
 #include <limits.h>
+#include <iostream>
+#include <vector>
 
+using namespace std; 
 
 // variáveis globais
-const int models_array_size=32;
 float scale = 1;
 float angle = 0.0f;
 float x_x=0,z=0;
 float angleBeta = 0.0f,angleAlfa = 0.0f;
 float distanciaCamera = 10.0f;
-modelo *(models_array[models_array_size]);
+
+vector<struct modelo*> modelos; 
 
 void changeSize(int w, int h) {
 
@@ -68,8 +71,8 @@ void renderScene(void) {
 
     glBegin(GL_TRIANGLES);
 
-    for(int i=0; i<models_array_size ; i++){
-        write3d(models_array[i]);
+    for (int i=0; i< modelos.size(); i++){
+        write3d(modelos[i]);
     }
 
     glEnd();
@@ -161,7 +164,6 @@ void processKeys(unsigned char key, int x, int y) {
 
 int main(int argc, char **argv) {
 
-    int i=0;
     char *pFilename = (char*) "demo.xml";
 
     // abrir ficheiro xml
@@ -179,11 +181,7 @@ int main(int argc, char **argv) {
             Modelo *modelo = NULL;
             modelo = read3d(name3D);
 
-
-            if(i < (models_array_size)){
-                models_array[i++]=modelo;
-            }
-
+            modelos.push_back(modelo);
 
             model = model->NextSiblingElement("model");
         }

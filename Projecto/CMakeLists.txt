@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.6)
 
 # Project Name
-PROJECT(Projecto)
+PROJECT(Engine)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_executable(${PROJECT_NAME} main.cpp readXML/tinyXML/tinyxmlparser.cpp readXML/tinyXML/tinyxml.cpp readXML/tinyXML/tinystr.cpp readXML/tinyXML/tinyxmlerror.cpp readXML/readXMLAUX.cpp)
-target_include_directories(Projecto PUBLIC
+target_include_directories(Engine PUBLIC
                            readXML/tinyXML/
                            readXML/
                            )
 
 add_executable(Generator generatorSrc/main_gen.cpp generatorSrc/generator.cpp)
-target_include_directories(Projecto PUBLIC
+target_include_directories(Engine PUBLIC
                            generatorSrc/
                            )
 
@@ -27,7 +27,7 @@ endif(NOT OPENGL_FOUND)
 
 if  (WIN32)
 
-	set_property(DIRECTORY . PROPERTY VS_STARTUP_PROJECT Projecto)
+	set_property(DIRECTORY . PROPERTY VS_STARTUP_PROJECT Engine)
 	message(STATUS "GLUT_DIR set to: " ${GLUT_DIR})
 	set(GLUT_DIR "" CACHE PATH "Path to GLUT folder")
 	if (NOT EXISTS "${GLUT_DIR}/GL/glut.h" OR NOT EXISTS "${GLUT_DIR}/glut32.lib")
