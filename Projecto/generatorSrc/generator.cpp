@@ -69,13 +69,18 @@ void print_plane(float x,char* file_name){
         fprintf(fd,"%f 0 %f\n",-l,-l);
         fprintf(fd,"%f 0 %f\n",-l,l);
 
-        fprintf(fd,"%f 0 %f\n",-l,l);
-        fprintf(fd,"%f 0 %f\n",-l,-l);
-        fprintf(fd,"%f 0 %f\n",l,l);
-
-        fprintf(fd,"%f 0 %f\n",-l,-l);
+        fprintf(fd,"%f 0 %f\n",-l,l); 
         fprintf(fd,"%f 0 %f\n",l,-l);
         fprintf(fd,"%f 0 %f\n",l,l);
+        
+
+        // segundo triangulo
+        fprintf(fd,"%f 0 %f\n",l,-l);
+        fprintf(fd,"%f 0 %f\n",-l,l);
+        fprintf(fd,"%f 0 %f\n",-l,-l);
+        
+
+        
 
     }
     fclose(fd);
