@@ -11,5 +11,6 @@ Computação Gráfica 19/20
     - [x] Reader XML
     - [x] Reader .3d
     - [x] Draw .3d
-  - [ ] Relatório
+  - [x] Relatório
 
+## Phase 2 – Transformations
