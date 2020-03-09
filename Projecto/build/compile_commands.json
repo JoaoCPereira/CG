@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7   -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc\"  -g   -o CMakeFiles/Engine.dir/main.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/main.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/main.cpp"
+},
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7   -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc\"  -g   -o CMakeFiles/Engine.dir/readXML/tinyXML/tinyxmlparser.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlparser.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlparser.cpp"
+},
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7   -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc\"  -g   -o CMakeFiles/Engine.dir/readXML/tinyXML/tinyxml.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.cpp"
+},
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7   -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc\"  -g   -o CMakeFiles/Engine.dir/readXML/tinyXML/tinystr.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.cpp"
+},
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7   -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc\"  -g   -o CMakeFiles/Engine.dir/readXML/tinyXML/tinyxmlerror.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlerror.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlerror.cpp"
+},
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7   -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML\" -I\"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc\"  -g   -o CMakeFiles/Engine.dir/readXML/readXMLAUX.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.cpp"
+},
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7    -g   -o CMakeFiles/Generator.dir/generatorSrc/main_gen.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/main_gen.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/main_gen.cpp"
+},
+{
+  "directory": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/build",
+  "command": "/usr/bin/g++-7    -g   -o CMakeFiles/Generator.dir/generatorSrc/generator.cpp.o -c \"/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.cpp\"",
+  "file": "/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.cpp"
+}
+]

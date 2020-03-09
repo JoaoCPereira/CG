@@ -1,0 +1,38 @@
+<scene>
+	<group>
+        <translate X=-8 Y=0 Z=0/>
+		<model file="sun.3d" />
+		<group>
+			<translate X=2.17 Y=0 Z=0 />
+			<model file="mercury.3d" />
+            <group>
+                <translate X=2.43 Y=0 Z=0 />
+                <model file="venus.3d" />
+                <group>
+                    <translate X=2.45 Y=0 Z=0 />
+                    <model file="earth.3d" />
+                    <group>
+                        <translate X=2.24 Y=0 Z=0 />
+                        <model file="mars.3d" />
+                        <group>
+                            <translate X=2.5 Y=0 Z=0 />
+                            <model file="jupyter.3d" />
+                            <group>
+                                <translate X=2.42 Y=0 Z=0 />
+                                <model file="saturn.3d" />
+                                <group>
+                                    <translate X=2.18 Y=0 Z=0 />
+                                    <model file="uranus.3d" />
+                                    <group>
+                                        <translate X=2.17 Y=0 Z=0 />
+                                        <model file="neptun.3d" />
+                                    </group>
+                                </group>
+                            </group>
+                        </group>
+                    </group>
+                </group>
+            </group>
+         </group>   
+	</group>
+</scene>
