@@ -20,9 +20,29 @@ float x_x=0,z=0;
 float angleBeta = 0.0f,angleAlfa = 0.0f;
 float distanciaCamera = 10.0f;
 
+int frame=0,timefps,timebase=0,fps=0;
+
+/*
 vector<struct modelo*> modelos;
 vector<struct geo_transf*> geo_tr;
 vector<int> sequencia;
+*/
+
+class SysState {
+    static vector<struct modelo*> modelos;
+	static vector<struct geo_transf*> geo_tr;
+	static vector<int> sequencia;
+	GLuint *buffers;
+  public:
+    SysState(char *fileName){
+    	readXML(fileName,modelos,geo_tr,sequencia);
+    }
+    static void renderScene(void);
+};
+
+vector<struct modelo*> SysState::modelos;
+vector<struct geo_transf*> SysState::geo_tr;
+vector<int> SysState::sequencia;
 
 void changeSize(int w, int h) {
 
@@ -49,7 +69,7 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void renderScene(void) {
+void SysState::renderScene(void) {
 
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -62,11 +82,11 @@ void renderScene(void) {
               0.0f,1.0f,0.0f);
 
 // put the geometric transformations here
-    /*
+    
     glTranslatef(x_x,0,z);
     glRotatef(angle,0,1,0);
     glScalef(scale,scale,scale);
-    */
+ 
 // put drawing instructions here
 
     writeSeq(modelos,geo_tr,sequencia);
@@ -151,6 +171,31 @@ void processKeys(unsigned char key, int x, int y) {
 
 }
 
+void fpsshow(void){
+    frame++;
+    timefps=glutGet(GLUT_ELAPSED_TIME);
+    if (timefps - timebase > 1000) {
+        fps = frame*1000.0/(timefps-timebase);
+        timebase = timefps;
+        frame = 0;
+    }
+    char s[64];
+    sprintf(s,"%d",fps);
+
+    glutSetWindowTitle(s);
+
+    glutPostRedisplay();
+}
+
+void printInfo() {
+
+    printf("Vendor: %s\n", glGetString(GL_VENDOR));
+    printf("Renderer: %s\n", glGetString(GL_RENDERER));
+    printf("Version: %s\n", glGetString(GL_VERSION));
+
+    printf("\nUse Arrows to move the camera up/down and left/right\n");
+    printf("R and F control the distance from the camera to the origin\n");
+}
 
 int main(int argc, char **argv) {
     char *pFilename = NULL;
@@ -164,7 +209,10 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    readXML(pFilename,modelos,geo_tr,sequencia);
+    //readXML(pFilename,modelos,geo_tr,sequencia);
+    SysState system (pFilename);
+
+    //criar modelos.size() buffers
 
 // init GLUT and the window
     glutInit(&argc, argv);
@@ -174,8 +222,9 @@ int main(int argc, char **argv) {
     glutCreateWindow("CG@DI-UM");
 
 // Required callback registry
-    glutDisplayFunc(renderScene);
+    glutDisplayFunc(system.renderScene);
     glutReshapeFunc(changeSize);
+    glutIdleFunc(fpsshow);
 
 // put here the registration of the keyboard callbacks
     glutKeyboardFunc(processKeys);
@@ -188,6 +237,7 @@ int main(int argc, char **argv) {
     glEnable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT,GL_LINE);
 
+    printInfo();
 // enter GLUT's main cycle
     glutMainLoop();
 

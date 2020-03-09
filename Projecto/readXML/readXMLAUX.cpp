@@ -145,6 +145,9 @@ void readXMLaux(TiXmlElement *element,vector<struct modelo*> &modelos,vector<str
         	//caso translate
         	if(!strcmp(element->Value(), "translate")){
         		Geo_Transf *geo =(struct geo_transf*) malloc(sizeof(struct geo_transf));
+        		geo->x=0;
+        		geo->y=0;
+        		geo->z=0;
 
         		geo->tipo = 0;
 
@@ -160,6 +163,9 @@ void readXMLaux(TiXmlElement *element,vector<struct modelo*> &modelos,vector<str
         	//caso rotate
         	if(!strcmp(element->Value(), "rotate")){
         		Geo_Transf *geo =(struct geo_transf*) malloc(sizeof(struct geo_transf));
+        		geo->x=0;
+        		geo->y=0;
+        		geo->z=0;
 
         		geo->tipo = 1;
 
@@ -177,6 +183,9 @@ void readXMLaux(TiXmlElement *element,vector<struct modelo*> &modelos,vector<str
         	if(!strcmp(element->Value(), "scale")){
 
         		Geo_Transf *geo =(struct geo_transf*) malloc(sizeof(struct geo_transf));
+        		geo->x=0;
+        		geo->y=0;
+        		geo->z=0;
 
         		geo->tipo = 2;
 
