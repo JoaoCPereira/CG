@@ -1,4 +1,0 @@
-/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Teste/CMakeFiles/rebuild_cache.dir
-/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Teste/CMakeFiles/Engine.dir
-/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Teste/CMakeFiles/edit_cache.dir
-/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Teste/CMakeFiles/Generator.dir
