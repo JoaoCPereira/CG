@@ -4,4 +4,4 @@
 
 ./Generator sphere 1 10 10 jupyter.3d | ./Generator sphere 0.83 10 10 saturn.3d | ./Generator sphere 0.36 10 10 uranus.3d
 
-./Generator sphere 0.35 10 10 neptun.3d
+./Generator sphere 0.35 10 10 neptune.3d | ./Generator sphere 0.83 10 10 saturn.3d | ./Generator sphere 0.08 10 10 moon.3d
