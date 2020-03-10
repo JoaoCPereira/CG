@@ -1,1 +1,0 @@
-/usr/bin/g++-7  -g   CMakeFiles/Generator.dir/generatorSrc/main_gen.cpp.o CMakeFiles/Generator.dir/generatorSrc/generator.cpp.o  -o Generator 
