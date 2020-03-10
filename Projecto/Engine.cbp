@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Engine"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Engine">
+				<Option output="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/Engine" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML"/>
+					<Add directory="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML"/>
+					<Add directory="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 Engine"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Engine/fast">
+				<Option output="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/Engine" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML"/>
+					<Add directory="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML"/>
+					<Add directory="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 Engine/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Generator">
+				<Option output="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/Generator" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 Generator"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Generator/fast">
+				<Option output="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/Generator" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 Generator/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/apx5/LCC/3\ Ano/2\ Semestre/CG/CG/Projecto/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.cpp">
+			<Option target="Generator"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.h">
+			<Option target="Generator"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/main.cpp">
+			<Option target="Generator"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/main.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.h">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.h">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.h">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlerror.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlparser.cpp">
+			<Option target="Engine"/>
+		</Unit>
+		<Unit filename="/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
