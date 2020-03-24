@@ -1,0 +1,4 @@
+/home/gulithor/LCC/3ano/CG/CG/Projecto/CMakeFiles/rebuild_cache.dir
+/home/gulithor/LCC/3ano/CG/CG/Projecto/CMakeFiles/Engine.dir
+/home/gulithor/LCC/3ano/CG/CG/Projecto/CMakeFiles/edit_cache.dir
+/home/gulithor/LCC/3ano/CG/CG/Projecto/CMakeFiles/Generator.dir

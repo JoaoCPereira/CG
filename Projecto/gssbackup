@@ -1,3 +1,4 @@
+
 ./Generator sphere 1 10 10 sun.3d | ./Generator sphere 1 10 10 mercury.3d | ./Generator sphere 1 10 10 venus.3d
 
 ./Generator sphere 1 10 10 earth.3d | ./Generator sphere 1 10 10 mars.3d | ./Generator sphere 1 10 10 jupyter.3d
