@@ -10,6 +10,9 @@ struct point
 
 struct modelo
 {
+	float diffR;
+	float diffG;
+	float diffB;
 	int numPoints;
 	Point *vector;
 };
@@ -87,6 +90,7 @@ Modelo* read3d(char *filename){
 void writeModelo3D(Modelo *model){
 
 	if (model){
+		glColor3f(model->diffR,model->diffG,model->diffB);
 		glBegin(GL_TRIANGLES);
 		for(int i=0; i< model->numPoints; i++){
 			glVertex3f(model->vector[i].x,model->vector[i].y,model->vector[i].z);
@@ -135,6 +139,14 @@ void readXMLaux(TiXmlElement *element,vector<struct modelo*> &modelos,vector<str
         
                 Modelo *modelo = NULL;
                 modelo = read3d(name3D);
+
+                modelo->diffR=1;
+                modelo->diffG=1;
+                modelo->diffB=1;
+
+                element->QueryFloatAttribute("diffR",&modelo->diffR);
+                element->QueryFloatAttribute("diffG",&modelo->diffG);
+                element->QueryFloatAttribute("diffB",&modelo->diffB);
         
                 modelos.push_back(modelo);
 

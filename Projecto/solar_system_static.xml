@@ -2,51 +2,51 @@
     <group>
         <group>
             <scale X=5 Y=5 Z=5/>
-            <model file="sun.3d" />
+            <model file="sun.3d" diffR=1 diffG=0.9 diffB=0/>
         </group>
         <group>
             <translate X=6.5 Y=0 Z=0/>
             <scale X=0.65 Y=0.65 Z=0.65/>
-            <model file="mercury.3d" />
+            <model file="mercury.3d" diffR=0.7 diffG=0.5 diffB=0/>
         </group>
         <group>
             <translate X=9 Y=0 Z=0/>
             <scale X=0.80 Y=0.80 Z=0.80/>
-            <model file="venus.3d" />
+            <model file="venus.3d" diffR=0.9 diffG=0.5 diffB=0.3/>
         </group>
         <group>
             <translate X=12 Y=0 Z=0/>
             <scale X=0.85 Y=0.85 Z=0.85/>
-            <model file="earth.3d" />
+            <model file="earth.3d" diffR=0 diffG=0.9 diffB=0.6/>
             <group>
                 <translate X=1 Y=0 Z=-1/>
                 <scale X=0.1 Y=0.1 Z=0.1/>
-                <model file="moon.3d" />
+                <model file="moon.3d" diffR=0.5 diffG=0.5 diffB=0.5/>
             </group>
         </group>
         <group>
             <translate X=15 Y=0 Z=0/>
             <scale X=0.75 Y=0.75 Z=0.75/>
-            <model file="mars.3d" />
+            <model file="mars.3d" diffR=0.8 diffG=0 diffB=0/>
         </group>
         <group>
             <translate X=19 Y=0 Z=0/>
             <scale X=2 Y=2 Z=2/>
-            <model file="jupyter.3d" />
+            <model file="jupyter.3d" diffR=1 diffG=0.8 diffB=0.9/>
         </group>
         <group>
             <translate X=24 Y=0 Z=0/>
             <scale X=1.7 Y=1.7 Z=1.7/>
-            <model file="saturn.3d" />
+            <model file="saturn.3d" diffR=1 diffG=0.9 diffB=0.5/>
         </group>
         <group>
             <translate X=28 Y=0 Z=0/>
             <scale X=1.1 Y=1.1 Z=1.1/>
-            <model file="uranus.3d" />
+            <model file="uranus.3d" diffR=0.1 diffG=0.6 diffB=1/>
         </group>
         <group>
             <translate X=32 Y=0 Z=0/>
-            <model file="neptune.3d" />
+            <model file="neptune.3d" diffR=0.1 diffG=0.1 diffB=0.5/>
         </group>
     </group>
 </scene>
