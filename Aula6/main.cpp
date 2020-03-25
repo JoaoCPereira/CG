@@ -209,26 +209,26 @@ void init() {
 
 	imageData = ilGetData();
 	
-	
-
 // 	Build the vertex arrays
 
 	vertexB.clear();
 
-    int min=-127.5;
+    float min=-(((float)(tw-1))/2.0), alturaMax=30;
+
+    float escala= alturaMax/tw;
 
     // linha
-    for (int z = 0; z < 255; z++) {
+    for (int z = 0; z < th-1; z++) {
     	// clonua
-    	for (int x = 0; x < 256; x++) {
+    	for (int x = 0; x < tw; x++) {
     		// para cada i j 2 pontos
     		vertexB.push_back(min+(1*x)); // X
-			vertexB.push_back( (float)imageData[(z*256)+x]*0.117 ); // Y
+			vertexB.push_back( (float)imageData[(z*tw)+x]*escala ); // Y
 			//printf("%f -- %d -- %d -- (%d,%d)\n",(float)imageData[(z*256)+x]*0.117,imageData[(z*256)+x],(z*256)+x,x,z);
 			vertexB.push_back(min+(1*z)); // Z
 
 			vertexB.push_back(min+(1*x)); // X
-			vertexB.push_back( (float)imageData[((z+1)*256)+x]*0.117 ); // Y 
+			vertexB.push_back( (float)imageData[((z+1)*tw)+x]*escala ); // Y 
 			vertexB.push_back(min+(1*z)+1); // Z
 		}
     }
@@ -245,6 +245,7 @@ void init() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT,GL_LINE);
+	// GL_FILL e GL_LINE
 }
 
 void fpsshow(void){
