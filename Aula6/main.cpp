@@ -22,10 +22,19 @@ using namespace std;
 unsigned int t,tw,th;
 unsigned char*imageData;
 
-float camX = 00, camY = 30, camZ = 40;
+float camX = 00, camY = 30, camZ = 40, radius=5;
 int startX, startY, tracking = 0;
 
 int alpha = 0, beta = 45, r = 50;
+
+int imageHeight=256,imageWidth=256;
+
+int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
+char s[64];
+
+vector <float> vertexB;
+
+GLuint buffers[1];
 
 void changeSize(int w, int h) {
 
@@ -56,6 +65,18 @@ void changeSize(int w, int h) {
 void drawTerrain() {
 
     // colocar aqui o código de desnho do terreno usando VBOs com TRIANGLE_STRIPS
+
+
+	// duvida powerPoint diz para para colocar no render vai ser executado varias vezes
+	// no pdf diz para executar uma única vez
+
+    glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
+	glVertexPointer(3,GL_FLOAT,0,0);
+
+
+	for (int i = 0; i < 255 ; i++) {
+		glDrawArrays(GL_TRIANGLE_STRIP, 512*i , 512);
+	}
 }
 
 
@@ -68,7 +89,7 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
-	gluLookAt(camX, camY, camZ, 
+	gluLookAt(camX*radius, camY*radius, camZ*radius, 
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
@@ -89,6 +110,21 @@ void processKeys(unsigned char key, int xx, int yy) {
 // put code to process regular keys in here
 }
 
+
+void processSpecialKeys(int key, int xx, int yy) {
+
+	switch (key) {
+
+	case GLUT_KEY_PAGE_DOWN: radius -= 0.1f;
+		if (radius < 0.1f)
+			radius = 0.1f;
+		break;
+
+	case GLUT_KEY_PAGE_UP: radius += 0.1f; break;
+	}
+	glutPostRedisplay();
+
+}
 
 
 void processMouseButtons(int button, int state, int xx, int yy) {
@@ -157,10 +193,8 @@ void processMouseMotion(int xx, int yy) {
 	camY = rAux * 							     sin(betaAux * 3.14 / 180.0);
 }
 
-
 void init() {
 	// 	Load the height map "terreno.jpg"
-	ilInit();
 	ilGenImages(1, &t);
 	ilBindImage(t);
 	
@@ -175,16 +209,57 @@ void init() {
 
 	imageData = ilGetData();
 	
-	ilBindImage(0);
-	ilDeleteImage(t);
-
-
+	
 
 // 	Build the vertex arrays
 
+	vertexB.clear();
+
+    int min=-127.5;
+
+    // linha
+    for (int z = 0; z < 255; z++) {
+    	// clonua
+    	for (int x = 0; x < 256; x++) {
+    		// para cada i j 2 pontos
+    		vertexB.push_back(min+(1*x)); // X
+			vertexB.push_back( (float)imageData[(z*256)+x]*0.117 ); // Y
+			//printf("%f -- %d -- %d -- (%d,%d)\n",(float)imageData[(z*256)+x]*0.117,imageData[(z*256)+x],(z*256)+x,x,z);
+			vertexB.push_back(min+(1*z)); // Z
+
+			vertexB.push_back(min+(1*x)); // X
+			vertexB.push_back( (float)imageData[((z+1)*256)+x]*0.117 ); // Y 
+			vertexB.push_back(min+(1*z)+1); // Z
+		}
+    }
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    glGenBuffers(1, buffers);
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+	glBufferData(GL_ARRAY_BUFFER,vertexB.size()*sizeof(float), &vertexB[0], GL_STATIC_DRAW);
+
+
 // 	OpenGL settings
-	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT,GL_LINE);
+}
+
+void fpsshow(void){
+	frame++;
+	timefps=glutGet(GLUT_ELAPSED_TIME);
+	if (timefps - timebase > 1000) {
+		fps = frame*1000.0/(timefps-timebase);
+		timebase = timefps;
+		frame = 0;
+	}
+	
+	sprintf(s,"%d",fps);
+	glutSetWindowTitle(s);
+
+	glutPostRedisplay();
 }
 
 
@@ -196,22 +271,27 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(320,320);
 	glutCreateWindow("CG@DI-UM");
-		
+
+	ilInit();
+	glewInit();
 
 // Required callback registry 
 	glutDisplayFunc(renderScene);
 	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
+	glutIdleFunc(fpsshow);
 
 // Callback registration for keyboard processing
 	glutKeyboardFunc(processKeys);
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
+	glutSpecialFunc(processSpecialKeys);
 
 	init();	
 
 // enter GLUT's main cycle
 	glutMainLoop();
+
 	
 	return 0;
 }
