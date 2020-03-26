@@ -5,7 +5,7 @@ PROJECT(Engine)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} main.cpp readXML/tinyXML/tinyxmlparser.cpp readXML/tinyXML/tinyxml.cpp readXML/tinyXML/tinystr.cpp readXML/tinyXML/tinyxmlerror.cpp readXML/readXMLAUX.cpp)
+add_executable(${PROJECT_NAME} main.cpp readXML/tinyXML/tinyxmlparser.cpp readXML/tinyXML/tinyxml.cpp readXML/tinyXML/tinystr.cpp readXML/tinyXML/tinyxmlerror.cpp readXML/readXMLClass.cpp readXML/readXMLAUX.cpp)
 target_include_directories(Engine PUBLIC
                            readXML/tinyXML/
                            readXML/
@@ -41,11 +41,21 @@ if  (WIN32)
 	
 else (WIN32) #Linux and Mac
 
+	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} Wno-deprecated")
 	find_package(GLUT REQUIRED)
 	include_directories(${GLUT_INCLUDE_DIR})
 	link_directories(${GLUT_LIBRARY_DIRS})
 	add_definitions(${GLUT_DEFINITIONS})
-	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+	
+	if (NOT APPLE)
+		find_package(GLEW REQUIRED)
+		include_directories(${GLEW_INCLUDE_DIRS})
+		link_libraries(${GLEW_LIBRARIES})
+		target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES})
+	else (NOT APPLE)
+		target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+	endif(NOT APPLE)
+	
 	if(NOT GLUT_FOUND)
 	   message(ERROR ": GLUT not found!")
 	endif(NOT GLUT_FOUND)

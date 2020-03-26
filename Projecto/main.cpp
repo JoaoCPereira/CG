@@ -9,9 +9,14 @@
 #include <math.h>
 #include "tinyxml.h"
 #include "tinystr.h"
-#include "readXMLAUX.h"
+#include "readXMLClass.h"
 #include <unistd.h>
 #include <limits.h>
+#include <iostream>
+#include <stdio.h>
+#include<bits/stdc++.h> 
+
+using namespace std; 
 
 // variáveis globais
 float scale = 1;
@@ -22,27 +27,7 @@ float distanciaCamera = 20.0f;
 
 int frame=0,timefps=0,timebase=0,fps=0;
 
-/*
-vector<struct modelo*> modelos;
-vector<struct geo_transf*> geo_tr;
-vector<int> sequencia;
-*/
-
-class SysState {
-    static vector<struct modelo*> modelos;
-	static vector<struct geo_transf*> geo_tr;
-	static vector<int> sequencia;
-	GLuint *buffers;
-  public:
-    SysState(char *fileName){
-    	readXML(fileName,modelos,geo_tr,sequencia);
-    }
-    static void renderScene(void);
-};
-
-vector<struct modelo*> SysState::modelos;
-vector<struct geo_transf*> SysState::geo_tr;
-vector<int> SysState::sequencia;
+GLuint buffers;
 
 void changeSize(int w, int h) {
 
@@ -68,33 +53,6 @@ void changeSize(int w, int h) {
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
 }
-
-void SysState::renderScene(void) {
-
-    // clear buffers
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // set the camera
-    //glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluLookAt(sin(angleAlfa)*cos(angleBeta)*distanciaCamera,sin(angleBeta)*distanciaCamera,cos(angleAlfa)*(cos(angleBeta)*distanciaCamera),
-              0.0,0.0,0.0,
-              0.0f,1.0f,0.0f);
-
-// put the geometric transformations here
-    
-    //glTranslatef(x_x,0,z);
-    //glRotatef(angle,0,1,0);
-    //glScalef(scale,scale,scale);
- 
-// put drawing instructions here
-
-    writeSeq(modelos,geo_tr,sequencia);
-
-    // End of frame
-    glutSwapBuffers();
-}
-
 
 
 // write function to process keyboard events
@@ -196,9 +154,6 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    //readXML(pFilename,modelos,geo_tr,sequencia);
-    SysState system (pFilename);
-
     //criar modelos.size() buffers
 
 // init GLUT and the window
@@ -207,6 +162,12 @@ int main(int argc, char **argv) {
     glutInitWindowPosition(100,100);
     glutInitWindowSize(1000,1000);
     glutCreateWindow("CG@DI-UM");
+
+    glewInit();
+    glEnableClientState(GL_VERTEX_ARRAY);
+    
+    //readXML(pFilename,modelos,geo_tr,sequencia);
+    SysState system (pFilename);
 
 // Required callback registry
     glutDisplayFunc(system.renderScene);
