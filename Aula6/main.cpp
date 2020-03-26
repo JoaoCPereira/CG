@@ -22,12 +22,10 @@ using namespace std;
 unsigned int t,tw,th;
 unsigned char*imageData;
 
-float camX = 00, camY = 30, camZ = 40, radius=5;
+float camX = 00, camY = 30, camZ = 40, radius=1;
 int startX, startY, tracking = 0;
 
 int alpha = 0, beta = 45, r = 50;
-
-int imageHeight=256,imageWidth=256;
 
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
 char s[64];
@@ -64,18 +62,14 @@ void changeSize(int w, int h) {
 
 void drawTerrain() {
 
-    // colocar aqui o código de desnho do terreno usando VBOs com TRIANGLE_STRIPS
+    // colocar aqui o código de desenho do terreno usando VBOs com TRIANGLE_STRIPS
 
 
 	// duvida powerPoint diz para para colocar no render vai ser executado varias vezes
 	// no pdf diz para executar uma única vez
 
-    glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
-	glVertexPointer(3,GL_FLOAT,0,0);
-
-
-	for (int i = 0; i < 255 ; i++) {
-		glDrawArrays(GL_TRIANGLE_STRIP, 512*i , 512);
+	for (int i = 0; i < th-1 ; i++) {
+		glDrawArrays(GL_TRIANGLE_STRIP, tw*2*i , tw*2);
 	}
 }
 
@@ -97,7 +91,7 @@ void renderScene(void) {
 
 	// just so that it renders something before the terrain is built
 	// to erase when the terrain is ready
-	glutWireTeapot(2.0);
+	//glutWireTeapot(2.0);
 
 // End of frame
 	glutSwapBuffers();
@@ -204,9 +198,11 @@ void init() {
 	tw=ilGetInteger(IL_IMAGE_WIDTH);
 	th=ilGetInteger(IL_IMAGE_HEIGHT);
 
-	if (tw != 256 && th != 256) return;
-	cout << tw << ' ' << th << endl;
-
+	if (tw != 256 && th != 256){
+    	cout << "The image could not be loaded" << endl;
+        return;
+    }
+    
 	imageData = ilGetData();
 	
 // 	Build the vertex arrays
@@ -219,12 +215,11 @@ void init() {
 
     // linha
     for (int z = 0; z < th-1; z++) {
-    	// clonua
+    	// coluna
     	for (int x = 0; x < tw; x++) {
     		// para cada i j 2 pontos
     		vertexB.push_back(min+(1*x)); // X
 			vertexB.push_back( (float)imageData[(z*tw)+x]*escala ); // Y
-			//printf("%f -- %d -- %d -- (%d,%d)\n",(float)imageData[(z*256)+x]*0.117,imageData[(z*256)+x],(z*256)+x,x,z);
 			vertexB.push_back(min+(1*z)); // Z
 
 			vertexB.push_back(min+(1*x)); // X
@@ -233,12 +228,12 @@ void init() {
 		}
     }
 
-    glEnableClientState(GL_VERTEX_ARRAY);
+    
 
     glGenBuffers(1, buffers);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 	glBufferData(GL_ARRAY_BUFFER,vertexB.size()*sizeof(float), &vertexB[0], GL_STATIC_DRAW);
-
+    glVertexPointer(3,GL_FLOAT,0,0);
 
 // 	OpenGL settings
 	//glEnable(GL_CULL_FACE);
@@ -275,6 +270,7 @@ int main(int argc, char **argv) {
 
 	ilInit();
 	glewInit();
+    glEnableClientState(GL_VERTEX_ARRAY);
 
 // Required callback registry 
 	glutDisplayFunc(renderScene);
