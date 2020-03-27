@@ -48,5 +48,10 @@
             <translate X=32 Y=0 Z=0/>
             <model file="sphere.3d" diffR=0.1 diffG=0.1 diffB=0.5/>
         </group>
+        <group>
+            <translate X=50 Y=0 Z=0/>
+            <rotate axisX=1 axisY=0 axisZ=0 angle=-90/>
+            <model file="teapot.patch.3d" diffR=0.76 diffG=0.26 diffB=0.43/>
+        </group>
     </group>
 </scene>

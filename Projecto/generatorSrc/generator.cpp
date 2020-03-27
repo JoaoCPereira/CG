@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <stdlib.h>
 using namespace std;
 
 void print_sphere(float radius,float slices,float stacks,char* file_name){
@@ -239,11 +240,12 @@ void process_patch(char *filename, int tesselation){
     ifstream infile(filename);
     int cp; //control points
     int np;
-    vector<int> control_points;
-    vector<float> pontos;
+    vector<float> control_points;
+    vector<float> points;
     int contador = 0;
     infile >> cp;
-    cout << cp << endl;
+    //cout << cp << endl;
+
     while(infile.good() && contador <= cp){
         string s;
         if(!getline(infile,s)) break;
@@ -258,31 +260,41 @@ void process_patch(char *filename, int tesselation){
         }
         contador ++;
     }
-    cout << "acabou os cp" << endl;
+    //cout << "acabou os cp" << endl;
     infile >> np;
-    cout << np << endl;
+    //cout << np << endl;
+    
     while(infile.good()){
         string s;
         if(!getline(infile,s)) break;
-        istringstream ss(s);
+        istringstream ss(s); 
         while(ss){
+            float temp[3];
             string f;
-            if (!getline(ss, f, ',' )) break;
+            if (!getline(ss, f, ',' )) break;     
             stringstream p(f);
             float x;
             p >> x;
-            pontos.push_back(x);
-
+            points.push_back(x);
+           
         }
     }
 
-    for(int i = 0; i< control_points.size();i++){
-        cout << control_points[i] << endl;
-    }
+    char a[30];
+    sprintf(a,"%s.3d",filename);
+    int total_points = (control_points.size()-2)*3;
+    FILE *fd = fopen(a,"w");
+    
+    if(fd){
+        fprintf(fd,"%d\n", total_points);
+        for(int i = 0; i < control_points.size()-2;i++){
 
-    for(int i = 0; i< pontos.size();i++){
-        cout << pontos[i] << endl;
+            fprintf(fd,"%f %f %f\n",points[control_points[i]*3],points[1+(control_points[i]*3)],points[2+(control_points[i]*3)]);
+            fprintf(fd,"%f %f %f\n",points[control_points[i+1]*3],points[1+(control_points[i+1]*3)],points[2+(control_points[i+1]*3)]);
+            fprintf(fd,"%f %f %f\n",points[control_points[i+2]*3],points[1+(control_points[i+2]*3)],points[2+(control_points[i+2]*3)]);
+        }
+
+        fclose(fd);
     }
 
 }    
-
