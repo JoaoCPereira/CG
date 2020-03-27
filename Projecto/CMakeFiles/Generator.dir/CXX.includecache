@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.cpp
+generator.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.h
+fstream
+-
+iostream
+-
+sstream
+-
+string
+-
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+math.h
+-
+vector
+-
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/main.cpp
+generator.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/generatorSrc/generator.h
+

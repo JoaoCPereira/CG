@@ -1,4 +1,9 @@
 #include "generator.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+using namespace std;
 
 void print_sphere(float radius,float slices,float stacks,char* file_name){
     FILE *fd = fopen(file_name,"w");
@@ -227,8 +232,45 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
 
     }
     fclose(fd);
-
 }
 
 
+void process_patch(char *filename, int tesselation){
+    ifstream infile(filename);
+    int cp; //control points
+    int np;
+    vector<string> control_points;
+    vector<string> pontos;
+    int contador = 0;
+    infile >> cp;
+    cout << cp << endl;
+    while(infile.good() && contador <= cp){
+        string s;
+        if(!getline(infile,s)) break;
+        istringstream ss(s);
+        while(ss){
+            string f;
+            if (!getline(ss, f, ',' )) break;
+            cout << f << ' ';
+            control_points.push_back(f);
+        }
+        contador ++;
+    }
+    cout << "acabou os cp" << endl;
+    infile >> np;
+    cout << np << endl;
+    while(infile.good()){
+        string s;
+        if(!getline(infile,s)) break;
+        istringstream ss(s);
+        while(ss){
+            string f;
+            if (!getline(ss, f, ',' )) break;
+            cout << f << ' ';
+            pontos.push_back(f);
+
+        }
+    }
+
+}    
 

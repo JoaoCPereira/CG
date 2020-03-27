@@ -7,7 +7,7 @@ typedef struct geo_transf Geo_Transf;
 
 void writeModelo3D(Modelo *model){
 
-	// desenhar com vbo com indece
+	// desenhar com vbo com indice
 	glColor3f(model->diffR,model->diffG,model->diffB);
 	//printf("posInicial = %d, numPontos = %d\n", model->posInitVBO, model->numPoints);
 

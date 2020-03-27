@@ -6,6 +6,9 @@
 #include <string.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <vector>
+
+using namespace std;
 
 
 /**
@@ -54,5 +57,6 @@ void print_box(float x,float y,float z,float divisions,char* file_name);
 void print_cone(float radius,float height,float slices,float stacks,char* file_name);
 
 
+void process_patch(char *filename, int tesselation);
 
 #endif

@@ -1,0 +1,182 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/main.cpp
+GLUT/glut.h
+-
+GL/glew.h
+-
+GL/glut.h
+-
+math.h
+-
+tinyxml.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/tinyxml.h
+tinystr.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/tinystr.h
+readXMLClass.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXMLClass.h
+unistd.h
+-
+limits.h
+-
+iostream
+-
+stdio.h
+-
+bits/stdc++.h
+-
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.cpp
+readXMLAUX.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.h
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.h
+GLUT/glut.h
+-
+GL/glew.h
+-
+GL/glut.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+tinyxml.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyxml.h
+tinystr.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinystr.h
+unistd.h
+-
+vector
+-
+iostream
+-
+bits/stdc++.h
+-
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLClass.cpp
+readXMLClass.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLClass.h
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLClass.h
+readXMLAUX.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/readXMLAUX.h
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.cpp
+tinystr.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.h
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.h
+assert.h
+-
+string.h
+-
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.cpp
+ctype.h
+-
+sstream
+-
+iostream
+-
+tinyxml.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.h
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.h
+ctype.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+assert.h
+-
+string
+-
+iostream
+-
+sstream
+-
+tinystr.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinystr.h
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlerror.cpp
+tinyxml.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.h
+
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxmlparser.cpp
+ctype.h
+-
+stddef.h
+-
+tinyxml.h
+/home/apx5/LCC/3 Ano/2 Semestre/CG/CG/Projecto/readXML/tinyXML/tinyxml.h
+windows.h
+-
+
+readXML/readXMLAUX.h
+GLUT/glut.h
+-
+GL/glew.h
+-
+GL/glut.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+tinyxml.h
+readXML/tinyxml.h
+tinystr.h
+readXML/tinystr.h
+unistd.h
+-
+vector
+-
+iostream
+-
+bits/stdc++.h
+-
+
+readXML/readXMLClass.h
+readXMLAUX.h
+readXML/readXMLAUX.h
+
+readXML/tinyXML/tinystr.h
+assert.h
+-
+string.h
+-
+
+readXML/tinyXML/tinyxml.h
+ctype.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+assert.h
+-
+string
+-
+iostream
+-
+sstream
+-
+tinystr.h
+readXML/tinyXML/tinystr.h
+

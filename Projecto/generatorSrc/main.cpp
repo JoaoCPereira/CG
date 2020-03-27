@@ -1,10 +1,16 @@
 #include "generator.h"
 
+using namespace std;
 
 int main(int argc, char* argv[]){
 
-    if(argc>1){
-        if (!strcmp(argv[1],"sphere")){
+    
+    if(argc > 1){
+
+        if(argc == 3){
+            process_patch(argv[1],atoi(argv[2]));
+        }
+        else if (!strcmp(argv[1],"sphere")){
             if(argc < 6) {
                 printf("Invalid arguments!! : \'./Generator shpere \"radius\" \"slices\" \"stacks\" \"name_file\"\' \n ");
                 return -1;
@@ -41,6 +47,6 @@ int main(int argc, char* argv[]){
             printf("Invalid arguments\n");
         }
     }
-    return 0;
+
 
 }
