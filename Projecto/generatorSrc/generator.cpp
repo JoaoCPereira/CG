@@ -239,8 +239,8 @@ void process_patch(char *filename, int tesselation){
     ifstream infile(filename);
     int cp; //control points
     int np;
-    vector<string> control_points;
-    vector<string> pontos;
+    vector<int> control_points;
+    vector<float> pontos;
     int contador = 0;
     infile >> cp;
     cout << cp << endl;
@@ -251,8 +251,10 @@ void process_patch(char *filename, int tesselation){
         while(ss){
             string f;
             if (!getline(ss, f, ',' )) break;
-            cout << f << ' ';
-            control_points.push_back(f);
+            stringstream p(f);
+            int x;
+            p >> x;
+            control_points.push_back(x);
         }
         contador ++;
     }
@@ -266,10 +268,20 @@ void process_patch(char *filename, int tesselation){
         while(ss){
             string f;
             if (!getline(ss, f, ',' )) break;
-            cout << f << ' ';
-            pontos.push_back(f);
+            stringstream p(f);
+            float x;
+            p >> x;
+            pontos.push_back(x);
 
         }
+    }
+
+    for(int i = 0; i< control_points.size();i++){
+        cout << control_points[i] << endl;
+    }
+
+    for(int i = 0; i< pontos.size();i++){
+        cout << pontos[i] << endl;
     }
 
 }    
