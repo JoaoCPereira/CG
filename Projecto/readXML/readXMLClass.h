@@ -15,7 +15,7 @@ class SysState {
     static void renderScene(void);
 
   private:
-    static void read3D(char *filename, float, float, float );
+    static int read3D(char *filename, float, float, float );
     static void parserXML(TiXmlElement *element);
     static void readXML(char *pFilename);
     static void writeSeq();

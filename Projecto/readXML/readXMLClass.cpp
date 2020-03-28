@@ -18,7 +18,7 @@ SysState::SysState(char *fileName){
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preVBO.data(), GL_STATIC_DRAW);
 }
 
-void SysState::read3D(char *filename,float diffR, float diffG, float diffB){
+int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
 
   Modelo *mod =(struct modelo*) malloc(sizeof(struct modelo));
 
@@ -75,7 +75,11 @@ void SysState::read3D(char *filename,float diffR, float diffG, float diffB){
         }
       }
     }
-
+  }
+  else{
+    // não abriu o ficheiro
+    cout << "File \"" << filename << "\" not found " << endl;
+    return 0;
   }
 
   fclose(fp);
@@ -89,6 +93,8 @@ void SysState::read3D(char *filename,float diffR, float diffG, float diffB){
   //printf("PosInitVBO =%d, numPontos =%d\n", mod->posInitVBO, mod->numPoints);
 
   modelos.push_back(mod);
+
+  return 1;
 }
 
 void SysState::parserXML(TiXmlElement *element){
@@ -102,16 +108,15 @@ void SysState::parserXML(TiXmlElement *element){
 
                 char *name3D = (char *) element->Attribute("file");
 
-                float diffR=0,diffG=0,diffB=0;
+                float diffR=1,diffG=1,diffB=1;
 
                 element->QueryFloatAttribute("diffR",&diffR);
                 element->QueryFloatAttribute("diffG",&diffG);
                 element->QueryFloatAttribute("diffB",&diffB);
         
-                read3D(name3D,diffR,diffG,diffB);
-
-                //adicinar 3(model ao array de sequencia)
-                sequencia.push_back(3);
+                if(read3D(name3D,diffR,diffG,diffB)){
+                  sequencia.push_back(3);
+                }
             }
 
           //caso translate

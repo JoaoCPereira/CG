@@ -240,61 +240,79 @@ void process_patch(char *filename, int tesselation){
     ifstream infile(filename);
     int cp; //control points
     int np;
-    vector<float> control_points;
+    vector< vector<int> > control_points;
     vector<float> points;
     int contador = 0;
-    infile >> cp;
+    int total_points = 0;
+
+    infile >> cp; // guardar numero de patches
     //cout << cp << endl;
 
+    // ler os patch's
     while(infile.good() && contador <= cp){
         string s;
         if(!getline(infile,s)) break;
-        istringstream ss(s);
+        istringstream ss(s); // guardar linha
+        vector<int> patch;
+
         while(ss){
             string f;
             if (!getline(ss, f, ',' )) break;
             stringstream p(f);
             int x;
             p >> x;
-            control_points.push_back(x);
+            patch.push_back(x);
+        }
+        if (patch.size() >= 3){
+            total_points += (patch.size()-2)*3;
+            control_points.push_back(patch);
         }
         contador ++;
     }
     //cout << "acabou os cp" << endl;
-    infile >> np;
+    infile >> np; // guardar o numero de pontos
     //cout << np << endl;
     
+    // ler os pontos
     while(infile.good()){
         string s;
         if(!getline(infile,s)) break;
         istringstream ss(s); 
         while(ss){
-            float temp[3];
             string f;
             if (!getline(ss, f, ',' )) break;     
             stringstream p(f);
             float x;
             p >> x;
             points.push_back(x);
-           
         }
     }
-
+    
     char a[30];
     sprintf(a,"%s.3d",filename);
-    int total_points = (control_points.size()-2)*3;
     FILE *fd = fopen(a,"w");
-    
+
     if(fd){
         fprintf(fd,"%d\n", total_points);
-        for(int i = 0; i < control_points.size()-2;i++){
+        // percorer cada posicao control_points
+        for(int j = 0; j < control_points.size();j++){
+            // para cada patch percorrer ate size-3
+            for(int i=0; i < control_points[j].size()-3 ; i+=2){
 
-            fprintf(fd,"%f %f %f\n",points[control_points[i]*3],points[1+(control_points[i]*3)],points[2+(control_points[i]*3)]);
-            fprintf(fd,"%f %f %f\n",points[control_points[i+1]*3],points[1+(control_points[i+1]*3)],points[2+(control_points[i+1]*3)]);
-            fprintf(fd,"%f %f %f\n",points[control_points[i+2]*3],points[1+(control_points[i+2]*3)],points[2+(control_points[i+2]*3)]);
+                //GL_TRIANGLE_STRIP
+                //Draws a series of triangles (three-sided polygons) using vertices v0, v1, v2, then v2, v1, v3 (note the order), then v2, v3, v4, and so on. 
+                //The ordering is to ensure that the triangles are all drawn with the same orientation so that the strip can correctly form part of a surface.
+
+                fprintf(fd,"%f %f %f\n",points[control_points[j][i]*3],points[1+(control_points[j][i]*3)],points[2+(control_points[j][i]*3)]); // v0
+                fprintf(fd,"%f %f %f\n",points[control_points[j][i+1]*3],points[1+(control_points[j][i+1]*3)],points[2+(control_points[j][i+1]*3)]); // v1
+                fprintf(fd,"%f %f %f\n",points[control_points[j][i+2]*3],points[1+(control_points[j][i+2]*3)],points[2+(control_points[j][i+2]*3)]); // v2
+
+                fprintf(fd,"%f %f %f\n",points[control_points[j][i+2]*3],points[1+(control_points[j][i+2]*3)],points[2+(control_points[j][i+2]*3)]); // v2
+                fprintf(fd,"%f %f %f\n",points[control_points[j][i+1]*3],points[1+(control_points[j][i+1]*3)],points[2+(control_points[j][i+1]*3)]); // v1
+                fprintf(fd,"%f %f %f\n",points[control_points[j][i+3]*3],points[1+(control_points[j][i+3]*3)],points[2+(control_points[j][i+3]*3)]); // v3
+            }
         }
 
         fclose(fd);
     }
-
 }    
