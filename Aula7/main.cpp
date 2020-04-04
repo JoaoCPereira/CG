@@ -35,6 +35,14 @@ int timeTest = 0;
 
 vector <float> vertexB;
 
+typedef struct coord{
+	float x;
+	float y;
+	float z;
+}*Coord;
+
+vector<Coord> coord_trees;
+
 GLuint buffers[1];
 
 void changeSize(int w, int h) {
@@ -61,6 +69,58 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void tree(void){
+
+	glRotatef(-90, 1, 0, 0); // ang in degrees
+	//tronco
+	glColor3f(0.5,0.3,0.1);
+	glutSolidCone(0.5,5, 10,10);
+
+	glColor3f(0.2,0.3,0);
+	glTranslatef(0,0,2);
+	glutSolidCone(1.5,5, 15,10);
+}
+
+
+void vectorF(){
+	srand(time(NULL));
+	float LO = -128;
+	float HI = 128;
+
+	for(int i = 0;i<n_arvores;i++){
+
+		float x = LO +static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
+		float z = LO +static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
+
+		if(sqrt(pow(x,2)+pow(z,2)) > 50){
+
+			Coord coords = (struct coord*) malloc(sizeof(struct coord));
+
+
+			coords->x = x;
+			coords->y = (float)imageData[(z*256)+x]*1.0;
+			coords->z = z;
+
+			coord_trees.push_back(coords);
+		}
+		else i--;
+	}
+}
+
+void vectorD(void){
+
+	for (int i = 0; i < coord_trees.size(); ++i){
+
+		glPushMatrix();
+		
+		glTranslatef(coord_trees[i]->x,0,coord_trees[i]->z);
+		tree();
+		
+		glPopMatrix();
+
+	}
+
+}
 
 
 void drawTerrain() {
@@ -114,7 +174,7 @@ void renderScene(void) {
 	// 8 teapot
 	float angleTea = 360 / 8;
 
-	glPushMatrix();
+	//glPushMatrix();
 
 	glRotatef(timeTest, 0, 1, 0);
 
@@ -136,9 +196,9 @@ void renderScene(void) {
 		//voltar a origem
 	}
 
-    glPopMatrix();
+    //glPopMatrix();
 
-	glPushMatrix();
+	//glPushMatrix();
 
 	glRotatef(-timeTest, 0, 1, 0);
 
@@ -160,9 +220,9 @@ void renderScene(void) {
 		//voltar a origem
 	}
 
-	glPopMatrix();
+	//glPopMatrix();
 
-	//vectorD();
+	vectorD();
 	// End of frame
 	glutSwapBuffers();
 }
@@ -336,6 +396,8 @@ void myIdle(){
 
 int main(int argc, char **argv) {
 
+	
+
 // init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
@@ -346,6 +408,8 @@ int main(int argc, char **argv) {
 	ilInit();
 	glewInit();
     glEnableClientState(GL_VERTEX_ARRAY);
+
+	vectorF();
 
 // Required callback registry 
 	glutDisplayFunc(renderScene);
