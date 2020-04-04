@@ -72,20 +72,21 @@ void changeSize(int w, int h) {
 
 float height(int x, int z){
 	//cout << (float)imageData[z*256+x]*escala;
-	return (float)imageData[z*256+x]*escala;
+	return (float)imageData[(z*256)+x]*escala;
+	//return vertexB[z*6*256+x*6+1];
 }
 
-float random_height(float x,float z){
-	int x1 = floor(x); int z1 = floor(z);
+float random_height(float px,float pz){
+	int x1 = floor(px); int z1 = floor(pz);
 	int x2 = x1+1; int z2 = z1+1;
-	float fz = z-z1; float fx = x-x1;
+	float fz = pz-z1; float fx = px-x1;
 
 	float h_x1_z = height(x1,z1) * (1-fz) + height(x1,z2) * fz;
 	float h_x2_z = height(x2,z1) * (1-fz) + height(x2,z2) * fz;
 
 	float h_xz = h_x1_z * (1-fx) + h_x2_z * fx;
 
-	cout << h_xz << endl;
+	//cout << "h_xz " << h_xz << "; h_x1_z " << h_x1_z <<  "; (1-fx) " << (1-fx) << "; h_x2_z " << h_x2_z << "; fx " << fx<< endl;
 
 	return h_xz;
 }
@@ -105,22 +106,20 @@ void tree(void){
 
 void vectorF(){
 	srand(time(NULL));
-	float LO = -128;
-	float HI = 128;
+	float LO = -128.0;
+	float HI = 128.0;
 
 	for(int i = 0;i<n_arvores;i++){
 
-		float x = LO +static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
-		float z = LO +static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
+		float x = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
+		float z = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
 
 		if(sqrt(pow(x,2)+pow(z,2)) > 50){
 
 			Coord coords = (struct coord*) malloc(sizeof(struct coord));
 
 			coords->x = x;
-			coords->y = 0;
-			coords->y = random_height(x,z);
-			
+			coords->y = random_height(x+HI,z+HI);
 			coords->z = z;
 
 			coord_trees.push_back(coords);
@@ -154,7 +153,7 @@ void drawTerrain() {
 	// no pdf diz para executar uma única vez
 
 	for (int i = 0; i < th-1 ; i++) {
-		glColor3f(1,1,1);
+		glColor3f(0.5,0.5,0.5);
 		glDrawArrays(GL_TRIANGLE_STRIP, tw*2*i , tw*2);
 	}
 }
@@ -175,6 +174,8 @@ void renderScene(void) {
 
 	drawTerrain();
 
+	glPushMatrix();
+	/*
 	glColor3f(0.2f, 0.8f, 0.2f);
 	glBegin(GL_TRIANGLES);
 		glVertex3f(100.0f, 0, -100.0f);
@@ -185,7 +186,7 @@ void renderScene(void) {
 		glVertex3f(-100.0f, 0, 100.0f);
 		glVertex3f(100.0f, 0, 100.0f);
 	glEnd();
-
+	*/
 
 	glColor3f(1, 0, 1);
 	glutSolidTorus(2, 4, 20, 20);
@@ -242,7 +243,7 @@ void renderScene(void) {
 		//voltar a origem
 	}
 
-	//glPopMatrix();
+	glPopMatrix();
 
 	vectorD();
 	// End of frame
@@ -391,7 +392,7 @@ void init() {
 	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT,GL_LINE);
+	glPolygonMode(GL_FRONT,GL_FILL);
 	// GL_FILL e GL_LINE
 }
 
