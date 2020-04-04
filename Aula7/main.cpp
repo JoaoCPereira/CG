@@ -21,6 +21,7 @@ using namespace std;
 
 unsigned int t,tw,th;
 unsigned char*imageData;
+float escala = 0;
 
 float camX = 00, camY = 30, camZ = 40, radius=1;
 int startX, startY, tracking = 0;
@@ -69,6 +70,26 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+float height(int x, int z){
+	//cout << (float)imageData[z*256+x]*escala;
+	return (float)imageData[z*256+x]*escala;
+}
+
+float random_height(float x,float z){
+	int x1 = floor(x); int z1 = floor(z);
+	int x2 = x1+1; int z2 = z1+1;
+	float fz = z-z1; float fx = x-x1;
+
+	float h_x1_z = height(x1,z1) * (1-fz) + height(x1,z2) * fz;
+	float h_x2_z = height(x2,z1) * (1-fz) + height(x2,z2) * fz;
+
+	float h_xz = h_x1_z * (1-fx) + h_x2_z * fx;
+
+	cout << h_xz << endl;
+
+	return h_xz;
+}
+
 void tree(void){
 
 	glRotatef(-90, 1, 0, 0); // ang in degrees
@@ -96,9 +117,10 @@ void vectorF(){
 
 			Coord coords = (struct coord*) malloc(sizeof(struct coord));
 
-
 			coords->x = x;
-			coords->y = (float)imageData[(z*256)+x]*1.0;
+			coords->y = 0;
+			coords->y = random_height(x,z);
+			
 			coords->z = z;
 
 			coord_trees.push_back(coords);
@@ -113,7 +135,7 @@ void vectorD(void){
 
 		glPushMatrix();
 		
-		glTranslatef(coord_trees[i]->x,0,coord_trees[i]->z);
+		glTranslatef(coord_trees[i]->x,coord_trees[i]->y,coord_trees[i]->z);
 		tree();
 		
 		glPopMatrix();
@@ -341,7 +363,7 @@ void init() {
 
     float min=-(((float)(tw-1))/2.0), alturaMax=30;
 
-    float escala= alturaMax/tw;
+    escala= alturaMax/tw;
 
     // linha
     for (int z = 0; z < th-1; z++) {
@@ -388,15 +410,14 @@ void fpsshow(void){
 	glutPostRedisplay();
 }
 
-
+/*
 void myIdle(){
 	timeTest += 0.5;
     glutPostRedisplay();
 }
+*/
 
 int main(int argc, char **argv) {
-
-	
 
 // init GLUT and the window
 	glutInit(&argc, argv);
@@ -409,13 +430,14 @@ int main(int argc, char **argv) {
 	glewInit();
     glEnableClientState(GL_VERTEX_ARRAY);
 
-	vectorF();
+
+	
 
 // Required callback registry 
 	glutDisplayFunc(renderScene);
 	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	glutIdleFunc(myIdle);
+	glutIdleFunc(fpsshow);
 
 // Callback registration for keyboard processing
 	glutKeyboardFunc(processKeys);
@@ -424,6 +446,9 @@ int main(int argc, char **argv) {
 	glutSpecialFunc(processSpecialKeys);
 
 	init();	
+
+	vectorF();
+
 
 // enter GLUT's main cycle
 	glutMainLoop();
