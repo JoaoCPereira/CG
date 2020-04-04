@@ -30,6 +30,9 @@ int alpha = 0, beta = 45, r = 50;
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
 char s[64];
 
+int n_arvores = 300;
+int timeTest = 0;
+
 vector <float> vertexB;
 
 GLuint buffers[1];
@@ -69,6 +72,7 @@ void drawTerrain() {
 	// no pdf diz para executar uma única vez
 
 	for (int i = 0; i < th-1 ; i++) {
+		glColor3f(1,1,1);
 		glDrawArrays(GL_TRIANGLE_STRIP, tw*2*i , tw*2);
 	}
 }
@@ -89,11 +93,77 @@ void renderScene(void) {
 
 	drawTerrain();
 
-	// just so that it renders something before the terrain is built
-	// to erase when the terrain is ready
-	//glutWireTeapot(2.0);
+	glColor3f(0.2f, 0.8f, 0.2f);
+	glBegin(GL_TRIANGLES);
+		glVertex3f(100.0f, 0, -100.0f);
+		glVertex3f(-100.0f, 0, -100.0f);
+		glVertex3f(-100.0f, 0, 100.0f);
 
-// End of frame
+		glVertex3f(100.0f, 0, -100.0f);
+		glVertex3f(-100.0f, 0, 100.0f);
+		glVertex3f(100.0f, 0, 100.0f);
+	glEnd();
+
+
+	glColor3f(1, 0, 1);
+	glutSolidTorus(2, 4, 20, 20);
+
+	glTranslatef(0,1.5,0);
+
+	//cilo interno
+	// 8 teapot
+	float angleTea = 360 / 8;
+
+	glPushMatrix();
+
+	glRotatef(timeTest, 0, 1, 0);
+
+	glColor3f(0,0,1);
+
+	for(int i=0;i<8;i++){
+
+		glPushMatrix();
+
+		//aplicar a rotacao na origem
+		glRotatef(angleTea*i, 0, 1, 0); // ang in degrees
+		glTranslatef(0, 0, 15);
+
+		glRotatef(-90, 0, 1, 0); // ang in degrees
+
+		glutSolidTeapot(2);
+
+		glPopMatrix();
+		//voltar a origem
+	}
+
+    glPopMatrix();
+
+	glPushMatrix();
+
+	glRotatef(-timeTest, 0, 1, 0);
+
+	angleTea = 360 / 16;
+
+	glColor3f(1, 0, 0);
+
+	for(int i=0;i<16;i++){
+
+		glPushMatrix();
+
+		//aplicar a rotacao na origem
+		glRotatef(angleTea*i, 0, 1, 0); // ang in degrees
+		glTranslatef(0, 0, 35);
+
+		glutSolidTeapot(2);
+
+		glPopMatrix();
+		//voltar a origem
+	}
+
+	glPopMatrix();
+
+	//vectorD();
+	// End of frame
 	glutSwapBuffers();
 }
 
@@ -259,6 +329,11 @@ void fpsshow(void){
 }
 
 
+void myIdle(){
+	timeTest += 0.5;
+    glutPostRedisplay();
+}
+
 int main(int argc, char **argv) {
 
 // init GLUT and the window
@@ -276,7 +351,7 @@ int main(int argc, char **argv) {
 	glutDisplayFunc(renderScene);
 	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	glutIdleFunc(fpsshow);
+	glutIdleFunc(myIdle);
 
 // Callback registration for keyboard processing
 	glutKeyboardFunc(processKeys);
