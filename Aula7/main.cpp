@@ -15,18 +15,19 @@
 #else
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include <random>
 #endif
 
 using namespace std;
 
 unsigned int t,tw,th;
 unsigned char*imageData;
-float escala = 0;
+float escala = 0, sensitivity = 0.05;
 
-float camX = 00, camY = 30, camZ = 40, radius=1;
-int startX, startY, tracking = 0;
+float camX = 0, camY = 5, camZ = 0, radius=1;
+int startX = 0, startY = 0, tracking = 0;
 
-int alpha = 0, beta = 45, r = 50;
+int alpha = 0, beta = 0, r = 3;
 
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
 char s[64];
@@ -107,12 +108,14 @@ void tree(void){
 void vectorF(){
 	srand(time(NULL));
 	float LO = -128.0;
-	float HI = 128.0;
+	float HI = 127.0;
 
 	for(int i = 0;i<n_arvores;i++){
 
-		float x = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
-		float z = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
+		float x = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
+		float z = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
+		//float x = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
+		//float z = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
 
 		if(sqrt(pow(x,2)+pow(z,2)) > 50){
 
@@ -127,7 +130,6 @@ void vectorF(){
 		else i--;
 	}
 }
-
 void vectorD(void){
 
 	for (int i = 0; i < coord_trees.size(); ++i){
@@ -168,9 +170,25 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
+
+	/*
 	gluLookAt(camX*radius, camY*radius, camZ*radius, 
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
+	*/
+
+	float Px = camX*r;
+	float Pz = camZ*r;
+
+	if (!camX) Px=r;
+	if (!camZ) Pz=r;
+
+	float Py = random_height(Px+128,Pz+128) + 5;
+	
+	gluLookAt(	Px, Py, Pz, 
+		      	Px+sin(alpha * 3.14 / 180.0)*cos(beta* 3.14 / 180.0),Py+sin(beta * 3.14 / 180.0),Pz+cos(alpha * 3.14 / 180.0)*cos(beta * 3.14 / 180.0),
+				//0.0f, Py, 0.0f,
+			  	0.0f,1.0f,0.0f);
 
 	drawTerrain();
 
@@ -262,12 +280,27 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 	switch (key) {
 
-	case GLUT_KEY_PAGE_DOWN: radius -= 0.1f;
-		if (radius < 0.1f)
-			radius = 0.1f;
-		break;
+		case GLUT_KEY_PAGE_DOWN: r -= 0.1f;
+			if (r < 0.1f)
+				r = 0.1f;
+			break;
 
-	case GLUT_KEY_PAGE_UP: radius += 0.1f; break;
+		case GLUT_KEY_PAGE_UP: r += 0.1f; break;
+
+		case GLUT_KEY_UP:
+			if (camZ > -128) camZ -=1;
+			break;
+		case GLUT_KEY_DOWN:
+		 	if (camZ < 128) camZ+=1;
+			break;
+		case GLUT_KEY_LEFT:
+		 	if (camX > -128) camX -=1;
+			break;
+		case GLUT_KEY_RIGHT:
+			if (camX < +128) camX +=1;
+			break;
+
+
 	}
 	glutPostRedisplay();
 
@@ -277,6 +310,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 void processMouseButtons(int button, int state, int xx, int yy) {
 	
 	if (state == GLUT_DOWN)  {
+		//cout << "Buttons" << " xx " << xx << " yy " << yy << endl;
 		startX = xx;
 		startY = yy;
 		if (button == GLUT_LEFT_BUTTON)
@@ -285,7 +319,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 			tracking = 2;
 		else
 			tracking = 0;
-	}
+	}/*
 	else if (state == GLUT_UP) {
 		if (tracking == 1) {
 			alpha += (xx - startX);
@@ -298,7 +332,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 				r = 3.0;
 		}
 		tracking = 0;
-	}
+	}*/
 }
 
 
@@ -310,16 +344,17 @@ void processMouseMotion(int xx, int yy) {
 
 	if (!tracking)
 		return;
-
-	deltaX = xx - startX;
-	deltaY = yy - startY;
+	deltaX = (xx - startX)*sensitivity;
+	deltaY = (yy - startY)*sensitivity;
 
 	if (tracking == 1) {
-
-
 		alphaAux = alpha + deltaX;
-		betaAux = beta + deltaY;
+		betaAux = beta - deltaY;
 
+		//cout << "Motion" << " xx " << xx << " yy " << yy << endl;
+		//cout << "Motion" << " Startxx " << startX << " Startyy " << startY << endl;
+		//cout << "Delta" << " xx " << deltaX << " yy " << deltaY << endl;
+	
 		if (betaAux > 85.0)
 			betaAux = 85.0;
 		else if (betaAux < -85.0)
@@ -332,12 +367,24 @@ void processMouseMotion(int xx, int yy) {
 		alphaAux = alpha;
 		betaAux = beta;
 		rAux = r - deltaY;
-		if (rAux < 3)
+
+		//cout << "rAux " << rAux << " r " << r << " deltaY " << deltaY << endl;
+
+		if (rAux < 3){
 			rAux = 3;
+		}
+		else if (rAux > 50){
+			rAux = 50;
+		}
 	}
-	camX = rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
-	camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
-	camY = rAux * 							     sin(betaAux * 3.14 / 180.0);
+
+	alpha = alphaAux;
+	beta = betaAux;
+	r = rAux;
+	//cout << r << endl;
+	//camX = rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
+	//camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
+	//camY = rAux * 							     sin(betaAux * 3.14 / 180.0);
 }
 
 void init() {
@@ -424,7 +471,7 @@ int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
 	glutInitWindowPosition(100,100);
-	glutInitWindowSize(320,320);
+	glutInitWindowSize(1280,1280);
 	glutCreateWindow("CG@DI-UM");
 
 	ilInit();
