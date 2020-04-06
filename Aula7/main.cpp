@@ -403,7 +403,7 @@ void processMouseMotion(int xx, int yy) {
 
 	int deltaX, deltaY;
 	int alphaAux, betaAux;
-	int rAux;
+	float rAux;
 
 	if (!tracking)
 		return;
