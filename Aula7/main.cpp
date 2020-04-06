@@ -345,7 +345,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 		case GLUT_KEY_RIGHT:
 			//timeTest += 0.5;
 			camX += 1;
-			if (camX > +128) camX =128;
+			if (camX > 128) camX =128;
 			break;
 	}
 	glutPostRedisplay();
@@ -438,7 +438,7 @@ void init() {
 	ilGenImages(1, &t);
 	ilBindImage(t);
 	
-	ilLoadImage("terreno1.jpg");
+	ilLoadImage("terreno.jpg");
 	ilConvertImage(IL_LUMINANCE,IL_UNSIGNED_BYTE);
 
 	tw=ilGetInteger(IL_IMAGE_WIDTH);
