@@ -25,13 +25,21 @@ unsigned char*imageData;
 float escala = 0, sensitivity = 0.05;
 
 int alpha = 0, beta = 0;
-float r = 3, camX = 1, camY = 1, camZ = 1, radius=1, k_X=1, k_Z=1,Px = camX*r, Pz = camY*r, Lx = Px+sin(alpha*3.14 / 180), Lz = Pz+cos(alpha*3.14 / 180);
+float r = 3, camX = 1, camY = 1, camZ = 1, radius=1;
+
+// constante da camara para deslocações
+float k_X=1, k_Z=1;
+
+// iniciar Px, Pz
+float Px = camX*r, Pz = camY*r;
+//iniciar lookAt
+float Lx = Px+sin(alpha*3.14 / 180), Lz = Pz+cos(alpha*3.14 / 180);
 int startX = 0, startY = 0, tracking = 0;
 
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
 char s[64];
 
-int n_arvores = 300;
+int n_trees = 300;
 float timeTest = 0;
 
 vector <float> vertexB;
@@ -109,7 +117,7 @@ void vectorF(){
 	float LO = -128.0;
 	float HI = 127.0;
 
-	for(int i = 0;i<n_arvores;i++){
+	for(int i = 0;i<n_trees;i++){
 
 		float x = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
 		float z = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
@@ -260,6 +268,7 @@ void renderScene(void) {
 
 		//cout << i << " - " << "yY =" << yY+128 << " zZ =" << zZ+128 << endl;
 
+		// vamos buscar a info da altura à informação da imagem
 		glTranslatef(0,random_height(yY+128,zZ+128),0);
 
 		glRotatef(-90, 0, 1, 0); // ang in degrees
@@ -389,6 +398,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 	}
 
 	/*
+	cross product do vector up da camara e do vector distancia
 	A x B = (a2b3  -   a3b2,     a3b1   -   a1b3,     a1b2   -   a2b1)
 	distX.push_back(d_x); distX.push_back(0);distX.push_back(d_z);
 	up.push_back(0);up.push_back(1);up.push_back(0);
@@ -412,7 +422,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 			tracking = 2;
 		else
 			tracking = 0;
-	}/*
+	}
 	else if (state == GLUT_UP) {
 		if (tracking == 1) {
 			alpha += (xx - startX);
@@ -425,7 +435,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 				r = 3.0;
 		}
 		tracking = 0;
-	}*/
+	}
 }
 
 
@@ -441,7 +451,7 @@ void processMouseMotion(int xx, int yy) {
 	deltaY = (yy - startY)*sensitivity;
 
 	if (tracking == 1) {
-		alphaAux = alpha + deltaX;
+		alphaAux = alpha - deltaX;
 		//betaAux = beta - deltaY;
 
 		//cout << "Motion" << " xx " << xx << " yy " << yy << endl;
@@ -536,11 +546,9 @@ void init() {
     glVertexPointer(3,GL_FLOAT,0,0);
 
 // 	OpenGL settings
-	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT,GL_LINE);
-	// GL_FILL e GL_LINE
 }
 
 void fpsshow(void){
@@ -573,8 +581,6 @@ int main(int argc, char **argv) {
 	glewInit();
     glEnableClientState(GL_VERTEX_ARRAY);
 
-
-	
 
 // Required callback registry 
 	glutDisplayFunc(renderScene);
