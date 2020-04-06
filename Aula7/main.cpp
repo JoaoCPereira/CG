@@ -24,10 +24,9 @@ unsigned int t,tw,th;
 unsigned char*imageData;
 float escala = 0, sensitivity = 0.05;
 
-float camX = 10, camY = 100, camZ = 10, radius=1;
-int startX = 0, startY = 0, tracking = 0;
-
 int alpha = 0, beta = 0, r = 3;
+float camX = 1, camY = 1, camZ = 1, radius=1, k_X=1, k_Z=1,Px = camX*r, Pz = camY*r, Lx = 0, Lz = 0;
+int startX = 0, startY = 0, tracking = 0;
 
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
 char s[64];
@@ -177,16 +176,22 @@ void renderScene(void) {
 			  0.0f,1.0f,0.0f);
 	*/
 
-	float Px = camX*r;
-	float Pz = camZ*r;
+	//Px = camX*r;
+	//Pz = camZ*r;
 
 	if (!camX) Px=r;
 	if (!camZ) Pz=r;
 
+	if (Px < -128) Px = -128;
+	else if (Px > 128) Px = 128;
+
+	if (Pz < -128) Pz = -128;
+	else if (Pz > 128) Pz = 128;
+
 	float Py = random_height(Px+128,Pz+128) + 5;
 	
 	gluLookAt(	Px, Py, Pz, 
-		      	Px+sin(alpha * 3.14 / 180.0),Py,Pz+cos(alpha * 3.14 / 180.0),
+		      	Lx,Py,Lz,
 				//0.0f, Py, 0.0f,
 			  	0.0f,1.0f,0.0f);
 	
@@ -330,24 +335,40 @@ void processSpecialKeys(int key, int xx, int yy) {
 		case GLUT_KEY_PAGE_UP: r += 0.1f; break;
 
 		case GLUT_KEY_UP:
-			camZ -= 1;
-			if (camZ < -128) camZ = -128;
+			//camZ -= 1;
+			//if (camZ < -128) camZ = -128;
+			k_Z = 1;
 			break;
 		case GLUT_KEY_DOWN:
-			camZ += 1;
-		 	if (camZ > 128) camZ=128;
+			//camZ += 1;
+		 	//if (camZ > 128) camZ=128;
+			k_Z = -1;
 			break;
 		case GLUT_KEY_LEFT:
 			//timeTest -= 0.5;
-			camX -= 1;
-		 	if (camX < -128) camX =-128;
+			//camX -= 1;
+		 	//if (camX < -128) camX =-128;
+			k_X = -1;
 			break;
 		case GLUT_KEY_RIGHT:
 			//timeTest += 0.5;
-			camX += 1;
-			if (camX > 128) camX =128;
+			//camX += 1;
+			//if (camX > 128) camX =128;
+			k_X = 1;
 			break;
 	}
+	float d_x = Lx-Px, d_z = Lz - Pz;
+
+	//cout << "Px:" << Px << " Pz:" << Pz << " Lx:" << Lx << " Lz:" << Lz << " d_x:" << d_x << " d_z" << d_z << endl;
+
+	cout << "P(" << Px << "," << Pz << ") L(" << Lx << "," << Lz << ") d(" << d_x << "," << d_z << ")" << endl;
+
+	Px += k_Z*d_x;
+	Pz += k_Z*d_z;
+
+	Lx += k_Z*d_x;
+	Lz += k_Z*d_z;
+
 	glutPostRedisplay();
 
 }
@@ -412,7 +433,7 @@ void processMouseMotion(int xx, int yy) {
 
 		alphaAux = alpha;
 		betaAux = beta;
-		rAux = r - deltaY;
+		rAux = r - deltaY*sensitivity;
 
 		//cout << "rAux " << rAux << " r " << r << " deltaY " << deltaY << endl;
 
@@ -426,7 +447,13 @@ void processMouseMotion(int xx, int yy) {
 
 	alpha = alphaAux;
 	beta = betaAux;
-	r = rAux;
+	//r = rAux;
+
+	Px = (Px/r)*rAux;
+	Pz = (Pz/r)*rAux;
+
+	Lx = Px+sin(alpha);
+	Lz = Pz+cos(beta);
 	//cout << r << endl;
 	//camX = rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	//camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
