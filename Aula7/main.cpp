@@ -22,10 +22,10 @@ using namespace std;
 
 unsigned int t,tw,th;
 unsigned char*imageData;
-float escala = 0, sensitivity = 0.05;
+float escala = 0, sensitivity = 0.003;
 
 int alpha = 0, beta = 0, r = 3;
-float camX = 1, camY = 1, camZ = 1, radius=1, k_X=1, k_Z=1,Px = camX*r, Pz = camY*r, Lx = 0, Lz = 0;
+float camX = 1, camY = 1, camZ = 1, radius=1, k_X=1, k_Z=1,Px = camX*r, Pz = camY*r, Lx = Px+sin(alpha*3.14 / 180), Lz = Pz+cos(alpha*3.14 / 180);
 int startX = 0, startY = 0, tracking = 0;
 
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
@@ -121,7 +121,7 @@ void vectorF(){
 			Coord coords = (struct coord*) malloc(sizeof(struct coord));
 
 			coords->x = x;
-			coords->y = random_height(x+HI,z+HI);
+			coords->y = random_height(x+HI+1,z+HI+1);
 			coords->z = z;
 
 			coord_trees.push_back(coords);
@@ -182,11 +182,11 @@ void renderScene(void) {
 	if (!camX) Px=r;
 	if (!camZ) Pz=r;
 
-	if (Px < -128) Px = -128;
-	else if (Px > 128) Px = 128;
+	if (Px <= -128) Px = -128;
+	else if (Px >= 126) Px = 126;
 
-	if (Pz < -128) Pz = -128;
-	else if (Pz > 128) Pz = 128;
+	if (Pz <= -126) Pz = -126;
+	else if (Pz >= 126) Pz = 126;
 
 	float Py = random_height(Px+128,Pz+128) + 5;
 	
@@ -234,7 +234,7 @@ void renderScene(void) {
 
 	glColor3f(0,0,1);
 
-	int rI = 15;
+	int rI = 15; //raio da circunferencia dos teapots internos
 
 	float y=0.0f, z=0.0f, yY=0.0f, zZ=0.0f;
 
@@ -280,7 +280,7 @@ void renderScene(void) {
 
 	glColor3f(1, 0, 0);
 
-	int rE = 35;
+	int rE = 35; //raio da circunferencia dos teapots externos
 
 	for(int i=0;i<16;i++){
 
@@ -325,6 +325,8 @@ void processKeys(unsigned char key, int xx, int yy) {
 
 void processSpecialKeys(int key, int xx, int yy) {
 
+	float d_x = Lx-Px, d_z = Lz - Pz;
+
 	switch (key) {
 
 		case GLUT_KEY_PAGE_DOWN: r -= 0.1f;
@@ -338,36 +340,48 @@ void processSpecialKeys(int key, int xx, int yy) {
 			//camZ -= 1;
 			//if (camZ < -128) camZ = -128;
 			k_Z = 1;
+			Px += k_Z*d_x;
+			Pz += k_Z*d_z;
+			Lx += k_Z*d_x;
+			Lz += k_Z*d_z;
 			break;
 		case GLUT_KEY_DOWN:
 			//camZ += 1;
 		 	//if (camZ > 128) camZ=128;
 			k_Z = -1;
+			Px += k_Z*d_x;
+			Pz += k_Z*d_z;
+			Lx += k_Z*d_x;
+			Lz += k_Z*d_z;
 			break;
 		case GLUT_KEY_LEFT:
 			//timeTest -= 0.5;
 			//camX -= 1;
 		 	//if (camX < -128) camX =-128;
 			k_X = -1;
+			Px += k_X*(-d_z);
+			Pz += k_X*d_x;
+			Lx += k_X*(-d_z);
+			Lz += k_X*d_x;
 			break;
 		case GLUT_KEY_RIGHT:
 			//timeTest += 0.5;
 			//camX += 1;
 			//if (camX > 128) camX =128;
 			k_X = 1;
+			Px += k_X*(-d_z);
+			Pz += k_X*d_x;
+			Lx += k_X*(-d_z);
+			Lz += k_X*d_x;
 			break;
 	}
-	float d_x = Lx-Px, d_z = Lz - Pz;
 
-	//cout << "Px:" << Px << " Pz:" << Pz << " Lx:" << Lx << " Lz:" << Lz << " d_x:" << d_x << " d_z" << d_z << endl;
-
-	cout << "P(" << Px << "," << Pz << ") L(" << Lx << "," << Lz << ") d(" << d_x << "," << d_z << ")" << endl;
-
-	Px += k_Z*d_x;
-	Pz += k_Z*d_z;
-
-	Lx += k_Z*d_x;
-	Lz += k_Z*d_z;
+	/*
+	A x B = (a2b3  -   a3b2,     a3b1   -   a1b3,     a1b2   -   a2b1)
+	distX.push_back(d_x); distX.push_back(0);distX.push_back(d_z);
+	up.push_back(0);up.push_back(1);up.push_back(0);
+	r = (-d_z,0,d_x)
+	*/
 
 	glutPostRedisplay();
 
@@ -453,7 +467,7 @@ void processMouseMotion(int xx, int yy) {
 	Pz = (Pz/r)*rAux;
 
 	Lx = Px+sin(alpha);
-	Lz = Pz+cos(beta);
+	Lz = Pz+cos(alpha);
 	//cout << r << endl;
 	//camX = rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	//camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
@@ -526,15 +540,10 @@ void fpsshow(void){
 	
 	sprintf(s,"%d",fps);
 	glutSetWindowTitle(s);
-	timeTest += 0.5;
+	timeTest += 0.5; // para a animação
 	glutPostRedisplay();
 }
 
-
-void myIdle(){
-	timeTest += 1;
-    glutPostRedisplay();
-}
 
 
 int main(int argc, char **argv) {
@@ -567,7 +576,7 @@ int main(int argc, char **argv) {
 
 	init();	
 
-	vectorF();
+	vectorF(); // iniciamos depois de init() porque precisamos de valores da init, imageData
 
 
 // enter GLUT's main cycle
