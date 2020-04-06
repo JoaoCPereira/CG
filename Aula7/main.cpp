@@ -344,7 +344,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 	float d_x = Lx-Px, d_z = Lz - Pz;
 
 	float P_x= 0, P_z=0, L_x = 0, L_z=0;
-	int max=128, min=-128;
+	int max=128, min=-128; // para manter a camara dentro do terreno
 
 	k_Z = 0;
 	k_X = 0;
@@ -359,25 +359,15 @@ void processSpecialKeys(int key, int xx, int yy) {
 		case GLUT_KEY_PAGE_UP: r += 0.1f; break;
 
 		case GLUT_KEY_UP:
-			//camZ -= 1;
-			//if (camZ < -128) camZ = -128;
 			k_Z = 1;
 			break;
 		case GLUT_KEY_DOWN:
-			//camZ += 1;
-		 	//if (camZ > 128) camZ=128;
 			k_Z = -1;
 			break;
 		case GLUT_KEY_LEFT:
-			//timeTest -= 0.5;
-			//camX -= 1;
-		 	//if (camX < -128) camX =-128;
 			k_X = -1;
 			break;
 		case GLUT_KEY_RIGHT:
-			//timeTest += 0.5;
-			//camX += 1;
-			//if (camX > 128) camX =128;
 			k_X = 1;
 			break;
 	}
@@ -387,7 +377,6 @@ void processSpecialKeys(int key, int xx, int yy) {
 	L_x =Lx + k_Z*d_x + k_X*(-d_z);
 	L_z =Lz + k_Z*d_z + k_X*d_x;
 
-	//cout << "P_(" << P_x << "," << P_z << ") L_(" << L_x << "," << L_z << ")" << endl; 
 
 	if ((P_x <= max) && (P_z <= max) && (P_x >= min) && (P_z >= min)){
 		Px = P_x;
@@ -400,9 +389,9 @@ void processSpecialKeys(int key, int xx, int yy) {
 	/*
 	cross product do vector up da camara e do vector distancia
 	A x B = (a2b3  -   a3b2,     a3b1   -   a1b3,     a1b2   -   a2b1)
-	distX.push_back(d_x); distX.push_back(0);distX.push_back(d_z);
-	up.push_back(0);up.push_back(1);up.push_back(0);
-	r = (-d_z,0,d_x)
+	distX_x = d_x; distX_y = 0;distX_z = d_z;
+	up_x = 0; up_y = 1;up_z = 0;
+	r_x = -d_z; r_y = 0; r_z = d_x
 	*/
 
 	glutPostRedisplay();
