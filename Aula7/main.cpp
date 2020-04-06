@@ -22,7 +22,7 @@ using namespace std;
 
 unsigned int t,tw,th;
 unsigned char*imageData;
-float escala = 0, sensitivity = 0.05;
+float escala = 0, sensitivity = 0.05; // para atenuar os movimentos bruscos do rato
 
 int alpha = 0, beta = 0;
 float r = 3, camX = 1, camY = 1, camZ = 1, radius=1;
@@ -81,7 +81,6 @@ void changeSize(int w, int h) {
 float height(int x, int z){
 	//cout << (float)imageData[z*256+x]*escala;
 	return (float)imageData[(z*256)+x]*escala;
-	//return vertexB[z*6*256+x*6+1];
 }
 
 float random_height(float px,float pz){
@@ -94,7 +93,6 @@ float random_height(float px,float pz){
 
 	float h_xz = h_x1_z * (1-fx) + h_x2_z * fx;
 
-	//cout << "h_xz " << h_xz << "; h_x1_z " << h_x1_z <<  "; (1-fx) " << (1-fx) << "; h_x2_z " << h_x2_z << "; fx " << fx<< endl;
 
 	return h_xz;
 }
@@ -121,15 +119,13 @@ void vectorF(){
 
 		float x = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
 		float z = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
-		//float x = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
-		//float z = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
 
 		if(sqrt(pow(x,2)+pow(z,2)) > 50){
 
 			Coord coords = (struct coord*) malloc(sizeof(struct coord));
 
 			coords->x = x;
-			coords->y = random_height(x+HI+1,z+HI+1);
+			coords->y = random_height(x+HI+1,z+HI+1); //tempos de somar 128 para ir ao 0 do array imageData
 			coords->z = z;
 
 			coord_trees.push_back(coords);
@@ -177,16 +173,7 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
-
-	/*
-	gluLookAt(camX*radius, camY*radius, camZ*radius, 
-		      0.0,0.0,0.0,
-			  0.0f,1.0f,0.0f);
-	*/
-
-	//Px = camX*r;
-	//Pz = camZ*r;
-
+/*
 	if (!camX) Px=r;
 	if (!camZ) Pz=r;
 
@@ -194,31 +181,18 @@ void renderScene(void) {
 	else if (Px > 128) Px = 128;
 
 	if (Pz < -128) Pz = -128;
-	else if (Pz > 128) Pz = 128;
+	else if (Pz > 128) Pz = 128;*/
 
 	float Py = random_height(Px+128,Pz+128) + 5;
 	
 	gluLookAt(	Px, Py, Pz, 
 		      	Lx,Py,Lz,
-				//0.0f, Py, 0.0f,
 			  	0.0f,1.0f,0.0f);
 	
 
 	drawTerrain();
 
 	glPushMatrix();
-	/*
-	glColor3f(0.2f, 0.8f, 0.2f);
-	glBegin(GL_TRIANGLES);
-		glVertex3f(100.0f, 0, -100.0f);
-		glVertex3f(-100.0f, 0, -100.0f);
-		glVertex3f(-100.0f, 0, 100.0f);
-
-		glVertex3f(100.0f, 0, -100.0f);
-		glVertex3f(-100.0f, 0, 100.0f);
-		glVertex3f(100.0f, 0, 100.0f);
-	glEnd();
-	*/
 
 	glColor3f(1, 0, 1);
 
@@ -246,7 +220,6 @@ void renderScene(void) {
 
 	float y=0.0f, z=0.0f, yY=0.0f, zZ=0.0f;
 
-	//cout << "-------------------" << endl;
 
 	for(int i=0;i<8;i++){
 
@@ -266,7 +239,7 @@ void renderScene(void) {
 		yY = y*cos((-timeTest* 3.14 / 180.0) )-z*sin((-timeTest* 3.14 / 180.0) );
 		zZ = y*sin((-timeTest* 3.14 / 180.0) )+z*cos((-timeTest* 3.14 / 180.0) );
 
-		//cout << i << " - " << "yY =" << yY+128 << " zZ =" << zZ+128 << endl;
+
 
 		// vamos buscar a info da altura à informação da imagem
 		glTranslatef(0,random_height(yY+128,zZ+128),0);
@@ -301,8 +274,6 @@ void renderScene(void) {
 
 		y = sin( (angleTea*i* 3.14 / 180.0))*rE;
 		z = cos( (angleTea*i* 3.14 / 180.0))*rE;
-
-		//cout << i << " - "<< "yY =" << y << " zZ =" << z << endl;
 
 		yY = y*cos((timeTest* 3.14 / 180.0) )-z*sin((timeTest* 3.14 / 180.0) );
 		zZ = y*sin((timeTest* 3.14 / 180.0) )+z*cos((timeTest* 3.14 / 180.0) );
