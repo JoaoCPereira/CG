@@ -319,7 +319,14 @@ void renderScene(void) {
 
 void processKeys(unsigned char key, int xx, int yy) {
 
-// put code to process regular keys in here
+ switch (key) {
+        case '1' :
+            glPolygonMode(GL_FRONT,GL_LINE);
+            break;
+        case '2' :
+            glPolygonMode(GL_FRONT,GL_FILL);
+            break;
+    }
 }
 
 
