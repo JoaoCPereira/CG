@@ -24,7 +24,7 @@ unsigned int t,tw,th;
 unsigned char*imageData;
 float escala = 0, sensitivity = 0.05;
 
-float camX = 0, camY = 5, camZ = 0, radius=1;
+float camX = 10, camY = 100, camZ = 10, radius=1;
 int startX = 0, startY = 0, tracking = 0;
 
 int alpha = 0, beta = 0, r = 3;
@@ -33,7 +33,7 @@ int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
 char s[64];
 
 int n_arvores = 300;
-int timeTest = 0;
+float timeTest = 0;
 
 vector <float> vertexB;
 
@@ -186,9 +186,10 @@ void renderScene(void) {
 	float Py = random_height(Px+128,Pz+128) + 5;
 	
 	gluLookAt(	Px, Py, Pz, 
-		      	Px+sin(alpha * 3.14 / 180.0)*cos(beta* 3.14 / 180.0),Py+sin(beta * 3.14 / 180.0),Pz+cos(alpha * 3.14 / 180.0)*cos(beta * 3.14 / 180.0),
+		      	Px+sin(alpha * 3.14 / 180.0),Py,Pz+cos(alpha * 3.14 / 180.0),
 				//0.0f, Py, 0.0f,
 			  	0.0f,1.0f,0.0f);
+	
 
 	drawTerrain();
 
@@ -207,7 +208,14 @@ void renderScene(void) {
 	*/
 
 	glColor3f(1, 0, 1);
+
+	glPushMatrix();
+
+	glTranslatef(0,random_height(128,128),0);
+
 	glutSolidTorus(2, 4, 20, 20);
+
+	glPopMatrix();
 
 	glTranslatef(0,1.5,0);
 
@@ -215,11 +223,17 @@ void renderScene(void) {
 	// 8 teapot
 	float angleTea = 360 / 8;
 
-	//glPushMatrix();
+	glPushMatrix();
 
 	glRotatef(timeTest, 0, 1, 0);
 
 	glColor3f(0,0,1);
+
+	int rI = 15;
+
+	float y=0.0f, z=0.0f, yY=0.0f, zZ=0.0f;
+
+	//cout << "-------------------" << endl;
 
 	for(int i=0;i<8;i++){
 
@@ -227,7 +241,21 @@ void renderScene(void) {
 
 		//aplicar a rotacao na origem
 		glRotatef(angleTea*i, 0, 1, 0); // ang in degrees
-		glTranslatef(0, 0, 15);
+		glTranslatef(0, 0, rI);
+
+		// translate da altura
+
+		y = sin( (angleTea*i* 3.14 / 180.0))*rI;
+		z = cos( (angleTea*i* 3.14 / 180.0))*rI;
+
+		//cout << i << " - "<< "yY =" << y << " zZ =" << z << endl;
+
+		yY = y*cos((-timeTest* 3.14 / 180.0) )-z*sin((-timeTest* 3.14 / 180.0) );
+		zZ = y*sin((-timeTest* 3.14 / 180.0) )+z*cos((-timeTest* 3.14 / 180.0) );
+
+		//cout << i << " - " << "yY =" << yY+128 << " zZ =" << zZ+128 << endl;
+
+		glTranslatef(0,random_height(yY+128,zZ+128),0);
 
 		glRotatef(-90, 0, 1, 0); // ang in degrees
 
@@ -237,9 +265,9 @@ void renderScene(void) {
 		//voltar a origem
 	}
 
-    //glPopMatrix();
+    glPopMatrix();
 
-	//glPushMatrix();
+	glPushMatrix();
 
 	glRotatef(-timeTest, 0, 1, 0);
 
@@ -247,19 +275,33 @@ void renderScene(void) {
 
 	glColor3f(1, 0, 0);
 
+	int rE = 35;
+
 	for(int i=0;i<16;i++){
 
 		glPushMatrix();
 
 		//aplicar a rotacao na origem
 		glRotatef(angleTea*i, 0, 1, 0); // ang in degrees
-		glTranslatef(0, 0, 35);
+		glTranslatef(0, 0, rE);
+
+		y = sin( (angleTea*i* 3.14 / 180.0))*rE;
+		z = cos( (angleTea*i* 3.14 / 180.0))*rE;
+
+		//cout << i << " - "<< "yY =" << y << " zZ =" << z << endl;
+
+		yY = y*cos((timeTest* 3.14 / 180.0) )-z*sin((timeTest* 3.14 / 180.0) );
+		zZ = y*sin((timeTest* 3.14 / 180.0) )+z*cos((timeTest* 3.14 / 180.0) );
+
+		glTranslatef(0,random_height(yY+128,zZ+128),0);
 
 		glutSolidTeapot(2);
 
 		glPopMatrix();
 		//voltar a origem
 	}
+
+	glPopMatrix();
 
 	glPopMatrix();
 
@@ -288,19 +330,23 @@ void processSpecialKeys(int key, int xx, int yy) {
 		case GLUT_KEY_PAGE_UP: r += 0.1f; break;
 
 		case GLUT_KEY_UP:
-			if (camZ > -128) camZ -=1;
+			camZ -= 1;
+			if (camZ < -128) camZ = -128;
 			break;
 		case GLUT_KEY_DOWN:
-		 	if (camZ < 128) camZ+=1;
+			camZ += 1;
+		 	if (camZ > 128) camZ=128;
 			break;
 		case GLUT_KEY_LEFT:
-		 	if (camX > -128) camX -=1;
+			//timeTest -= 0.5;
+			camX -= 1;
+		 	if (camX < -128) camX =-128;
 			break;
 		case GLUT_KEY_RIGHT:
-			if (camX < +128) camX +=1;
+			//timeTest += 0.5;
+			camX += 1;
+			if (camX > +128) camX =128;
 			break;
-
-
 	}
 	glutPostRedisplay();
 
@@ -373,8 +419,8 @@ void processMouseMotion(int xx, int yy) {
 		if (rAux < 3){
 			rAux = 3;
 		}
-		else if (rAux > 50){
-			rAux = 50;
+		else if (rAux > 200){
+			rAux = 200;
 		}
 	}
 
@@ -392,7 +438,7 @@ void init() {
 	ilGenImages(1, &t);
 	ilBindImage(t);
 	
-	ilLoadImage("terreno.jpg");
+	ilLoadImage("terreno1.jpg");
 	ilConvertImage(IL_LUMINANCE,IL_UNSIGNED_BYTE);
 
 	tw=ilGetInteger(IL_IMAGE_WIDTH);
@@ -406,7 +452,6 @@ void init() {
 	imageData = ilGetData();
 	
 // 	Build the vertex arrays
-
 	vertexB.clear();
 
     float min=-(((float)(tw-1))/2.0), alturaMax=30;
@@ -439,7 +484,7 @@ void init() {
 	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT,GL_FILL);
+	glPolygonMode(GL_FRONT,GL_LINE);
 	// GL_FILL e GL_LINE
 }
 
@@ -454,16 +499,16 @@ void fpsshow(void){
 	
 	sprintf(s,"%d",fps);
 	glutSetWindowTitle(s);
-
+	timeTest += 0.5;
 	glutPostRedisplay();
 }
 
-/*
+
 void myIdle(){
-	timeTest += 0.5;
+	timeTest += 1;
     glutPostRedisplay();
 }
-*/
+
 
 int main(int argc, char **argv) {
 
