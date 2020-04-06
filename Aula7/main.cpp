@@ -22,10 +22,10 @@ using namespace std;
 
 unsigned int t,tw,th;
 unsigned char*imageData;
-float escala = 0, sensitivity = 0.003;
+float escala = 0, sensitivity = 0.05;
 
-int alpha = 0, beta = 0, r = 3;
-float camX = 1, camY = 1, camZ = 1, radius=1, k_X=1, k_Z=1,Px = camX*r, Pz = camY*r, Lx = Px+sin(alpha*3.14 / 180), Lz = Pz+cos(alpha*3.14 / 180);
+int alpha = 0, beta = 0;
+float r = 3, camX = 1, camY = 1, camZ = 1, radius=1, k_X=1, k_Z=1,Px = camX*r, Pz = camY*r, Lx = Px+sin(alpha*3.14 / 180), Lz = Pz+cos(alpha*3.14 / 180);
 int startX = 0, startY = 0, tracking = 0;
 
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
@@ -182,11 +182,11 @@ void renderScene(void) {
 	if (!camX) Px=r;
 	if (!camZ) Pz=r;
 
-	if (Px <= -128) Px = -128;
-	else if (Px >= 126) Px = 126;
+	if (Px < -128) Px = -128;
+	else if (Px > 128) Px = 128;
 
-	if (Pz <= -126) Pz = -126;
-	else if (Pz >= 126) Pz = 126;
+	if (Pz < -128) Pz = -128;
+	else if (Pz > 128) Pz = 128;
 
 	float Py = random_height(Px+128,Pz+128) + 5;
 	
@@ -334,6 +334,12 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 	float d_x = Lx-Px, d_z = Lz - Pz;
 
+	float P_x= 0, P_z=0, L_x = 0, L_z=0;
+	int max=128, min=-128;
+
+	k_Z = 0;
+	k_X = 0;
+
 	switch (key) {
 
 		case GLUT_KEY_PAGE_DOWN: r -= 0.1f;
@@ -347,40 +353,39 @@ void processSpecialKeys(int key, int xx, int yy) {
 			//camZ -= 1;
 			//if (camZ < -128) camZ = -128;
 			k_Z = 1;
-			Px += k_Z*d_x;
-			Pz += k_Z*d_z;
-			Lx += k_Z*d_x;
-			Lz += k_Z*d_z;
 			break;
 		case GLUT_KEY_DOWN:
 			//camZ += 1;
 		 	//if (camZ > 128) camZ=128;
 			k_Z = -1;
-			Px += k_Z*d_x;
-			Pz += k_Z*d_z;
-			Lx += k_Z*d_x;
-			Lz += k_Z*d_z;
 			break;
 		case GLUT_KEY_LEFT:
 			//timeTest -= 0.5;
 			//camX -= 1;
 		 	//if (camX < -128) camX =-128;
 			k_X = -1;
-			Px += k_X*(-d_z);
-			Pz += k_X*d_x;
-			Lx += k_X*(-d_z);
-			Lz += k_X*d_x;
 			break;
 		case GLUT_KEY_RIGHT:
 			//timeTest += 0.5;
 			//camX += 1;
 			//if (camX > 128) camX =128;
 			k_X = 1;
-			Px += k_X*(-d_z);
-			Pz += k_X*d_x;
-			Lx += k_X*(-d_z);
-			Lz += k_X*d_x;
 			break;
+	}
+	P_x =Px + k_Z*d_x + k_X*(-d_z);
+	P_z =Pz + k_Z*d_z + k_X*d_x;
+
+	L_x =Lx + k_Z*d_x + k_X*(-d_z);
+	L_z =Lz + k_Z*d_z + k_X*d_x;
+
+	//cout << "P_(" << P_x << "," << P_z << ") L_(" << L_x << "," << L_z << ")" << endl; 
+
+	if ((P_x <= max) && (P_z <= max) && (P_x >= min) && (P_z >= min)){
+		Px = P_x;
+		Pz = P_z;
+
+		Lx = L_x;
+		Lz = L_z;
 	}
 
 	/*
@@ -437,23 +442,23 @@ void processMouseMotion(int xx, int yy) {
 
 	if (tracking == 1) {
 		alphaAux = alpha + deltaX;
-		betaAux = beta - deltaY;
+		//betaAux = beta - deltaY;
 
 		//cout << "Motion" << " xx " << xx << " yy " << yy << endl;
 		//cout << "Motion" << " Startxx " << startX << " Startyy " << startY << endl;
 		//cout << "Delta" << " xx " << deltaX << " yy " << deltaY << endl;
-	
+		/*
 		if (betaAux > 85.0)
 			betaAux = 85.0;
 		else if (betaAux < -85.0)
 			betaAux = -85.0;
-
+		*/
 		rAux = r;
 	}
 	else if (tracking == 2) {
 
 		alphaAux = alpha;
-		betaAux = beta;
+		//betaAux = beta;
 		rAux = r - deltaY*sensitivity;
 
 		//cout << "rAux " << rAux << " r " << r << " deltaY " << deltaY << endl;
@@ -467,14 +472,16 @@ void processMouseMotion(int xx, int yy) {
 	}
 
 	alpha = alphaAux;
-	beta = betaAux;
+	//beta = betaAux;
 	//r = rAux;
 
 	Px = (Px/r)*rAux;
 	Pz = (Pz/r)*rAux;
 
-	Lx = Px+sin(alpha);
-	Lz = Pz+cos(alpha);
+	r = rAux;
+
+	Lx = Px+sin(alpha* 3.14 / 180.0);
+	Lz = Pz+cos(alpha* 3.14 / 180.0);
 	//cout << r << endl;
 	//camX = rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	//camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
