@@ -17,6 +17,7 @@ int startX, startY, tracking = 0;
 
 int alpha = 0, beta = 0, r = 5;
 
+
 #define POINT_COUNT 5
 // Points that make up the loop for catmull-rom interpolation
 float p[POINT_COUNT][3] = {{-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0}};
@@ -85,7 +86,6 @@ void getCatmullRomPoint(float t, float *p0, float *p1, float *p2, float *p3, flo
 
 		// Compute A = M * P
 		multMatrixVector(*m,P,A);
-		//cout << A[i] << endl;
 
 		// Compute pos = T * A
 		pos[i] = t*t*t*A[0] + t*t*A[1] + t*A[2] + A[3];
@@ -197,18 +197,31 @@ void renderScene(void) {
 
 	glMultMatrixf(rot_matrix);
 	
-	glPushMatrix();
 
+	glBegin( GL_LINES );
 
-	glColor3f(0.1,0.5,0.5);
+	glColor3f( 1, 0, 0. );
+	glVertex3f( -0.5, 0., 0.0 ); //X
+	glVertex3f( 0.5, 0., 0.0 );
+		
+
+	glColor3f( 0., 1, 0. ); // Z
+	glVertex3f( 0., 0., -0.5 );
+	glVertex3f( 0., 0., 0.5 );
+
+	
+	glColor3f( 0., 0., 1 );
+	glVertex3f( 0., -0.5, 0. ); //Y
+	glVertex3f( 0., 0.5, 0. );
+
+	glEnd();
+	
+
+	glColor3f(1,0.9,0);
 	glutSolidTeapot(0.1);
 
-	glPopMatrix();
-
-
-
 	glutSwapBuffers();
-	t+=0.001;
+	t+=0.0008;
 }
 
 
@@ -278,6 +291,9 @@ void processMouseMotion(int xx, int yy)
 }
 
 
+
+
+
 int main(int argc, char **argv) {
 
 
@@ -288,6 +304,7 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(320,320);
 	glutCreateWindow("CG@DI-UM");
+	
 		
 // callback registration 
 	glutDisplayFunc(renderScene);
