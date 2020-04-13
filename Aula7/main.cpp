@@ -178,7 +178,7 @@ void renderScene(void) {
 
 	//Px = camX*r;
 	//Pz = camZ*r;
-
+	/*
 	if (!camX) Px=r;
 	if (!camZ) Pz=r;
 
@@ -187,6 +187,7 @@ void renderScene(void) {
 
 	if (Pz < -128) Pz = -128;
 	else if (Pz > 128) Pz = 128;
+	*/
 
 	float Py = random_height(Px+128,Pz+128) + 5;
 	
@@ -318,20 +319,6 @@ void renderScene(void) {
 
 
 void processKeys(unsigned char key, int xx, int yy) {
-
- switch (key) {
-        case '1' :
-            glPolygonMode(GL_FRONT,GL_LINE);
-            break;
-        case '2' :
-            glPolygonMode(GL_FRONT,GL_FILL);
-            break;
-    }
-}
-
-
-void processSpecialKeys(int key, int xx, int yy) {
-
 	float d_x = Lx-Px, d_z = Lz - Pz;
 
 	float P_x= 0, P_z=0, L_x = 0, L_z=0;
@@ -340,39 +327,28 @@ void processSpecialKeys(int key, int xx, int yy) {
 	k_Z = 0;
 	k_X = 0;
 
-	switch (key) {
+ switch (key) {
+        case '1' :
+            glPolygonMode(GL_FRONT,GL_LINE);
+            break;
+        case '2' :
+            glPolygonMode(GL_FRONT,GL_FILL);
+            break;
+        case 'w' :
+        	k_Z = 1;
+            break;
+        case 's' :
+            k_Z = -1;
+            break;
+        case 'a' :
+            k_X = -1;
+            break;
+        case 'd' :
+            k_X = 1;
+            break;
+    }
 
-		case GLUT_KEY_PAGE_DOWN: r -= 0.1f;
-			if (r < 0.1f)
-				r = 0.1f;
-			break;
-
-		case GLUT_KEY_PAGE_UP: r += 0.1f; break;
-
-		case GLUT_KEY_UP:
-			//camZ -= 1;
-			//if (camZ < -128) camZ = -128;
-			k_Z = 1;
-			break;
-		case GLUT_KEY_DOWN:
-			//camZ += 1;
-		 	//if (camZ > 128) camZ=128;
-			k_Z = -1;
-			break;
-		case GLUT_KEY_LEFT:
-			//timeTest -= 0.5;
-			//camX -= 1;
-		 	//if (camX < -128) camX =-128;
-			k_X = -1;
-			break;
-		case GLUT_KEY_RIGHT:
-			//timeTest += 0.5;
-			//camX += 1;
-			//if (camX > 128) camX =128;
-			k_X = 1;
-			break;
-	}
-	P_x =Px + k_Z*d_x + k_X*(-d_z);
+    P_x =Px + k_Z*d_x + k_X*(-d_z);
 	P_z =Pz + k_Z*d_z + k_X*d_x;
 
 	L_x =Lx + k_Z*d_x + k_X*(-d_z);
@@ -394,6 +370,32 @@ void processSpecialKeys(int key, int xx, int yy) {
 	up.push_back(0);up.push_back(1);up.push_back(0);
 	r = (-d_z,0,d_x)
 	*/
+
+	glutPostRedisplay();
+}
+
+
+void processSpecialKeys(int key, int xx, int yy) {
+
+	switch (key) {
+
+		case GLUT_KEY_PAGE_DOWN: r -= 0.1f;
+			if (r < 0.1f)
+				r = 0.1f;
+			break;
+
+		case GLUT_KEY_PAGE_UP: r += 0.1f; break;
+
+		case GLUT_KEY_LEFT:
+			alpha++;
+			break;
+		case GLUT_KEY_RIGHT:
+			alpha--;
+			break;
+	}
+
+	Lx = Px+sin(alpha* 3.14 / 180.0);
+	Lz = Pz+cos(alpha* 3.14 / 180.0);
 
 	glutPostRedisplay();
 
@@ -433,7 +435,9 @@ void processMouseMotion(int xx, int yy) {
 
 	int deltaX, deltaY;
 	int alphaAux, betaAux;
-	int rAux;
+	float rAux;
+
+	/*
 
 	if (!tracking)
 		return;
@@ -441,7 +445,7 @@ void processMouseMotion(int xx, int yy) {
 	deltaY = (yy - startY)*sensitivity;
 
 	if (tracking == 1) {
-		alphaAux = alpha + deltaX;
+		//alphaAux = alpha + deltaX;
 		//betaAux = beta - deltaY;
 
 		//cout << "Motion" << " xx " << xx << " yy " << yy << endl;
@@ -452,7 +456,7 @@ void processMouseMotion(int xx, int yy) {
 			betaAux = 85.0;
 		else if (betaAux < -85.0)
 			betaAux = -85.0;
-		*/
+		
 		rAux = r;
 	}
 	else if (tracking == 2) {
@@ -486,6 +490,7 @@ void processMouseMotion(int xx, int yy) {
 	//camX = rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	//camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	//camY = rAux * 							     sin(betaAux * 3.14 / 180.0);
+	*/
 }
 
 void init() {
