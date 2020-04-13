@@ -22,16 +22,24 @@ using namespace std;
 
 unsigned int t,tw,th;
 unsigned char*imageData;
-float escala = 0, sensitivity = 0.05;
+float escala = 0, sensitivity = 0.05; // para atenuar os movimentos bruscos do rato
 
 int alpha = 0, beta = 0;
-float r = 3, camX = 1, camY = 1, camZ = 1, radius=1, k_X=1, k_Z=1,Px = camX*r, Pz = camY*r, Lx = Px+sin(alpha*3.14 / 180), Lz = Pz+cos(alpha*3.14 / 180);
+float r = 3, camX = 1, camY = 1, camZ = 1, radius=1;
+
+// constante da camara para deslocações
+float k_X=1, k_Z=1;
+
+// iniciar Px, Pz
+float Px = camX*r, Pz = camY*r;
+//iniciar lookAt
+float Lx = Px+sin(alpha*3.14 / 180), Lz = Pz+cos(alpha*3.14 / 180);
 int startX = 0, startY = 0, tracking = 0;
 
 int frame = 0, timefps,timebase = 0,fps = 0, slices = 10;
 char s[64];
 
-int n_arvores = 300;
+int n_trees = 300;
 float timeTest = 0;
 
 vector <float> vertexB;
@@ -73,7 +81,6 @@ void changeSize(int w, int h) {
 float height(int x, int z){
 	//cout << (float)imageData[z*256+x]*escala;
 	return (float)imageData[(z*256)+x]*escala;
-	//return vertexB[z*6*256+x*6+1];
 }
 
 float random_height(float px,float pz){
@@ -86,7 +93,6 @@ float random_height(float px,float pz){
 
 	float h_xz = h_x1_z * (1-fx) + h_x2_z * fx;
 
-	//cout << "h_xz " << h_xz << "; h_x1_z " << h_x1_z <<  "; (1-fx) " << (1-fx) << "; h_x2_z " << h_x2_z << "; fx " << fx<< endl;
 
 	return h_xz;
 }
@@ -109,19 +115,17 @@ void vectorF(){
 	float LO = -128.0;
 	float HI = 127.0;
 
-	for(int i = 0;i<n_arvores;i++){
+	for(int i = 0;i<n_trees;i++){
 
 		float x = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
 		float z = ((float)rand() / RAND_MAX) * (HI - LO) + LO;
-		//float x = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
-		//float z = LO + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(HI-LO));
 
 		if(sqrt(pow(x,2)+pow(z,2)) > 50){
 
 			Coord coords = (struct coord*) malloc(sizeof(struct coord));
 
 			coords->x = x;
-			coords->y = random_height(x+HI+1,z+HI+1);
+			coords->y = random_height(x+HI+1,z+HI+1); //tempos de somar 128 para ir ao 0 do array imageData
 			coords->z = z;
 
 			coord_trees.push_back(coords);
@@ -179,6 +183,7 @@ void renderScene(void) {
 	//Px = camX*r;
 	//Pz = camZ*r;
 	/*
+/*
 	if (!camX) Px=r;
 	if (!camZ) Pz=r;
 
@@ -186,32 +191,20 @@ void renderScene(void) {
 	else if (Px > 128) Px = 128;
 
 	if (Pz < -128) Pz = -128;
+
 	else if (Pz > 128) Pz = 128;
-	*/
+*/
 
 	float Py = random_height(Px+128,Pz+128) + 5;
 	
 	gluLookAt(	Px, Py, Pz, 
 		      	Lx,Py,Lz,
-				//0.0f, Py, 0.0f,
 			  	0.0f,1.0f,0.0f);
 	
 
 	drawTerrain();
 
 	glPushMatrix();
-	/*
-	glColor3f(0.2f, 0.8f, 0.2f);
-	glBegin(GL_TRIANGLES);
-		glVertex3f(100.0f, 0, -100.0f);
-		glVertex3f(-100.0f, 0, -100.0f);
-		glVertex3f(-100.0f, 0, 100.0f);
-
-		glVertex3f(100.0f, 0, -100.0f);
-		glVertex3f(-100.0f, 0, 100.0f);
-		glVertex3f(100.0f, 0, 100.0f);
-	glEnd();
-	*/
 
 	glColor3f(1, 0, 1);
 
@@ -239,7 +232,6 @@ void renderScene(void) {
 
 	float y=0.0f, z=0.0f, yY=0.0f, zZ=0.0f;
 
-	//cout << "-------------------" << endl;
 
 	for(int i=0;i<8;i++){
 
@@ -259,8 +251,9 @@ void renderScene(void) {
 		yY = y*cos((-timeTest* 3.14 / 180.0) )-z*sin((-timeTest* 3.14 / 180.0) );
 		zZ = y*sin((-timeTest* 3.14 / 180.0) )+z*cos((-timeTest* 3.14 / 180.0) );
 
-		//cout << i << " - " << "yY =" << yY+128 << " zZ =" << zZ+128 << endl;
 
+
+		// vamos buscar a info da altura à informação da imagem
 		glTranslatef(0,random_height(yY+128,zZ+128),0);
 
 		glRotatef(-90, 0, 1, 0); // ang in degrees
@@ -294,8 +287,6 @@ void renderScene(void) {
 		y = sin( (angleTea*i* 3.14 / 180.0))*rE;
 		z = cos( (angleTea*i* 3.14 / 180.0))*rE;
 
-		//cout << i << " - "<< "yY =" << y << " zZ =" << z << endl;
-
 		yY = y*cos((timeTest* 3.14 / 180.0) )-z*sin((timeTest* 3.14 / 180.0) );
 		zZ = y*sin((timeTest* 3.14 / 180.0) )+z*cos((timeTest* 3.14 / 180.0) );
 
@@ -322,7 +313,7 @@ void processKeys(unsigned char key, int xx, int yy) {
 	float d_x = Lx-Px, d_z = Lz - Pz;
 
 	float P_x= 0, P_z=0, L_x = 0, L_z=0;
-	int max=128, min=-128;
+	int max=128, min=-128; // para manter a camara dentro do terreno
 
 	k_Z = 0;
 	k_X = 0;
@@ -354,7 +345,6 @@ void processKeys(unsigned char key, int xx, int yy) {
 	L_x =Lx + k_Z*d_x + k_X*(-d_z);
 	L_z =Lz + k_Z*d_z + k_X*d_x;
 
-	//cout << "P_(" << P_x << "," << P_z << ") L_(" << L_x << "," << L_z << ")" << endl; 
 
 	if ((P_x <= max) && (P_z <= max) && (P_x >= min) && (P_z >= min)){
 		Px = P_x;
@@ -363,17 +353,7 @@ void processKeys(unsigned char key, int xx, int yy) {
 		Lx = L_x;
 		Lz = L_z;
 	}
-
-	/*
-	A x B = (a2b3  -   a3b2,     a3b1   -   a1b3,     a1b2   -   a2b1)
-	distX.push_back(d_x); distX.push_back(0);distX.push_back(d_z);
-	up.push_back(0);up.push_back(1);up.push_back(0);
-	r = (-d_z,0,d_x)
-	*/
-
-	glutPostRedisplay();
 }
-
 
 void processSpecialKeys(int key, int xx, int yy) {
 
@@ -414,7 +394,7 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 			tracking = 2;
 		else
 			tracking = 0;
-	}/*
+	}
 	else if (state == GLUT_UP) {
 		if (tracking == 1) {
 			alpha += (xx - startX);
@@ -427,17 +407,22 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 				r = 3.0;
 		}
 		tracking = 0;
-	}*/
+	}
 }
 
 
 void processMouseMotion(int xx, int yy) {
 
+	/*
+
 	int deltaX, deltaY;
 	int alphaAux, betaAux;
 	float rAux;
+<<<<<<< HEAD
 
 	/*
+=======
+>>>>>>> b2577555a53219b866285ecffed659d4dee40927
 
 	if (!tracking)
 		return;
@@ -445,7 +430,11 @@ void processMouseMotion(int xx, int yy) {
 	deltaY = (yy - startY)*sensitivity;
 
 	if (tracking == 1) {
+<<<<<<< HEAD
 		//alphaAux = alpha + deltaX;
+=======
+		alphaAux = alpha - deltaX;
+>>>>>>> b2577555a53219b866285ecffed659d4dee40927
 		//betaAux = beta - deltaY;
 
 		//cout << "Motion" << " xx " << xx << " yy " << yy << endl;
@@ -541,11 +530,9 @@ void init() {
     glVertexPointer(3,GL_FLOAT,0,0);
 
 // 	OpenGL settings
-	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT,GL_LINE);
-	// GL_FILL e GL_LINE
 }
 
 void fpsshow(void){
@@ -578,8 +565,6 @@ int main(int argc, char **argv) {
 	glewInit();
     glEnableClientState(GL_VERTEX_ARRAY);
 
-
-	
 
 // Required callback registry 
 	glutDisplayFunc(renderScene);
