@@ -142,6 +142,7 @@ void changeSize(int w, int h) {
 
 void renderCatmullRomCurve() {
 	float gt = 0;
+	glColor3f(1,1,1);
 	glBegin(GL_LINE_LOOP);
 	for(; gt<=1; gt+=0.01){
 		getGlobalCatmullRomPoint(gt,pos,deriv);
@@ -158,11 +159,10 @@ void renderCatmullRomCurve() {
 void renderScene(void) {
 
 	static float t = 0;
-	float mat[16];
-	float prod[3];
-	float norm[3];
+	float X[3];
+	float Y[3];
+	float Z[3];
 	
-
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -179,33 +179,35 @@ void renderScene(void) {
 	getGlobalCatmullRomPoint(t,pos,deriv);
 
 	glTranslatef(pos[0],pos[1],pos[2]);
-
-	float X[3];
-	float Y[3];
-	float Z[3];
-	X[0] = deriv[0];X[1] = deriv[1];X[2] = deriv[2]; // X = P'(t)
-	cross(&pos[2],&pos[0],Y); // Y = Z cross X
-	cross(&pos[0],y,Z); // Z = X x Y anterior
-	y[0]=Y[0]; y[1] = Y[1]; y[2] = Y[2]; // guardamos o novo y para usar na proxima invocação
-	normalize(X); normalize(Y); normalize(Z);
-
-	float M[4][4] = {	{X[0],X[1],X[2],0}, //transposta em relação aos slides
-						{Y[0],Y[1],Y[2],0},
-						{Z[0],Z[1],Z[2],0},
-						{0,0,0,1}	};
 	
-	float M_[4][4] = {	{X[0],Y[0],Z[0],0},	
-						{X[1],Y[1],Z[1],0},
-						{X[2],Y[2],Z[2],0},
-						{0,0,0,1}	};
+	X[0] = deriv[0];X[1] = deriv[1];X[2] = deriv[2]; // X = P'(t)
+	
+	cross(X,y,Z); // Z = X x Y anterior
+	normalize(Z); normalize(X);
 
-	glMultMatrixf(*M);
 
-	glutWireTeapot(0.1);
+	cross(Z,X,Y); // Y = Z cross X
+	y[0]=Y[0]; y[1] = Y[1]; y[2] = Y[2]; // guardamos o novo y para usar na proxima invocação
+
+	normalize(Y);
+	
+	float rot_matrix[16];
+
+	buildRotMatrix(X,Y,Z,rot_matrix);
+
+	glMultMatrixf(rot_matrix);
+	
+	glPushMatrix();
+
+
+	glColor3f(0.1,0.5,0.5);
+	glutSolidTeapot(0.1);
+
+	glPopMatrix();
+
 
 
 	glutSwapBuffers();
-	//t+=0.00001;
 	t+=0.001;
 }
 
