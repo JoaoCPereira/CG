@@ -21,13 +21,13 @@
 using namespace std; 
 
 
-typedef struct point{
+struct point{
 	float x;
 	float y;
 	float z;
-}*Ponto;
+};
 
-//typedef struct point Ponto;
+typedef struct point Point;
 
 struct modelo
 {
@@ -40,14 +40,18 @@ struct modelo
 
 struct geo_transf{
 	int tipo; // int para o tipo (0-translate, 2-rotate, 3-scale)
-	vector<Ponto> control_points;
-	float time;
 	float x;
 	float y;
 	float z;
 	float angle;
 };
 
+struct translate{
+	float time;
+	vector<struct point*> cp;
+};
+
+typedef struct translate Translate;
 typedef struct modelo Modelo;
 typedef struct geo_transf Geo_Transf;
 

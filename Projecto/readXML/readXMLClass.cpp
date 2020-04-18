@@ -2,6 +2,7 @@
 
 vector<struct modelo*> SysState::modelos;
 vector<struct geo_transf*> SysState::geo_tr;
+vector<struct translate*> SysState::tr;
 vector<int> SysState::sequencia;
 vector <float> SysState::preVBO;
 
@@ -121,17 +122,14 @@ void SysState::parserXML(TiXmlElement *element){
 
           //caso translate
           if(!strcmp(element->Value(), "translate")){
-            Geo_Transf *geo =(struct geo_transf*) malloc(sizeof(struct geo_transf));
-            geo->x=0;
-            geo->y=0;
-            geo->z=0;
+          	//Translate *t = (struct translate*) malloc(sizeof(struct translate));
+          	Translate *t = new Translate();
+            t->time = 0;
 
-            geo->tipo = 0;
-            geo->time = 0;
-            geo->control_points.clear();
-            element->QueryFloatAttribute("time",&geo->time);
+            t->cp.clear();
+
+            element->QueryFloatAttribute("time",&t->time);
           
-
 /*
             element->QueryFloatAttribute("X",&geo->x);
             element->QueryFloatAttribute("Y",&geo->y);
@@ -139,11 +137,11 @@ void SysState::parserXML(TiXmlElement *element){
 
 */
 
-            geo_tr.push_back(geo);
+            tr.push_back(t);
             parserXML(element->FirstChildElement());
 
             cout << "antes da seq" << endl;
-            sequencia.push_back(2);
+            sequencia.push_back(3);
           }
 
           //caso rotate
@@ -202,15 +200,18 @@ void SysState::parserXML(TiXmlElement *element){
 
           if(!strcmp(element->Value(), "point")){
             
-            Ponto p = (struct point*) malloc(sizeof(struct point));
-            p->x = 0;p->y = 0; p->z = 0;
+            Point *p = (struct point*) malloc(sizeof(struct point));
+            p->x = 0;
+            p->y = 0;
+            p->z = 0;
             
             element->QueryFloatAttribute("X",&p->x);
             element->QueryFloatAttribute("Y",&p->y);
             element->QueryFloatAttribute("Z",&p->z);
-            cout << geo_tr.size() << endl;
 
-            geo_tr[geo_tr.size()-1]->control_points.push_back(p);
+            tr[tr.size()-1]->cp.push_back(p);
+
+            cout << tr[tr.size()-1]->cp.size() << endl;
           }
 
           //proximo filho
@@ -261,7 +262,6 @@ void SysState::renderScene(void) {
     //glScalef(scale,scale,scale);
  
 // put drawing instructions here
-
     writeSeq();
 
     // End of frame
