@@ -20,17 +20,14 @@
 #include<bits/stdc++.h> 
 using namespace std; 
 
-/*
-struct point
-{
+
+typedef struct point{
 	float x;
 	float y;
 	float z;
+}*Ponto;
 
-};
-
-typedef struct point Point;
-*/
+//typedef struct point Ponto;
 
 struct modelo
 {
@@ -43,6 +40,8 @@ struct modelo
 
 struct geo_transf{
 	int tipo; // int para o tipo (0-translate, 2-rotate, 3-scale)
+	vector<Ponto> control_points;
+	float time;
 	float x;
 	float y;
 	float z;

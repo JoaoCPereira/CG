@@ -127,13 +127,22 @@ void SysState::parserXML(TiXmlElement *element){
             geo->z=0;
 
             geo->tipo = 0;
+            geo->time = 0;
+            geo->control_points.clear();
+            element->QueryFloatAttribute("time",&geo->time);
+          
 
+/*
             element->QueryFloatAttribute("X",&geo->x);
             element->QueryFloatAttribute("Y",&geo->y);
             element->QueryFloatAttribute("Z",&geo->z);
 
-            geo_tr.push_back(geo);
+*/
 
+            geo_tr.push_back(geo);
+            parserXML(element->FirstChildElement());
+
+            cout << "antes da seq" << endl;
             sequencia.push_back(2);
           }
 
@@ -189,6 +198,19 @@ void SysState::parserXML(TiXmlElement *element){
 
             parserXML(element->FirstChildElement());
 
+          }
+
+          if(!strcmp(element->Value(), "point")){
+            
+            Ponto p = (struct point*) malloc(sizeof(struct point));
+            p->x = 0;p->y = 0; p->z = 0;
+            
+            element->QueryFloatAttribute("X",&p->x);
+            element->QueryFloatAttribute("Y",&p->y);
+            element->QueryFloatAttribute("Z",&p->z);
+            cout << geo_tr.size() << endl;
+
+            geo_tr[geo_tr.size()-1]->control_points.push_back(p);
           }
 
           //proximo filho
