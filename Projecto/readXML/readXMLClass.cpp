@@ -130,18 +130,15 @@ void SysState::parserXML(TiXmlElement *element){
 
             element->QueryFloatAttribute("time",&t->time);
           
-/*
+			/*
             element->QueryFloatAttribute("X",&geo->x);
             element->QueryFloatAttribute("Y",&geo->y);
             element->QueryFloatAttribute("Z",&geo->z);
-
-*/
+			*/
 
             tr.push_back(t);
             parserXML(element->FirstChildElement());
-
-            cout << "antes da seq" << endl;
-            sequencia.push_back(3);
+            sequencia.push_back(4);
           }
 
           //caso rotate
@@ -210,8 +207,6 @@ void SysState::parserXML(TiXmlElement *element){
             element->QueryFloatAttribute("Z",&p->z);
 
             tr[tr.size()-1]->cp.push_back(p);
-
-            cout << tr[tr.size()-1]->cp.size() << endl;
           }
 
           //proximo filho
@@ -246,6 +241,7 @@ void SysState::readXML(char *pFilename){
 void SysState::renderScene(void) {
 
     // clear buffers
+    glClearColor(0.0f,0.0f,0.0f,0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // set the camera
@@ -271,6 +267,7 @@ void SysState::renderScene(void) {
 void SysState::writeSeq(){
   int numGeo = 0;
   int numModelo = 0;
+  int numTranf = 0;
 
   //percorrer vector sequencia
   for(int i=0;i<sequencia.size();i++){
@@ -283,10 +280,13 @@ void SysState::writeSeq(){
         glPopMatrix();
         break;
       case 2:
-        if(numGeo<geo_tr.size()) writeGeoTransf(geo_tr[numGeo++]);
+        if(numGeo<geo_tr.size()) writeGeo(geo_tr[numGeo++]);
         break;
       case 3:
         if(numModelo<modelos.size()) writeModelo3D(modelos[numModelo++]);
+        break;
+      case 4:
+        if(numTranf<tr.size()) writeTranslate(tr[numTranf++]);
         break;
     }
   }

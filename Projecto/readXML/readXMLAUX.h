@@ -57,6 +57,8 @@ typedef struct geo_transf Geo_Transf;
 
 void writeModelo3D(Modelo *);
 
-void writeGeoTransf(Geo_Transf *);
+void writeGeo(Geo_Transf *);
+
+void writeTranslate(Translate *);
 
 #endif
