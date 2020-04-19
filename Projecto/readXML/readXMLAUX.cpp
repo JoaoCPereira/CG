@@ -7,6 +7,7 @@ float y[3] = {0,1,0};
 
 typedef struct modelo Modelo;
 typedef struct geo_transf Geo_Transf;
+float t = 0;
 
 void writeModelo3D(Modelo *model){
 
@@ -165,8 +166,8 @@ void renderCatmullRomCurve(Translate *translate) {
 
 
 void writeTranslate(Translate *translate){
-
-	static float t = 0;
+	//float tempo = t/(translate->time*0.1);
+	float tempo = t*translate->time;
 
 	float X[3];
 	float Y[3];
@@ -177,7 +178,7 @@ void writeTranslate(Translate *translate){
 
 	// apply transformations here
 	// ...
-	getGlobalCatmullRomPoint(t,pos,deriv, translate);
+	getGlobalCatmullRomPoint(tempo,pos,deriv, translate);
 
 	glTranslatef(pos[0],pos[1],pos[2]);
 	
@@ -197,5 +198,6 @@ void writeTranslate(Translate *translate){
 	buildRotMatrix(X,Y,Z,rot_matrix);
 
 	glMultMatrixf(rot_matrix);
+
 
 }

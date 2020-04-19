@@ -8,6 +8,7 @@ vector <float> SysState::preVBO;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
 extern GLuint buffers; // variaveis globais externas do ficheiro main.cpp
+extern float t;
 
 SysState::SysState(char *fileName){
     readXML(fileName);
@@ -259,6 +260,7 @@ void SysState::renderScene(void) {
  
 // put drawing instructions here
     writeSeq();
+    t+=0.0003;
 
     // End of frame
     glutSwapBuffers();
