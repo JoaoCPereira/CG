@@ -23,7 +23,7 @@ float scale = 1;
 float angle = 0.0f;
 float x_x=0,z=0;
 float angleBeta = 0.0f,angleAlfa = 0.0f;
-float distanciaCamera = 20.0f;
+float distanciaCamera = 230.0f;
 
 int frame=0,timefps=0,timebase=0,fps=0;
 
