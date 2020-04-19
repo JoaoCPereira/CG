@@ -7,7 +7,7 @@
         </group>
         <!-mercurio->
         <group> 
-            <translate time = 1>
+            <translate time = 20>
                 <point X="10"/>
                 <point X="7.07" Z="-7.07"/>
                 <point Z="-10"/>
@@ -22,7 +22,7 @@
         </group>
         <!-venus->
         <group>
-            <translate time = 5>
+            <translate time = 30>
                 <point X="-16"/>
                 <point Z="11.31" X ="-11.31"/>
                 <point Z="16"/>
@@ -37,7 +37,7 @@
         </group>
         <!-terra->
         <group>
-            <translate time = 8>
+            <translate time = 40>
                 <point X=12.5 Y=0 Z=0 />
                 <point X=0 Y=0 Z=-12.5 />
                 <point X=-12.5Y=0 Z=0 />
@@ -58,7 +58,7 @@
         </group>
         <!-marte->
         <group>
-            <translate time=65>
+            <translate time=60>
                 <point Z="-28"/>
                 <point Z="-19.79" X ="-19.79"/>
                 <point X="-28"/>
@@ -73,7 +73,7 @@
         </group>
         <!-jupiter->
         <group>
-            <translate time=170>
+            <translate time=70>
                 <point Z="50"/>
                 <point Z="35.35" X ="35.35"/>
                 <point X="50"/>
@@ -88,7 +88,7 @@
         </group>
         <!-saturno->
         <group>
-            <translate time=190>
+            <translate time=80>
                 <point Z="72"/>
                 <point Z="50.91" X ="50.91"/>
                 <point X="72"/>
@@ -103,7 +103,7 @@
         </group>
         <!-urano->
         <group>
-            <translate time=210>
+            <translate time=90>
                 <point X="100"/>
                 <point Z="-70.71" X ="70.71"/>
                 <point Z="-100"/>
@@ -118,7 +118,7 @@
         </group>
        <!-neptuno->
         <group>
-            <translate time=230>
+            <translate time=100>
                 <point Z="-120"/>
                 <point Z="-84.85" X ="-84.85"/>
                 <point X="-120"/>
@@ -133,14 +133,10 @@
         <!-teapot->
         <group>
             <translate time=30>
-                <point X="100"/>
-                <point Z="-40"/>
+                <point X="200"/>
                 <point X="-40" Z="-40"/>
-                <point X="-50" Z="-40"/>
-                <point X="-100"/>
-                <point X="-50" Z="40"/>
+                <point X="-200"/>
                 <point X="-40" Z="40"/>
-                <point Z="40"/>
             </translate>
             <rotate axisX=1 axisY=0 axisZ=0 angle=-90/>
             <model file="teapot.patch.3d" diffR=0.76 diffG=0.26 diffB=0.43/>

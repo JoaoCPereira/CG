@@ -260,7 +260,7 @@ void SysState::renderScene(void) {
  
 // put drawing instructions here
     writeSeq();
-    t+=0.0003;
+    t+=0.000005;
 
     // End of frame
     glutSwapBuffers();
