@@ -14,3 +14,15 @@ Computação Gráfica 19/20
   - [x] Relatório
 
 ## Phase 2 – Transformations
+
+
+## Phase 3 – Curves, Cubic Surfaces and VBOs
+  - [x] VBO's
+  - [x] Curves, Translate and rotate with time
+  - [] Patch de Bezier
+  
+
+## Phase 4 – Normals and Texture Coordinates
+  [] Garantir o funcionamento de Debug
+  
+
