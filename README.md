@@ -19,10 +19,10 @@ Computação Gráfica 19/20
 ## Phase 3 – Curves, Cubic Surfaces and VBOs
   - [x] VBO's
   - [x] Curves, Translate and rotate with time
-  - [] Patch de Bezier
+  - [ ] Patch de Bezier
   
 
 ## Phase 4 – Normals and Texture Coordinates
-  [] Garantir o funcionamento de Debug
+  [ ] Garantir o funcionamento de Debug
   
 
