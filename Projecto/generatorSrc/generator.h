@@ -1,7 +1,5 @@
 #ifndef __GENERATOR__
 #define __GENERATOR__
-
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define _USE_MATH_DEFINES
@@ -14,11 +12,12 @@ typedef struct point{
     float x;
     float y;
     float z;
+
 }*Point;
 
 
 /**
-@file generator.hpp
+@file generator.h
 
 */
 

@@ -4,26 +4,29 @@
 #include <sstream>
 #include <string>
 #include <stdlib.h>
+
 using namespace std;
 
 vector<Point> bezier_points_to_calculus;
-vector< vector<int> > control_points;
+vector< vector<int> > patches;
 vector<int> patch;
 vector<Point> points;
 float pos[4],deriv[4];
 vector<Point> vector_pos;
+vector<struct point> vector_final;
 
 
-float norm(Point a){
-    return sqrt(a->x*a->x + a->y*a->y + a->z*a->z);
+float norm(struct point a){
+    return sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
 }
 
-void normalize(Point a) {
+struct point normalize(struct point a) {
 
 	float l = norm(a);
-	a->x = a->x/l;
-    a->y = a->y/l;      
-	a->z = a->z/l;
+	a.x = a.x/l;
+    a.y = a.y/l;      
+	a.z = a.z/l;
+    return a;
 }
 
 Point cross_prod(Point a, Point b){
@@ -46,52 +49,12 @@ void multMatrixVector(float *m, float *v, float *res) {
 	}
 
 }
-/*
-Point mat_dot_product_PM (const struct point P[4][4], const float M[4][4], unsigned i, unsigned j)
-{
-    Point ret = (struct point*) malloc(sizeof(struct point));
-    for (unsigned I = 0; I < 4; I++)
-        ret = ret + M[I][j] * P[i][I];
-    return ret;
-}
-
-Point mat_dot_product_MP (const float M[4][4], Point P[4][4], unsigned i, unsigned j)
-{
-     Point ret = (struct point*) malloc(sizeof(struct point));
-    for (unsigned I = 0; I < 4; I++)
-        ret = ret + M[i][I] * P[I][j];
-    return ret;
-}
-
-
-void mult_MP (const float M[4][4],Point P[4][4], Point r[4][4])
-{
-    for (unsigned i = 0; i < 4; i++)
-        for (unsigned j = 0; j < 4; j++)
-            r[i][j] = mat_dot_product_MP(M, P, i, j);
-}
-
-static void mult_PM (Point P[4][4], const float M[4][4], Point r[4][4])
-{
-    for (unsigned i = 0; i < 4; i++)
-        for (unsigned j = 0; j < 4; j++)
-            r[i][j] = mat_dot_product_PM(P, M, i, j);
-}
-
-void mult_Mat_Point_Mat (const float M[4][4], Point P[4][4], Point r[4][4])
-{
-    Point tmp[4][4];
-    mult_MP(M, P, tmp);
-    mult_PM(tmp, M, r);
-}
-*/
 
 void print_sphere(float radius,float slices,float stacks,char* file_name){
     FILE *fd = fopen(file_name,"w");
     if (fd){
         float alfa = 2*M_PI / (slices*4);
         float beta = (M_PI/2) / stacks;
-        float d = (radius/2) / stacks;
 
         fprintf(fd, "%d\n", (int)(slices*4*6+(stacks-1)*slices*4*12)); // numero total de pontos
 
@@ -316,55 +279,161 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
 }
 
 
+struct point operator* (float s,struct point A){
+    struct point ret;
+    
+    ret.x = A.x*s;
+    ret.y = A.y*s;
+    ret.z = A.z*s;
+    return ret;
+}
+
+struct point operator+ (struct point A,struct point B){
+    struct point ret;
+    
+    ret.x = A.x+B.x;
+    ret.y = A.y+B.y;
+    ret.z = A.z+B.z;
+    return ret;
+}
+
+
+static struct point mat_dot_product_MP (const float M[4][4], const Point P[4][4], unsigned i, unsigned j)
+{
+    struct point ret;
+    for (unsigned I = 0; I < 4; I++)
+        ret = ret + M[i][I] * *(P[I][j]);
+    return ret;
+}
+
+static struct point mat_dot_product_PM (const struct point P[4][4], const float M[4][4], unsigned i, unsigned j)
+{
+    struct point ret;
+    for (unsigned I = 0; I < 4; I++)
+        ret = ret + M[I][j] * P[i][I];
+    return ret;
+}
+
+static void mult_MP (const float M[4][4], const Point P[4][4], struct point r[4][4])
+{
+    for (unsigned i = 0; i < 4; i++)
+        for (unsigned j = 0; j < 4; j++)
+            r[i][j] = mat_dot_product_MP(M, P, i, j);
+}
+
+static void mult_PM (const struct point P[4][4], const float M[4][4], struct point r[4][4])
+{
+    for (unsigned i = 0; i < 4; i++)
+        for (unsigned j = 0; j < 4; j++)
+            r[i][j] = mat_dot_product_PM(P, M, i, j);
+}
+
+static void mult_MPM (const float M[4][4], const Point P[4][4], struct point r[4][4])
+{
+    struct point tmp[4][4];
+
+    mult_MP(M, P, tmp);
+    mult_PM(tmp, M, r);
+}
+
+struct point normal (struct point p1, struct point p2)
+{
+    struct point tmp;
+    tmp.x = p1.y * p2.z;
+    tmp.y = p1.z * p2.x; 
+    tmp.z = p1.x * p2.y;
+    return normalize(tmp);
+}
+
+struct point gen_bezier_get_single_point (const struct point MPM[4][4], float u, float v, Point N)
+{
+    struct point tmp[4];
+
+
+    for (unsigned j = 0; j < 4; j++)
+        tmp[j] = (3 * u * u * MPM[j][0])
+            + (2 * u * MPM[j][1])
+            + MPM[j][2];
+    struct point Nu = (v * v * v * tmp[0])
+        + (v * v * tmp[1])
+        + (v * tmp[2])
+        + tmp[3];
+
+    for (unsigned j = 0; j < 4; j++)
+        tmp[j] = (u * u * u * MPM[j][0])
+            + (u * u * MPM[j][1])
+            + (u * MPM[j][2])
+            + MPM[j][3];
+    struct point Nv = (3 * v * v * tmp[0])
+        + (2 * v * tmp[1])
+        + tmp[2];
+
+    *N = normal(Nu, Nv);
+
+    for (unsigned j = 0; j < 4; j++)
+        tmp[j] = u * u * u * MPM[j][0]
+            + (u * u * MPM[j][1])
+            + (u * MPM[j][2])
+            + MPM[j][3];
+
+    return (v * v * v * tmp[0])
+        + (v * v * tmp[1])
+        + (v * tmp[2])
+        + tmp[3];
+}
+
+
 //ainda nao sei o que retorna
-void calculate_surface(vector<Point> points,vector<int> patch, float tesselation){
-    float t = 1/tesselation;
+void calculate_surface(vector<Point> points,vector<int> patch, float tessellation){
     
-    float M[4][4] = {   { -1,  3, -3, 1, },
-                        {  3, -6,  3, 0, },
-                        { -3,  3,  0, 0, },
-                        {  1,  0,  0, 0, }  };
+    const float M[4][4] =   {   { -1,  3, -3, 1, },
+                                {  3, -6,  3, 0, },
+                                { -3,  3,  0, 0, },
+                                {  1,  0,  0, 0, }};
+
+    Point P[4][4] = {   {points[patch[0]],points[patch[1]],points[patch[2]],points[patch[3]]},
+                        {points[patch[4]],points[patch[5]],points[patch[6]],points[patch[7]]},
+                        {points[patch[8]],points[patch[9]],points[patch[10]],points[patch[11]]},
+                        {points[patch[12]],points[patch[13]],points[patch[14]],points[patch[15]]}};
+
+    struct point MPM[4][4];
+    mult_MPM(M,P,MPM);
+
+    for (unsigned i = 1; i <= 4 * tessellation; i++) {
+        float u  = ((float) i)     / (4.0 * tessellation);
+        float u_ = ((float) i - 1) / (4.0 * tessellation);
+
+        for (unsigned j = 1; j <= 4 * tessellation; j++) {
+            float v  = ((float) j)     / (4.0 * tessellation);
+            float v_ = ((float) j - 1) / (4.0 * tessellation);
+
+            struct point ret_1,ret_2,ret_3,ret_4;
+
+            struct point N1,N2,N3,N4;
+
+            ret_1 = gen_bezier_get_single_point(MPM, u,  v_, &N1);
+            ret_2 = gen_bezier_get_single_point(MPM, u,  v, &N2);
+            ret_3 = gen_bezier_get_single_point(MPM, u_,  v_, &N3);
+            ret_4 = gen_bezier_get_single_point(MPM, u_,  v, &N4);
+
+            cout << ret_1.x << ',' << ret_1.y << ',' << ret_1.z << endl;
+            cout << ret_2.x << ',' << ret_2.y << ',' << ret_2.z << endl;
+            cout << ret_3.x << ',' << ret_3.y << ',' << ret_3.z << endl;
+            cout << ret_4.x << ',' << ret_4.y << ',' << ret_4.z << endl;
+            cout << endl;
 
 
-    Point P[4][4] = {   {points[patch[0]],points[patch[1]],points[patch[2]] ,points[patch[3]] },
-                        {points[patch[4]],points[patch[5]] , points[patch[6]], points[patch[7]]},
-                        {points[patch[8]], points[patch[9]],points[patch[10]] , points[patch[11]]},
-                        {points[patch[12]], points[patch[13]],points[patch[14]] ,points[patch[15]]}};
-
-    
-    
-    for(int j = 0;j<patch.size()-4;j++){
-        float A[4], P[4]; 
-        for(int i = 0; i < 4; i++){
-            if(i== 0){
-                P[0] = points[patch[j]]->x; P[1] =points[patch[j+1]]->x ; P[2] = points[patch[j+2]]->x; P[3] = points[patch[j+3]]->x;
-            }
-            if(i==1){
-                P[0] = points[patch[j]]->y; P[1] =points[patch[j+1]]->y ; P[2] = points[patch[j+2]]->y; P[3] = points[patch[j+3]]->y;
-            }
-            if(i==2){
-                P[0] = points[patch[j]]->z; P[1] =points[patch[j+1]]->z ; P[2] = points[patch[j+2]]->z; P[3] = points[patch[j+3]]->z;
-            }
-            if(i==3){
-                P[0] = 1; P[1] = 1 ; P[2] = 1; P[3] = 1;
-            }
-
-            // Compute A = M * P
-		    multMatrixVector(*M,P,A);
-            //A = vector u
-
-            pos[i] = t*t*t*A[0] + t*t*A[1] + t*A[2] + A[3];
-
+            
+            vector_final.push_back(N1);
+            vector_final.push_back(N2);
+            vector_final.push_back(N3);
+            vector_final.push_back(N3);
+            vector_final.push_back(N2);
+            vector_final.push_back(N4);
         }
-
-        Point a = (struct point*) malloc(sizeof(struct point));
-        a-> x = pos[0];a->y = pos[1]; a->z = pos[2];
-        vector_pos.push_back(a);
-        cout << vector_pos[j]->x << ' ' << vector_pos[j]->y << ' ' << vector_pos[j]->z << endl;
     }
 
 }
-
 
 void process_patch(char *filename, int tesselation){
     ifstream infile(filename);
@@ -372,7 +441,7 @@ void process_patch(char *filename, int tesselation){
     int np;
 
     vector<float> temp;
-    
+
     int contador = 0;
     int total_points = 0;
 
@@ -384,7 +453,7 @@ void process_patch(char *filename, int tesselation){
         string s;
         if(!getline(infile,s)) break;
         istringstream ss(s); // guardar linha
-        
+        patch.clear();
         while(ss){
             string f;
             if (!getline(ss, f, ',' )) break;
@@ -395,14 +464,13 @@ void process_patch(char *filename, int tesselation){
         }
         if (patch.size() >= 3){
             total_points += (patch.size()-2)*3;
-            control_points.push_back(patch);
+            patches.push_back(patch);
         }
         contador ++;
     }
     //cout << "acabou os cp" << endl;
     infile >> np; // guardar o numero de pontos
     //cout << np << endl;
-    points.clear();
     // ler os pontos
     while(infile.good()){
         temp.clear();
@@ -426,29 +494,24 @@ void process_patch(char *filename, int tesselation){
         }
     }
 
-    for(int i = 0; i < control_points.size();i++){
-        calculate_surface(points,control_points[i],tesselation);
 
+    for(vector<int> patch : patches){
+        calculate_surface(points,patch,tesselation);
     }
-    
+
+
     char a[30];
     sprintf(a,"%s.3d",filename);
     FILE *fd = fopen(a,"w");
 
     if(fd){
-        fprintf(fd,"%d\n",vector_pos.size());
-        for(int i = 0; i < vector_pos.size()-3;i+=2){
-            fprintf(fd,"%f %f %f\n",vector_pos[i]->x,vector_pos[i]->y,vector_pos[i]->z);
-            fprintf(fd,"%f %f %f\n",vector_pos[i+1]->x,vector_pos[i+1]->y,vector_pos[i+1]->z);
-            fprintf(fd,"%f %f %f\n",vector_pos[i+2]->x,vector_pos[i+2]->y,vector_pos[i+2]->z);
-            
-            fprintf(fd,"%f %f %f\n",vector_pos[i+2]->x,vector_pos[i+2]->y,vector_pos[i+2]->z);
-            fprintf(fd,"%f %f %f\n",vector_pos[i+1]->x,vector_pos[i+1]->y,vector_pos[i+1]->z);
-            fprintf(fd,"%f %f %f\n",vector_pos[i+3]->x,vector_pos[i+3]->y,vector_pos[i+3]->z);
-            
+        fprintf(fd,"%lu\n",vector_final.size());
+        for(struct point p : vector_final){
+            fprintf(fd,"%f %f %f\n",p.x,p.y,p.z);
         }
+             
+    }
         
         fclose(fd);
-        
-    }
+
 }    

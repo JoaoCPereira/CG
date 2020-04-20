@@ -3,7 +3,7 @@
         <!-sol->
         <group> 
             <scale X=5 Y=5 Z=5/>
-            <model file="sphere.3d" diffR=1 diffG=0.9 diffB=0/>
+            <model file="teapot.patch.3d" diffR=1 diffG=0.9 diffB=0/>
         </group>
         <!-mercurio->
         <group> 
@@ -57,7 +57,7 @@
                 <point X=0 Y=0 Z=1.5 />
             </translate>
             <scale X=0.3 Y=0.3 Z=0.3/>
-            <rotate time=1 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=0.2 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.29 diffG=0.47 diffB=0.89/>
             </group>
         </group>
@@ -141,15 +141,5 @@
             <model file="sphere.3d" diffR=0.1 diffG=0.1 diffB=0.5/>
         </group>
         <!-teapot->
-        <group>
-            <translate time=30>
-                <point X="200"/>
-                <point X="-40" Z="-40"/>
-                <point X="-200"/>
-                <point X="-40" Z="40"/>
-            </translate>
-            <rotate time=10 axisX=1 axisY=0 axisZ=0 angle=-90/>
-            <model file="teapot.patch.3d" diffR=0.76 diffG=0.26 diffB=0.43/>
-        </group>
     </group>
 </scene>
