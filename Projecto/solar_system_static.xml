@@ -18,6 +18,7 @@
                 <point X="7.07" Z="7.07"/>
             </translate>
             <scale X=0.65 Y=0.65 Z=0.65/>
+            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.7 diffG=0.5 diffB=0/>
         </group>
         <!-venus->
@@ -33,26 +34,30 @@
                 <point Z="-11.31" X ="-11.31"/>
             </translate>
             <scale X=0.80 Y=0.80 Z=0.80/>
+            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.9 diffG=0.5 diffB=0.3/>
         </group>
         <!-terra->
         <group>
-            <translate time = 40>
+            <translate time = 3>
                 <point X=12.5 Y=0 Z=0 />
                 <point X=0 Y=0 Z=-12.5 />
                 <point X=-12.5Y=0 Z=0 />
                 <point X=0 Y=0 Z=12.5/>
             </translate>
             <scale X=0.85 Y=0.85 Z=0.85/>
+            <rotate angle=20 axisX=1 axisY=1 axisZ=0 />
+            <rotate time=2 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0 diffG=0.9 diffB=0.6/>
             <group>
-            <translate time = 0.8>
+            <translate time = 10>
                 <point X=1.5 Y=0 Z=0 />
                 <point X=0 Y=0 Z=-1.5 />
                 <point X=-1.5 Y=0 Z=0 />
                 <point X=0 Y=0 Z=1.5 />
             </translate>
             <scale X=0.3 Y=0.3 Z=0.3/>
+            <rotate time=1 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.29 diffG=0.47 diffB=0.89/>
             </group>
         </group>
@@ -69,6 +74,7 @@
                 <point Z="-19.79" X ="19.79"/>
             </translate>
             <scale X=0.75 Y=0.75 Z=0.75/>
+            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.8 diffG=0 diffB=0/>
         </group>
         <!-jupiter->
@@ -84,6 +90,7 @@
                 <point Z="35.35" X ="-35.35"/>
             </translate>
             <scale X=2 Y=2 Z=2/>
+            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=1 diffG=0.8 diffB=0.9/>
         </group>
         <!-saturno->
@@ -99,6 +106,7 @@
                 <point Z="50.91" X ="-50.91"/>
             </translate>
             <scale X=1.7 Y=1.7 Z=1.7/>
+            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=1 diffG=0.9 diffB=0.5/>
         </group>
         <!-urano->
@@ -114,6 +122,7 @@
                 <point Z="70.71" X ="70.71"/>
             </translate>
             <scale X=1.1 Y=1.1 Z=1.1/>
+            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.1 diffG=0.6 diffB=1/>
         </group>
        <!-neptuno->
@@ -128,6 +137,7 @@
                 <point X="120"/>
                 <point Z="-84.85" X ="84.85"/>
             </translate>
+            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.1 diffG=0.1 diffB=0.5/>
         </group>
         <!-teapot->
@@ -138,7 +148,7 @@
                 <point X="-200"/>
                 <point X="-40" Z="40"/>
             </translate>
-            <rotate axisX=1 axisY=0 axisZ=0 angle=-90/>
+            <rotate time=10 axisX=1 axisY=0 axisZ=0 angle=-90/>
             <model file="teapot.patch.3d" diffR=0.76 diffG=0.26 diffB=0.43/>
         </group>
     </group>

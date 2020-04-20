@@ -14,6 +14,8 @@
 #include "tinyxml.h"
 #include "tinystr.h"
 #include <unistd.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #include <vector>
 #include <iostream>
@@ -44,6 +46,7 @@ struct geo_transf{
 	float y;
 	float z;
 	float angle;
+	float time;
 };
 
 struct translate{

@@ -39,7 +39,29 @@ void writeGeo(Geo_Transf *transf){
 				break;
 			*/
 			case 1: // rotate
-				glRotatef(transf->angle,transf->x,transf->y,transf->z);
+				//glRotatef(transf->angle,transf->x,transf->y,transf->z);
+				if (transf->angle) glRotatef(transf->angle,transf->x,transf->y,transf->z);
+				else {
+					glRotatef(((2*M_PI)/transf->time)*t*1000,transf->x,transf->y,transf->z);
+					glBegin(GL_LINE_LOOP);
+					//X
+					glColor3f(1,0,0);
+					glVertex3f(0,0,0);
+					glVertex3f(5,0,0);
+
+
+					//Y
+					glColor3f(0,1,0);
+					glVertex3f(0,0,0);
+					glVertex3f(0,5,0);
+
+					//Z
+					glColor3f(0,0,1);
+					glVertex3f(0,0,0);
+					glVertex3f(0,0,5);
+					glEnd();
+				}
+
 				break;
 			case 2: // scale
 				glScalef(transf->x,transf->y,transf->z);

@@ -145,12 +145,15 @@ void SysState::parserXML(TiXmlElement *element){
           //caso rotate
           if(!strcmp(element->Value(), "rotate")){
             Geo_Transf *geo =(struct geo_transf*) malloc(sizeof(struct geo_transf));
+            geo->angle=0;
             geo->x=0;
             geo->y=0;
             geo->z=0;
+            geo->time=1;
 
             geo->tipo = 1;
 
+            element->QueryFloatAttribute("time",&geo->time);
             element->QueryFloatAttribute("angle",&geo->angle);
             element->QueryFloatAttribute("axisX",&geo->x);
             element->QueryFloatAttribute("axisY",&geo->y);
