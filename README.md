@@ -23,6 +23,6 @@ Computação Gráfica 19/20
   
 
 ## Phase 4 – Normals and Texture Coordinates
-  [ ] Garantir o funcionamento de Debug
+  - [ ] Garantir o funcionamento de Debug
   
 
