@@ -19,7 +19,7 @@ Computação Gráfica 19/20
 ## Phase 3 – Curves, Cubic Surfaces and VBOs
   - [x] VBO's
   - [x] Curves, Translate and rotate with time
-      -[ ] garantir translate e rotate no tempo certo
+      - [ ] garantir translate e rotate no tempo certo
   - [ ] Patch de Bezier
   
 
