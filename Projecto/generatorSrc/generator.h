@@ -10,6 +10,12 @@
 
 using namespace std;
 
+typedef struct point{
+    float x;
+    float y;
+    float z;
+}*Point;
+
 
 /**
 @file generator.hpp
