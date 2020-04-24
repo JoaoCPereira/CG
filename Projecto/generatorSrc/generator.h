@@ -63,6 +63,10 @@ void print_box(float x,float y,float z,float divisions,char* file_name);
 void print_cone(float radius,float height,float slices,float stacks,char* file_name);
 
 
+void evalBezierCurve(const Point *P, const float &t, Point *res);
+void evalBezierPatch(const Point *controlPoints, const float &u, const float &v , Point *res);
+void generate3D(int tesselation);
+
 void process_patch(char *filename, int tesselation);
 
 #endif
