@@ -272,7 +272,7 @@ void generate3D(int tesselation) {
 	int divs = tesselation;
 
     int vertices[divs * divs * 4];
-    int nvertices = divs * divs * 4;
+    int nvertices = (divs) * (divs) * 4;
 
     Point *P = new Point[(divs + 1) * (divs + 1)];
 
@@ -290,8 +290,8 @@ void generate3D(int tesselation) {
                 evalBezierPatch(controlPoints, i / (float)divs, j / (float)divs , &P[k]);
             } 
         }
-
-        // face connectivity (trovavelmente o erro esta aqui)
+        int o=0;
+        
         for (int j=0, k=0; j < divs; ++j) {
         	for (int i=0; i < divs; ++i, ++k) {
         		/*
@@ -303,12 +303,13 @@ void generate3D(int tesselation) {
 					v1------v2
 				
 				*/
+        		o +=4;
                 vertices[k * 4] = (divs + 1) * j + i;
                 vertices[k * 4 + 1] = (divs + 1) * (j + 1) + i;
                 vertices[k * 4 + 2] = (divs + 1) * (j + 1) + i + 1; 
                 vertices[k * 4 + 3] = (divs + 1) * j + i + 1; 
-            } 
-        } 
+            }
+        }
 
         vector<struct point*> temp1;
         temp1.clear();
@@ -322,7 +323,7 @@ void generate3D(int tesselation) {
         }
 
         // bezier to normal
-        for(int size=0; size < temp1.size()-3; size+=2){
+        for(int size=0; size < temp1.size()-3; size+=4){
         	final.push_back(temp1[size]); // v0
         	final.push_back(temp1[size+3]); // v3
         	final.push_back(temp1[size+1]); // v1
