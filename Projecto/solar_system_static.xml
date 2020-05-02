@@ -7,7 +7,7 @@
         </group>
         <!-mercurio->
         <group> 
-            <translate time = 20>
+            <translate time = 100>
                 <point X="10"/>
                 <point X="7.07" Z="-7.07"/>
                 <point Z="-10"/>
@@ -18,12 +18,12 @@
                 <point X="7.07" Z="7.07"/>
             </translate>
             <scale X=0.65 Y=0.65 Z=0.65/>
-            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=100 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.7 diffG=0.5 diffB=0/>
         </group>
         <!-venus->
         <group>
-            <translate time = 30>
+            <translate time = 250>
                 <point X="-16"/>
                 <point Z="11.31" X ="-11.31"/>
                 <point Z="16"/>
@@ -34,36 +34,36 @@
                 <point Z="-11.31" X ="-11.31"/>
             </translate>
             <scale X=0.80 Y=0.80 Z=0.80/>
-            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=220 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.9 diffG=0.5 diffB=0.3/>
         </group>
         <!-terra->
         <group>
-            <translate time = 3>
-                <point X=12.5 Y=0 Z=0 />
-                <point X=0 Y=0 Z=-12.5 />
-                <point X=-12.5Y=0 Z=0 />
-                <point X=0 Y=0 Z=12.5/>
+            <translate time = 320>
+                <point X=20.5 Y=0 Z=0 />
+                <point X=0 Y=0 Z=-20.5 />
+                <point X=-20.5Y=0 Z=0 />
+                <point X=0 Y=0 Z=20.5/>
             </translate>
             <scale X=0.85 Y=0.85 Z=0.85/>
             <rotate angle=20 axisX=1 axisY=1 axisZ=0 />
-            <rotate time=2 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=50 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0 diffG=0.9 diffB=0.6/>
             <group>
-            <translate time = 10>
+            <translate time = 30>
                 <point X=1.5 Y=0 Z=0 />
                 <point X=0 Y=0 Z=-1.5 />
                 <point X=-1.5 Y=0 Z=0 />
                 <point X=0 Y=0 Z=1.5 />
             </translate>
             <scale X=0.3 Y=0.3 Z=0.3/>
-            <rotate time=0.2 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=50 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.29 diffG=0.47 diffB=0.89/>
             </group>
         </group>
         <!-marte->
         <group>
-            <translate time=60>
+            <translate time=500>
                 <point Z="-28"/>
                 <point Z="-19.79" X ="-19.79"/>
                 <point X="-28"/>
@@ -74,7 +74,7 @@
                 <point Z="-19.79" X ="19.79"/>
             </translate>
             <scale X=0.75 Y=0.75 Z=0.75/>
-            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=50 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.8 diffG=0 diffB=0/>
             <!-Fobos>
             <group>
@@ -103,7 +103,7 @@
         </group>
         <!-jupiter->
         <group>
-            <translate time=70>
+            <translate time=1500>
                 <point Z="50"/>
                 <point Z="35.35" X ="35.35"/>
                 <point X="50"/>
@@ -114,12 +114,12 @@
                 <point Z="35.35" X ="-35.35"/>
             </translate>
             <scale X=2 Y=2 Z=2/>
-            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=20 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=1 diffG=0.8 diffB=0.9/>
         </group>
         <!-saturno->
         <group>
-            <translate time=80>
+            <translate time=3000>
                 <point Z="72"/>
                 <point Z="50.91" X ="50.91"/>
                 <point X="72"/>
@@ -130,12 +130,12 @@
                 <point Z="50.91" X ="-50.91"/>
             </translate>
             <scale X=1.7 Y=1.7 Z=1.7/>
-            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=20 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=1 diffG=0.9 diffB=0.5/>
         </group>
         <!-urano->
         <group>
-            <translate time=90>
+            <translate time=10000>
                 <point X="100"/>
                 <point Z="-70.71" X ="70.71"/>
                 <point Z="-100"/>
@@ -146,12 +146,12 @@
                 <point Z="70.71" X ="70.71"/>
             </translate>
             <scale X=1.1 Y=1.1 Z=1.1/>
-            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=25 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.1 diffG=0.6 diffB=1/>
         </group>
        <!-neptuno->
         <group>
-            <translate time=100>
+            <translate time=30000>
                 <point Z="-120"/>
                 <point Z="-84.85" X ="-84.85"/>
                 <point X="-120"/>
@@ -161,12 +161,12 @@
                 <point X="120"/>
                 <point Z="-84.85" X ="84.85"/>
             </translate>
-            <rotate time=10 axisX=0 axisY=1 axisZ=0 />
+            <rotate time=35 axisX=0 axisY=1 axisZ=0 />
             <model file="sphere.3d" diffR=0.1 diffG=0.1 diffB=0.5/>
         </group>
         <!-teapot->
         <group>
-            <translate time=30>
+            <translate time=500>
                 <point X="200"/>
                 <point X="-40" Z="-40"/>
                 <point X="-200"/>
