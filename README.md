@@ -21,7 +21,8 @@ Computação Gráfica 19/20
   - [x] Curves, Translate and rotate with time
       - [ ] garantir translate e rotate no tempo certo
       - [ ] analisar os valores do ficheiro xml para garantir rotas mais ou menos realistas
-  - [ ] Patch de Bezier para o teapot
+  - [x] Patch de Bezier para o teapot
+  - [ ] relatório
   
 
 ## Phase 4 – Normals and Texture Coordinates
