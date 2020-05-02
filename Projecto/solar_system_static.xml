@@ -78,7 +78,7 @@
             <model file="sphere.3d" diffR=0.8 diffG=0 diffB=0/>
             <!-Fobos>
             <group>
-            <translate time = 7>
+            <translate time = 15>
                 <point X=1.5 Y=0 Z=0 />
                 <point X=0 Y=0 Z=-1.5 />
                 <point X=-1.5 Y=0 Z=0 />
