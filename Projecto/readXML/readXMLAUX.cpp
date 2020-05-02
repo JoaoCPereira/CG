@@ -7,62 +7,26 @@ float y[3] = {0,1,0};
 
 typedef struct modelo Modelo;
 typedef struct geo_transf Geo_Transf;
-float t = 0;
+float scaleTime = 0.001;
 
 void writeModelo3D(Modelo *model){
-
-	// desenhar com vbo com indice
+	// cor do objecto
 	glColor3f(model->diffR,model->diffG,model->diffB);
-	//printf("posInicial = %d, numPontos = %d\n", model->posInitVBO, model->numPoints);
-
+	// desenhar com vbo com indice
 	glDrawArrays(GL_TRIANGLES, model->posInitVBO, model->numPoints);
-
-	/*
-	if (model){
-		glColor3f(model->diffR,model->diffG,model->diffB);
-		glBegin(GL_TRIANGLES);
-		for(int i=0; i< model->numPoints; i++){
-			glVertex3f(model->vector[i].x,model->vector[i].y,model->vector[i].z);
-		}
-		glEnd();
-	}
-	*/
 }
 
 void writeGeo(Geo_Transf *transf){
 
 	if(transf){
 		switch (transf->tipo) {
-			/*
-			case 0: // translate
-				glTranslatef(transf->x,transf->y,transf->z);
-				break;
-			*/
 			case 1: // rotate
-				//glRotatef(transf->angle,transf->x,transf->y,transf->z);
 				if (transf->angle) glRotatef(transf->angle,transf->x,transf->y,transf->z);
 				else {
-					glRotatef(((2*M_PI)/transf->time)*t*1000,transf->x,transf->y,transf->z);
-					glBegin(GL_LINE_LOOP);
-					//X
-					glColor3f(1,0,0);
-					glVertex3f(0,0,0);
-					glVertex3f(5,0,0);
-
-
-					//Y
-					glColor3f(0,1,0);
-					glVertex3f(0,0,0);
-					glVertex3f(0,5,0);
-
-					//Z
-					glColor3f(0,0,1);
-					glVertex3f(0,0,0);
-					glVertex3f(0,0,5);
-					glEnd();
+					glRotatef(((2*M_PI)/transf->time)*glutGet(GLUT_ELAPSED_TIME)*0.01,transf->x,transf->y,transf->z);
 				}
-
 				break;
+
 			case 2: // scale
 				glScalef(transf->x,transf->y,transf->z);
 				break;
@@ -98,7 +62,6 @@ void normalize(float *a) {
 
 
 float length(float *v) {
-
 	float res = sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
 	return res;
 
@@ -114,7 +77,6 @@ void multMatrixVector(float *m, float *v, float *res) {
 	}
 
 }
-
 
 void getCatmullRomPoint(float t, Point *p0, Point *p1, Point *p2, Point *p3, float *pos, float *deriv) {
 
@@ -153,7 +115,6 @@ void getCatmullRomPoint(float t, Point *p0, Point *p1, Point *p2, Point *p3, flo
 	
 }
 
-
 // given  global t, returns the point in the curve
 void getGlobalCatmullRomPoint(float gt, float *pos, float *deriv, Translate *translate) {
 
@@ -186,10 +147,8 @@ void renderCatmullRomCurve(Translate *translate) {
 	glEnd();
 }
 
-
-void writeTranslate(Translate *translate){
-	//float tempo = t/(translate->time*0.1);
-	float tempo = t*translate->time;
+void writeTranslate(Translate *translate) {
+	float tempo = ((glutGet(GLUT_ELAPSED_TIME)*scaleTime)*translate->cp.size())/translate->time;
 
 	float X[3];
 	float Y[3];
@@ -197,9 +156,7 @@ void writeTranslate(Translate *translate){
 
 	renderCatmullRomCurve(translate);
 
-
 	// apply transformations here
-	// ...
 	getGlobalCatmullRomPoint(tempo,pos,deriv, translate);
 
 	glTranslatef(pos[0],pos[1],pos[2]);
@@ -220,6 +177,4 @@ void writeTranslate(Translate *translate){
 	buildRotMatrix(X,Y,Z,rot_matrix);
 
 	glMultMatrixf(rot_matrix);
-
-
 }

@@ -8,7 +8,6 @@ vector <float> SysState::preVBO;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
 extern GLuint buffers; // variaveis globais externas do ficheiro main.cpp
-extern float t;
 
 SysState::SysState(char *fileName){
     readXML(fileName);
@@ -95,7 +94,6 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
   //printf("PosInitVBO =%d, numPontos =%d\n", mod->posInitVBO, mod->numPoints);
 
   modelos.push_back(mod);
-
   return 1;
 }
 
@@ -123,19 +121,12 @@ void SysState::parserXML(TiXmlElement *element){
 
           //caso translate
           if(!strcmp(element->Value(), "translate")){
-          	//Translate *t = (struct translate*) malloc(sizeof(struct translate));
           	Translate *t = new Translate();
             t->time = 0;
 
             t->cp.clear();
 
             element->QueryFloatAttribute("time",&t->time);
-          
-			/*
-            element->QueryFloatAttribute("X",&geo->x);
-            element->QueryFloatAttribute("Y",&geo->y);
-            element->QueryFloatAttribute("Z",&geo->z);
-			*/
 
             tr.push_back(t);
             parserXML(element->FirstChildElement());
@@ -213,10 +204,6 @@ void SysState::parserXML(TiXmlElement *element){
             tr[tr.size()-1]->cp.push_back(p);
           }
 
-          //proximo filho
-
-          //element != nullptr;
-
           if(element){
               element = element->NextSiblingElement();
           }
@@ -224,7 +211,7 @@ void SysState::parserXML(TiXmlElement *element){
 }
 
 void SysState::readXML(char *pFilename){
-// abrir ficheiro xml
+    // abrir ficheiro xml
     TiXmlDocument doc( pFilename );
     bool loadOkay = doc.LoadFile();
 
@@ -255,15 +242,10 @@ void SysState::renderScene(void) {
               0.0,0.0,0.0,
               0.0f,1.0f,0.0f);
 
-// put the geometric transformations here
+    // put the geometric transformations here
     
-    //glTranslatef(x_x,0,z);
-    //glRotatef(angle,0,1,0);
-    //glScalef(scale,scale,scale);
- 
-// put drawing instructions here
+    // put drawing instructions here
     writeSeq();
-    t+=0.000005;
 
     // End of frame
     glutSwapBuffers();

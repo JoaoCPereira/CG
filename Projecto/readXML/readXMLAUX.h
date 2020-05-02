@@ -62,6 +62,15 @@ void writeModelo3D(Modelo *);
 
 void writeGeo(Geo_Transf *);
 
+void buildRotMatrix(float *, float *, float *, float *);
+void cross(float *, float *, float *);
+void normalize(float *);
+float length(float *);
+void multMatrixVector(float *m, float *v, float *res);
+void getCatmullRomPoint(float , Point *, Point *, Point *, Point *, float *, float *);
+void getGlobalCatmullRomPoint(float , float *, float *, Translate *);
+void renderCatmullRomCurve(Translate *);
+
 void writeTranslate(Translate *);
 
 #endif

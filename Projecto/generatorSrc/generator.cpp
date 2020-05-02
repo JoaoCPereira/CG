@@ -11,7 +11,7 @@ vector< vector<int> > patches;
 vector<int> patch;
 
 vector<struct point*> points;
-vector<struct point*> final;
+vector<struct point*> vectorFinal;
 
 void print_sphere(float radius,float slices,float stacks,char* file_name){
     FILE *fd = fopen(file_name,"w");
@@ -256,7 +256,6 @@ void evalBezierCurve(const Point *P, const float &t, Point *res) {
     res->z = z;
 } 
 
-
 void evalBezierPatch(const Point *controlPoints, const float &u, const float &v , Point *res) { 
 	Point uCurve[4];
     for (int i = 0; i < 4; ++i) {
@@ -265,10 +264,8 @@ void evalBezierPatch(const Point *controlPoints, const float &u, const float &v 
     evalBezierCurve(uCurve, v, res); 
 } 
 
-
 void generate3D(int tesselation) { 
-
-	final.clear();
+	vectorFinal.clear();
 	int divs = tesselation;
 
     int vertices[divs * divs * 4];
@@ -291,16 +288,16 @@ void generate3D(int tesselation) {
             } 
         }
         int o=0;
-        
+
         for (int j=0, k=0; j < divs; ++j) {
         	for (int i=0; i < divs; ++i, ++k) {
         		/*
-        			v0______v3
+        			v3______v0
 					|        |
 					|        |
 					|		 |
 					|		 |
-					v1------v2
+					v2------v1
 				
 				*/
         		o +=4;
@@ -324,13 +321,13 @@ void generate3D(int tesselation) {
 
         // bezier to normal
         for(int size=0; size < temp1.size()-3; size+=4){
-        	final.push_back(temp1[size]); // v0
-        	final.push_back(temp1[size+3]); // v3
-        	final.push_back(temp1[size+1]); // v1
+        	vectorFinal.push_back(temp1[size]); // v0
+        	vectorFinal.push_back(temp1[size+3]); // v3
+        	vectorFinal.push_back(temp1[size+1]); // v1
 
-        	final.push_back(temp1[size+1]); // v1
-        	final.push_back(temp1[size+3]); // v3
-        	final.push_back(temp1[size+2]); // v2
+        	vectorFinal.push_back(temp1[size+1]); // v1
+        	vectorFinal.push_back(temp1[size+3]); // v3
+        	vectorFinal.push_back(temp1[size+2]); // v2
         }
     } 
 } 
@@ -368,9 +365,8 @@ void process_patch(char *filename, int tesselation){
         }
         contador ++;
     }
-    //cout << "acabou os cp" << endl;
     infile >> np; // guardar o numero de pontos
-    //cout << np << endl;
+    
     // ler os pontos
     while(infile.good()){
         temp.clear();
@@ -401,9 +397,9 @@ void process_patch(char *filename, int tesselation){
     FILE *fd = fopen(a,"w");
 
     if(fd){
-        fprintf(fd,"%ld\n",final.size());
-        for(int i=0; i < final.size() ; i++){
-        	fprintf(fd,"%f %f %f\n",final[i]->x,final[i]->y,final[i]->z);
+        fprintf(fd,"%ld\n",vectorFinal.size());
+        for(int i=0; i < vectorFinal.size() ; i++){
+        	fprintf(fd,"%f %f %f\n",vectorFinal[i]->x,vectorFinal[i]->y,vectorFinal[i]->z);
         }
              
     }
