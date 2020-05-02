@@ -264,7 +264,7 @@ void evalBezierPatch(const Point *controlPoints, const float &u, const float &v 
     evalBezierCurve(uCurve, v, res); 
 } 
 
-void generate3D(int tesselation) { 
+void calculate_surface(int tesselation) { 
 	vectorFinal.clear();
 	int divs = tesselation;
 
@@ -390,7 +390,7 @@ void process_patch(char *filename, int tesselation){
         }
     }
 
-    generate3D(tesselation);
+    calculate_surface(tesselation);
 
     char a[30];
     sprintf(a,"%s.3d",filename);

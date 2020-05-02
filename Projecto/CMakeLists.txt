@@ -5,10 +5,10 @@ PROJECT(Engine)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} main.cpp readXML/tinyXML/tinyxmlparser.cpp readXML/tinyXML/tinyxml.cpp readXML/tinyXML/tinystr.cpp readXML/tinyXML/tinyxmlerror.cpp readXML/readXMLClass.cpp readXML/readXMLAUX.cpp)
+add_executable(${PROJECT_NAME} main.cpp engineSrc/tinyXML/tinyxmlparser.cpp engineSrc/tinyXML/tinyxml.cpp engineSrc/tinyXML/tinystr.cpp engineSrc/tinyXML/tinyxmlerror.cpp engineSrc/engineSrcClass.cpp engineSrc/engineSrcAUX.cpp)
 target_include_directories(Engine PUBLIC
-                           readXML/tinyXML/
-                           readXML/
+                           engineSrc/tinyXML/
+                           engineSrc/
                            )
 
 add_executable(Generator generatorSrc/main.cpp generatorSrc/generator.cpp)

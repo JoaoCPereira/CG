@@ -1,7 +1,6 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -42,6 +41,7 @@ int alpha = 0, beta = 45, r = 50;
 unsigned int texture;
 int imageWidth;
 unsigned char *imageData;
+
 
 // vectors to store vertex data temporarily
 std::vector<float> position, normal, texCoord;
@@ -121,9 +121,25 @@ void normalize(float *a) {
 
 
 void computeNormal(int i, int j) {
+	float i_ = (float) i;
+	float j_ = (float) j;
+	float p_1[3] = {i_,h(i_,j_-1),j_-1};
+	float p_2[3] = {i_,h(i_,j_+1),j_+1};
+	float p_3[3] = {i_-1,h(i_-1,j_),j_};
+	float p_4[3] = {i_+1,h(i_+1,j_),j_};
+	
+	float v_1[3] = {p_2[0]-p_1[0],p_2[1]-p_1[1],p_2[2]-p_1[2]};
+	float v_2[3] = {p_4[0]-p_3[0],p_4[1]-p_3[1],p_4[2]-p_3[2]};
 
-	// fill the normal vector with the normal for vertex at grid location (i,j)
+	float n[3];
+	cross(v_1,v_2,n);
+	normalize(n);
 
+	normal.push_back(n[0]);
+	normal.push_back(n[1]);
+	normal.push_back(n[2]);
+	
+	
 }
 
 void prepareTerrain() {
@@ -132,16 +148,22 @@ void prepareTerrain() {
 		for (int j = 1; j < imageWidth - 1; j++) {
 
 			computeNormal(i + 1, j);
+
 			
 			// fill texCoord vector with the texture coordinates for grid location (i+1,j)
+			texCoord.push_back(1);
+			texCoord.push_back(0);
 
 			position.push_back(i - imageWidth*0.5f + 1);
 			position.push_back(h(i + 1, j));
 			position.push_back(j - imageWidth*0.5f);
 
 			computeNormal(i, j);
-
+			
+		
 			// fill texCoord vector with the texture coordinates for grid location (i,j)
+			texCoord.push_back(0);
+			texCoord.push_back(0);
 
 			position.push_back(i - imageWidth*0.5f);
 			position.push_back(h(i, j));
@@ -406,13 +428,28 @@ void loadTexture() {
 	texData = ilGetData();
 
 	glGenTextures(1, &texture);
+	
+	
 
 	glBindTexture(GL_TEXTURE_2D, texture);
+	//no mipmap
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	// with mipmap
+
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+	//glGenerateMipmap(GL_TEXTURE_2D);
+	//GL_NEAREST_MIPMAP_NEAREST
+	//GL_NEAREST_MIPMAP_LINEAR
+	//GL_LINEAR_MIPMAP_NEAREST
+	//GL_LINEAR_MIPMAP_LINEAR
+
+
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 }

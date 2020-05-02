@@ -9,7 +9,7 @@
 #include <math.h>
 #include "tinyxml.h"
 #include "tinystr.h"
-#include "readXMLClass.h"
+#include "engineSrcClass.h"
 #include <unistd.h>
 #include <limits.h>
 #include <iostream>
@@ -131,17 +131,7 @@ void fpsshow(void){
 
     glutPostRedisplay();
 }
-/*
-void printInfo() {
 
-    printf("Vendor: %s\n", glGetString(GL_VENDOR));
-    printf("Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("Version: %s\n", glGetString(GL_VERSION));
-
-    printf("\nUse Arrows to move the camera up/down and left/right\n");
-    printf("R and F control the distance from the camera to the origin\n");
-}
-*/
 int main(int argc, char **argv) {
     char *pFilename = NULL;
 

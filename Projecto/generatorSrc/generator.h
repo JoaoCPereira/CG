@@ -67,6 +67,12 @@ void evalBezierCurve(const Point *P, const float &t, Point *res);
 void evalBezierPatch(const Point *controlPoints, const float &u, const float &v , Point *res);
 void generate3D(int tesselation);
 
+/**
+*@brief Process Bezier patches from a file
+* @param filename File name where to read the patches
+* @param tesselation Tesselation level
+*@return A file with the dots to draw the teapot surfaces
+*/
 void process_patch(char *filename, int tesselation);
 
 #endif
