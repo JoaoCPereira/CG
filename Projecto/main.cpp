@@ -175,6 +175,9 @@ int main(int argc, char **argv) {
     glEnable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT,GL_LINE);
 
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
     //printInfo();
 // enter GLUT's main cycle
     glutMainLoop();

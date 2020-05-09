@@ -14,7 +14,6 @@ extern GLuint buffers[2]; // variaveis globais externas do ficheiro main.cpp
 SysState::SysState(char *fileName){
     readXML(fileName);
 
-
     glGenBuffers(2, buffers);
     //carregar os dados para o VBO
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
@@ -23,6 +22,9 @@ SysState::SysState(char *fileName){
     //carregar os dados para o lig
     glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
+
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glEnableClientState(GL_NORMAL_ARRAY);
 
 
     // Turn on lighting and Define light color
@@ -271,6 +273,8 @@ void SysState::parserXML(TiXmlElement *element){
             element->QueryFloatAttribute("posX",&p->x);
             element->QueryFloatAttribute("posY",&p->y);
             element->QueryFloatAttribute("posZ",&p->z);
+
+            //cout << p->z << endl;
 
             l->point = p;
             l->type = 0;

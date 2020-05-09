@@ -200,9 +200,11 @@ void writeLigth(Light *light, int numberLight){
 
 	// falta ver o caso DIRECTIONAL (1)
 	if(light->type==1){
-		float pos[4] = {light->point->x, light->point->y, light->point->y, 0.0};
+		float pos[4] = {light->point->x, light->point->y, light->point->z, 0.0};
 	}
-	else float pos[4] = {light->point->x, light->point->y, light->point->y, 1.0};
+	else float pos[4] = {light->point->x, light->point->y, light->point->z, 1.0};
+
+	//cout << light->point->x << " " << light->point->y << " " << light->point->z << endl;
 
 	glLightfv(GL_LIGHT0,GL_POSITION, pos);
 }
