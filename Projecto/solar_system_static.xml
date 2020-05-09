@@ -3,7 +3,10 @@
         <!-sol->
         <group> 
             <scale X=5 Y=5 Z=5/>
-            <model file="sphere.3d" diffR=1 diffG=0.9 diffB=0/>
+            <model file="sphere.3d" texture="Textures/sunmap.jpg" emiR="1" emiG="1" emiB="1"/>
+            <lights>
+                <light type="POINT" posX=5 posY=5 posZ=5/>
+            </lights>
         </group>
         <!-mercurio->
         <group> 
@@ -19,7 +22,7 @@
             </translate>
             <scale X=0.65 Y=0.65 Z=0.65/>
             <rotate time=100 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.7 diffG=0.5 diffB=0/>
+            <model file="sphere.3d" texture="Textures/mercurymap.jpg"/>
         </group>
         <!-venus->
         <group>
@@ -35,7 +38,7 @@
             </translate>
             <scale X=0.80 Y=0.80 Z=0.80/>
             <rotate time=220 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.9 diffG=0.5 diffB=0.3/>
+            <model file="sphere.3d" texture="Textures/venusmap.jpg"/>
         </group>
         <!-terra->
         <group>
@@ -48,7 +51,8 @@
             <scale X=0.85 Y=0.85 Z=0.85/>
             <rotate angle=20 axisX=1 axisY=1 axisZ=0 />
             <rotate time=50 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0 diffG=0.9 diffB=0.6/>
+            <model file="sphere.3d" texture="Textures/earthmap.jpg"/>
+            <!-lua->
             <group>
             <translate time = 30>
                 <point X=1.5 Y=0 Z=0 />
@@ -58,7 +62,7 @@
             </translate>
             <scale X=0.3 Y=0.3 Z=0.3/>
             <rotate time=50 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.29 diffG=0.47 diffB=0.89/>
+            <model file="sphere.3d" texture="Textures/moonmap.jpg"/>
             </group>
         </group>
         <!-marte->
@@ -75,8 +79,8 @@
             </translate>
             <scale X=0.75 Y=0.75 Z=0.75/>
             <rotate time=50 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.8 diffG=0 diffB=0/>
-            <!-Fobos>
+            <model file="sphere.3d" texture="Textures/marsmap.jpg"/>
+            <!-phobos>
             <group>
             <translate time = 15>
                 <point X=1.5 Y=0 Z=0 />
@@ -86,7 +90,7 @@
             </translate>
             <scale X=0.22 Y=0.22 Z=0.22/>
             <rotate time=0.2 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.5 diffG=0.4 diffB=0.3/>
+            <model file="sphere.3d" texture="Textures/phobosmap.jpg"/>
             </group>
             <!-Deimos>
             <group>
@@ -98,7 +102,7 @@
             </translate>
             <scale X=0.12 Y=0.12 Z=0.12/>
             <rotate time=0.2 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.8 diffG=0.6 diffB=0.4/>
+            <model file="sphere.3d" texture="Textures/deimosmap.jpg"/>
             </group>
         </group>
         <!-jupiter->
@@ -115,7 +119,7 @@
             </translate>
             <scale X=2 Y=2 Z=2/>
             <rotate time=20 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=1 diffG=0.8 diffB=0.9/>
+            <model file="sphere.3d" texture="Textures/jupitermap.jpg"/>
         </group>
         <!-saturno->
         <group>
@@ -131,7 +135,7 @@
             </translate>
             <scale X=1.7 Y=1.7 Z=1.7/>
             <rotate time=20 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=1 diffG=0.9 diffB=0.5/>
+            <model file="sphere.3d" texture="Textures/saturnmap.jpg"/>
         </group>
         <!-urano->
         <group>
@@ -147,7 +151,7 @@
             </translate>
             <scale X=1.1 Y=1.1 Z=1.1/>
             <rotate time=25 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.1 diffG=0.6 diffB=1/>
+            <model file="sphere.3d" texture="Textures/uranusmap.jpg"/>
         </group>
        <!-neptuno->
         <group>
@@ -162,7 +166,7 @@
                 <point Z="-84.85" X ="84.85"/>
             </translate>
             <rotate time=35 axisX=0 axisY=1 axisZ=0 />
-            <model file="sphere.3d" diffR=0.1 diffG=0.1 diffB=0.5/>
+            <model file="sphere.3d" texture="Textures/neptunemap.jpg"/>
         </group>
         <!-teapot->
         <group>
@@ -173,7 +177,7 @@
                 <point X="-40" Z="40"/>
             </translate>
             <rotate time=10 axisX=1 axisY=0 axisZ=0 angle=-90/>
-            <model file="teapot.patch.3d" diffR=0.76 diffG=0.26 diffB=0.43/>
+            <model file="teapot.patch.3d" texture="Textures/halleymap.jpg"/>
         </group>
     </group>
 </scene>
