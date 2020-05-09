@@ -1,6 +1,6 @@
 #include "engineSrcAUX.h"
 
-extern GLuint buffers; // variaveis globais externas do ficheiro main.cpp
+extern GLuint buffers[3]; // variaveis globais externas do ficheiro main.cpp
 
 float pos[4]{0}, deriv[4]{0};
 float y[3] = {0,1,0};
@@ -8,10 +8,12 @@ float y[3] = {0,1,0};
 typedef struct modelo Modelo;
 typedef struct geo_transf Geo_Transf;
 float scaleTime = 0.001; // passar de segundos para milissegundos
+unsigned int texture;
 
 void writeModelo3D(Modelo *model){
 	// cor do objecto
 	glColor3f(model->diffR,model->diffG,model->diffB);
+	float emissive[]= {model->emiR,model->emiG,model->emiB,1};
 
 	// Define a material
 
@@ -22,6 +24,14 @@ void writeModelo3D(Modelo *model){
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
 	glMaterialf(GL_FRONT, GL_SHININESS, 128);
+	glMaterialfv(GL_FRONT, GL_EMISSION, emissive);
+	
+
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
+	glVertexPointer(3,GL_FLOAT,0,0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
+	glNormalPointer(GL_FLOAT,0,0);
 
 	// desenhar com vbo com indice
 	glDrawArrays(GL_TRIANGLES, model->posInitVBO, model->numPoints);
@@ -193,7 +203,10 @@ void writeTranslate(Translate *translate) {
 void writeLigth(Light *light, int numberLight){
 
 	// falta ver o caso DIRECTIONAL (1)
-	float pos[4] = {light->point->x, light->point->y, light->point->y, 0.0};
+	if(light->type==1){
+		float pos[4] = {light->point->x, light->point->y, light->point->y, 0.0};
+	}
+	else float pos[4] = {light->point->x, light->point->y, light->point->y, 1.0};
 
 	glLightfv(numberLight,GL_POSITION, pos);
 }
@@ -208,5 +221,17 @@ void loadTexture(char *file){
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 	texData = ilGetData();
+	glGenTextures(1, &texture);
+	
+	glBindTexture(GL_TEXTURE_2D, texture);
 
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 }

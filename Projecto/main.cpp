@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include<bits/stdc++.h> 
 
+
 using namespace std; 
 
 // variáveis globais
@@ -27,7 +28,7 @@ float distanciaCamera = 230.0f;
 
 int frame=0,timefps=0,timebase=0,fps=0;
 
-GLuint buffers[2];
+GLuint buffers[3];
 
 void changeSize(int w, int h) {
 
@@ -154,6 +155,7 @@ int main(int argc, char **argv) {
     glutCreateWindow("CG@DI-UM");
 
     glewInit();
+    ilInit();
     glEnableClientState(GL_VERTEX_ARRAY);
     
     //readXML(pFilename,modelos,geo_tr,sequencia);

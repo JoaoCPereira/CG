@@ -6,18 +6,32 @@ vector<struct translate*> SysState::tr;
 vector<struct light*> SysState::lights;
 vector<int> SysState::sequencia;
 vector <float> SysState::preVBO;
+vector<float> SysState::preLig;
+vector<float> SysState::preTextures;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
-extern GLuint buffers[2]; // variaveis globais externas do ficheiro main.cpp
+extern GLuint buffers[3]; // variaveis globais externas do ficheiro main.cpp
 
 SysState::SysState(char *fileName){
     readXML(fileName);
 
+
+    glGenBuffers(3, buffers);
     //carregar os dados para o VBO
-    glGenBuffers(2, buffers);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-    glVertexPointer(3,GL_FLOAT,0,0);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preVBO.data(), GL_STATIC_DRAW);
+
+    //carregar os dados para o buffer das normais
+    glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
+    glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
+
+    //glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+	  //glBufferData(GL_ARRAY_BUFFER, texCoord.size() * sizeof(float), &(texCoord[0]), GL_STATIC_DRAW);
+
+    //glEnableClientState(GL_VERTEX_ARRAY);
+	  //glEnableClientState(GL_NORMAL_ARRAY);
+	  //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 
     // Turn on lighting and Define light color
 
@@ -26,23 +40,22 @@ SysState::SysState(char *fileName){
 
     glEnable(GL_LIGHTING);
 
-    /*
     for(int n=0; n < lights.size(); n++){
-      
       std::string lightNum;
       std::stringstream tmp;
 
       tmp << "GL_LIGHT" << n;
       lightNum = tmp.str();
-      */
 
       glEnable(GL_LIGHT0);
+      glEnable(GL_TEXTURE_2D);
+
 
       // light colors
       glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
       glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
       glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-    //}
+    }
 
 
 }
@@ -83,7 +96,6 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
     if (!erro){
 
       mod->posInitVBO=preVBO.size()/3; // num pontos
-      mod->posInitNormal=preVBO.size()/3;
     
       while ((counterP < numPoints) && (read = getline(&line, &len, fp)) != -1) {
 
@@ -93,6 +105,30 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
         preVBO.push_back(x);
         preVBO.push_back(y);
         preVBO.push_back(z);
+
+        if (validArgs!=3) {
+          printf("Invalid point!! on line: %d (of %d)\n",counterP+1, numPoints+1);
+          erro = true;
+          break;
+        }
+        else {
+          ++counterP;
+          free(line);
+          line=NULL;
+        }
+      }
+
+      counterP=0;
+      //mod->posInitNormal=pre.size()/3;
+
+      while ((counterP < numPoints) && (read = getline(&line, &len, fp)) != -1) {
+
+        float x=0.0,y=0.0,z=0.0;
+        validArgs = sscanf(line,"%f %f %f",&x,&y,&z);
+
+        preLig.push_back(x);
+        preLig.push_back(y);
+        preLig.push_back(z);
 
         if (validArgs!=3) {
           printf("Invalid point!! on line: %d (of %d)\n",counterP+1, numPoints+1);
@@ -124,7 +160,7 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
   mod->emiG=emiG;
   mod->emiB=emiB;
 
-  loadTexture(texfile);
+  //loadTexture(texfile);
   
 
   //printf("PosInitVBO =%d, numPontos =%d\n", mod->posInitVBO, mod->numPoints);
