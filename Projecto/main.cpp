@@ -155,7 +155,6 @@ int main(int argc, char **argv) {
     glutCreateWindow("CG@DI-UM");
 
     glewInit();
-    ilInit();
     glEnableClientState(GL_VERTEX_ARRAY);
     
     //readXML(pFilename,modelos,geo_tr,sequencia);

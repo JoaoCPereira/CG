@@ -20,19 +20,23 @@ SysState::SysState(char *fileName){
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preVBO.data(), GL_STATIC_DRAW);
 
+    //carregar os dados para o lig
+    glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
+    glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
+
     //carregar os dados para o buffer das normais
     glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
 
+    //glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+    //glBufferData(GL_ARRAY_BUFFER, texCoord.size() * sizeof(float), &(texCoord[0]), GL_STATIC_DRAW);
+
     //glEnableClientState(GL_VERTEX_ARRAY);
     //glEnableClientState(GL_NORMAL_ARRAY);
+    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    //glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
-	  //glBufferData(GL_ARRAY_BUFFER, texCoord.size() * sizeof(float), &(texCoord[0]), GL_STATIC_DRAW);
 
-    //glEnableClientState(GL_VERTEX_ARRAY);
-	  //glEnableClientState(GL_NORMAL_ARRAY);
-	  //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 
 
     // Turn on lighting and Define light color
@@ -41,23 +45,23 @@ SysState::SysState(char *fileName){
     GLfloat white[4] = {0.9, 0.9, 0.9, 0.};
 
     glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
 
+    /*
     for(int n=0; n < lights.size(); n++){
       std::string lightNum;
       std::stringstream tmp;
 
       tmp << "GL_LIGHT" << n;
       lightNum = tmp.str();
-
+    */
       glEnable(GL_LIGHT0);
-      glEnable(GL_TEXTURE_2D);
-
 
       // light colors
       glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
       glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
       glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-    }
+    //}
 
 
 }
@@ -163,9 +167,6 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
   mod->emiB=emiB;
 
   //loadTexture(texfile);
-  
-
-  //printf("PosInitVBO =%d, numPontos =%d\n", mod->posInitVBO, mod->numPoints);
 
   modelos.push_back(mod);
   return 1;
@@ -295,7 +296,7 @@ void SysState::parserXML(TiXmlElement *element){
             element->QueryFloatAttribute("posY",&p->y);
             element->QueryFloatAttribute("posZ",&p->z);
 
-            //cout << p->z << endl;
+            cout << p->z << endl;
 
             l->point = p;
             l->type = 0;

@@ -25,7 +25,6 @@ void writeModelo3D(Modelo *model){
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
 	glMaterialf(GL_FRONT, GL_SHININESS, 128);
 	glMaterialfv(GL_FRONT, GL_EMISSION, emissive);
-	
 
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
 	glVertexPointer(3,GL_FLOAT,0,0);
@@ -210,8 +209,9 @@ void writeLigth(Light *light, int numberLight){
 
 	//cout << light->point->x << " " << light->point->y << " " << light->point->z << endl;
 
-	glLightfv(numberLight,GL_POSITION, pos);
+	glLightfv(GL_LIGHT0,GL_POSITION, pos);
 }
+
 
 void loadTexture(char *file){
 	unsigned int t, tw, th;
@@ -223,17 +223,19 @@ void loadTexture(char *file){
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 	texData = ilGetData();
+
 	glGenTextures(1, &texture);
-	
+
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+
 }
