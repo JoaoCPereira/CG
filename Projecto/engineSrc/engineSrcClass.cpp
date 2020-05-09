@@ -7,24 +7,32 @@ vector<struct light*> SysState::lights;
 vector<int> SysState::sequencia;
 vector <float> SysState::preVBO;
 vector<float> SysState::preLig;
+vector<float> SysState::preTextures;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
-extern GLuint buffers[2]; // variaveis globais externas do ficheiro main.cpp
+extern GLuint buffers[3]; // variaveis globais externas do ficheiro main.cpp
 
 SysState::SysState(char *fileName){
     readXML(fileName);
 
-    glGenBuffers(2, buffers);
+    glGenBuffers(3, buffers);
     //carregar os dados para o VBO
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preVBO.data(), GL_STATIC_DRAW);
 
-    //carregar os dados para o lig
+    //carregar os dados para o buffer das normais
     glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
 
     //glEnableClientState(GL_VERTEX_ARRAY);
     //glEnableClientState(GL_NORMAL_ARRAY);
+
+    //glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+	  //glBufferData(GL_ARRAY_BUFFER, texCoord.size() * sizeof(float), &(texCoord[0]), GL_STATIC_DRAW);
+
+    //glEnableClientState(GL_VERTEX_ARRAY);
+	  //glEnableClientState(GL_NORMAL_ARRAY);
+	  //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
     // Turn on lighting and Define light color
@@ -42,6 +50,8 @@ SysState::SysState(char *fileName){
       lightNum = tmp.str();
 
       glEnable(GL_LIGHT0);
+      glEnable(GL_TEXTURE_2D);
+
 
       // light colors
       glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
@@ -52,7 +62,7 @@ SysState::SysState(char *fileName){
 
 }
 
-int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
+int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float emiR,float emiG,float emiB,char *texfile){
 
   Modelo *mod =(struct modelo*) malloc(sizeof(struct modelo));
 
@@ -148,6 +158,12 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
   mod->diffR=diffR;
   mod->diffG=diffG;
   mod->diffB=diffB;
+  mod->emiR=emiR;
+  mod->emiG=emiG;
+  mod->emiB=emiB;
+
+  //loadTexture(texfile);
+  
 
   //printf("PosInitVBO =%d, numPontos =%d\n", mod->posInitVBO, mod->numPoints);
 
@@ -166,13 +182,18 @@ void SysState::parserXML(TiXmlElement *element){
 
                 char *name3D = (char *) element->Attribute("file");
 
-                float diffR=1,diffG=1,diffB=1;
+                float diffR=1,diffG=1,diffB=1; 
+                float emiR=0,emiG=0,emiB=0;
 
                 element->QueryFloatAttribute("diffR",&diffR);
                 element->QueryFloatAttribute("diffG",&diffG);
                 element->QueryFloatAttribute("diffB",&diffB);
+                element->QueryFloatAttribute("emiR",&emiR);
+                element->QueryFloatAttribute("emiG",&emiG);
+                element->QueryFloatAttribute("emiB",&emiB);
+                char *texture = (char*) element->Attribute("texture");
         
-                if(read3D(name3D,diffR,diffG,diffB)){
+                if(read3D(name3D,diffR,diffG,diffB,emiR,emiG,emiB,texture)){
                   sequencia.push_back(3);
                 }
             }

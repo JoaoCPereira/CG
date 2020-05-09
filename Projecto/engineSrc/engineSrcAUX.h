@@ -20,6 +20,7 @@
 #include <vector>
 #include <iostream>
 #include<bits/stdc++.h> 
+#include <IL/il.h>
 using namespace std; 
 
 
@@ -36,6 +37,9 @@ struct modelo
 	float diffR;
 	float diffG;
 	float diffB;
+	float emiR;
+	float emiG;
+	float emiB;
 	int numPoints;
 	int posInitVBO;
 	int posInitNormal;
@@ -80,5 +84,6 @@ void renderCatmullRomCurve(Translate *);
 
 void writeTranslate(Translate *);
 void writeLigth(Light *, int );
+void loadTexture(char* texFilename);
 
 #endif

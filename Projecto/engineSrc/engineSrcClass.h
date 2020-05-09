@@ -12,13 +12,14 @@ class SysState {
   static vector<int> sequencia;
   static vector <float> preVBO;
   static vector<float> preLig;
+  static vector<float> preTextures;
 
   public:
     SysState(char *fileName);
     static void renderScene(void);
 
   private:
-    static int read3D(char *filename, float, float, float );
+    static int read3D(char *filename, float, float, float ,float ,float ,float, char*);
     static void parserXML(TiXmlElement *element);
     static void readXML(char *pFilename);
     static void writeSeq();
