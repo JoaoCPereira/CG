@@ -27,7 +27,7 @@ float distanciaCamera = 230.0f;
 
 int frame=0,timefps=0,timebase=0,fps=0;
 
-GLuint buffers;
+GLuint buffers[2];
 
 void changeSize(int w, int h) {
 

@@ -12,6 +12,17 @@ float scaleTime = 0.001; // passar de segundos para milissegundos
 void writeModelo3D(Modelo *model){
 	// cor do objecto
 	glColor3f(model->diffR,model->diffG,model->diffB);
+
+	// Define a material
+
+	float dark[] = { 0.2, 0.2, 0.2, 1.0 };
+	float white[] = { 0.8, 0.8, 0.8, 1.0 };
+	float red[] = { 0.8, 0.2, 0.2, 1.0 };
+
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialf(GL_FRONT, GL_SHININESS, 128);
+
 	// desenhar com vbo com indice
 	glDrawArrays(GL_TRIANGLES, model->posInitVBO, model->numPoints);
 }
@@ -177,4 +188,12 @@ void writeTranslate(Translate *translate) {
 	buildRotMatrix(X,Y,Z,rot_matrix);
 
 	glMultMatrixf(rot_matrix);
+}
+
+void writeLigth(Light *light, int numberLight){
+
+	// falta ver o caso DIRECTIONAL (1)
+	float pos[4] = {light->point->x, light->point->y, light->point->y, 0.0};
+
+	glLightfv(numberLight,GL_POSITION, pos);
 }

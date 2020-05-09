@@ -5,11 +5,12 @@
 
 class SysState {
   private:
-   	static vector<struct modelo*> modelos;
-	static vector<struct geo_transf*> geo_tr;
-	static vector<struct translate*> tr;
-	static vector<int> sequencia;
-	static vector <float> preVBO;
+    static vector<struct modelo*> modelos;
+  static vector<struct geo_transf*> geo_tr;
+  static vector<struct translate*> tr;
+  static vector<struct light*> lights;
+  static vector<int> sequencia;
+  static vector <float> preVBO;
 
   public:
     SysState(char *fileName);

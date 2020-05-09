@@ -38,6 +38,7 @@ struct modelo
 	float diffB;
 	int numPoints;
 	int posInitVBO;
+	int posInitNormal;
 };
 
 struct geo_transf{
@@ -54,6 +55,12 @@ struct translate{
 	vector<struct point*> cp;
 };
 
+struct light{
+	Point *point;
+	int type; // 0-Point, 1-Directional, 2-SPOT
+};
+
+typedef struct light Light;
 typedef struct translate Translate;
 typedef struct modelo Modelo;
 typedef struct geo_transf Geo_Transf;
@@ -72,5 +79,6 @@ void getGlobalCatmullRomPoint(float , float *, float *, Translate *);
 void renderCatmullRomCurve(Translate *);
 
 void writeTranslate(Translate *);
+void writeLigth(Light *, int );
 
 #endif

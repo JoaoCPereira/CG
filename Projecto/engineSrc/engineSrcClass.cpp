@@ -3,20 +3,47 @@
 vector<struct modelo*> SysState::modelos;
 vector<struct geo_transf*> SysState::geo_tr;
 vector<struct translate*> SysState::tr;
+vector<struct light*> SysState::lights;
 vector<int> SysState::sequencia;
 vector <float> SysState::preVBO;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
-extern GLuint buffers; // variaveis globais externas do ficheiro main.cpp
+extern GLuint buffers[2]; // variaveis globais externas do ficheiro main.cpp
 
 SysState::SysState(char *fileName){
     readXML(fileName);
 
     //carregar os dados para o VBO
-    glGenBuffers(1, &buffers);
-    glBindBuffer(GL_ARRAY_BUFFER, buffers);
+    glGenBuffers(2, buffers);
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
     glVertexPointer(3,GL_FLOAT,0,0);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preVBO.data(), GL_STATIC_DRAW);
+
+    // Turn on lighting and Define light color
+
+    GLfloat dark[4] = {0.2, 0.2, 0.2, 1.0};
+    GLfloat white[4] = {0.9, 0.9, 0.9, 0.};
+
+    glEnable(GL_LIGHTING);
+
+    for(int n=0; n < lights.size(); n++){
+      /*
+      std::string lightNum;
+      std::stringstream tmp;
+
+      tmp << "GL_LIGHT" << n;
+      lightNum = tmp.str();
+      */
+
+      glEnable(n);
+
+      // light colors
+      glLightfv(n, GL_AMBIENT, dark);
+      glLightfv(n, GL_DIFFUSE, white);
+      glLightfv(n, GL_SPECULAR, white);
+    }
+
+
 }
 
 int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
@@ -24,6 +51,7 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
   Modelo *mod =(struct modelo*) malloc(sizeof(struct modelo));
 
   mod->posInitVBO=0;
+  mod->posInitNormal=0;
 
   int counterP = 0;
   int numPoints = 0;
@@ -54,6 +82,7 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
     if (!erro){
 
       mod->posInitVBO=preVBO.size()/3; // num pontos
+      mod->posInitNormal=preVBO.size()/3;
     
       while ((counterP < numPoints) && (read = getline(&line, &len, fp)) != -1) {
 
@@ -121,7 +150,7 @@ void SysState::parserXML(TiXmlElement *element){
 
           //caso translate
           if(!strcmp(element->Value(), "translate")){
-          	Translate *t = new Translate();
+            Translate *t = new Translate();
             t->time = 0;
 
             t->cp.clear();
@@ -175,7 +204,8 @@ void SysState::parserXML(TiXmlElement *element){
           }
 
           //caso group
-          if(!strcmp(element->Value(), "group")){
+          if(!strcmp(element->Value(), "group") || !strcmp(element->Value(), "lights")){
+
             sequencia.push_back(0);
 
             parserXML(element->FirstChildElement());
@@ -187,7 +217,6 @@ void SysState::parserXML(TiXmlElement *element){
           if(!strcmp(element->Value(), "models")){
 
             parserXML(element->FirstChildElement());
-
           }
 
           if(!strcmp(element->Value(), "point")){
@@ -204,6 +233,33 @@ void SysState::parserXML(TiXmlElement *element){
             tr[tr.size()-1]->cp.push_back(p);
           }
 
+          if(!strcmp(element->Value(), "light")){
+            
+            Light *l = (struct light*) malloc(sizeof(struct light));
+            Point *p = (struct point*) malloc(sizeof(struct point));
+            p->x = 0;
+            p->y = 0;
+            p->z = 0;
+            
+            element->QueryFloatAttribute("posX",&p->x);
+            element->QueryFloatAttribute("posY",&p->y);
+            element->QueryFloatAttribute("posZ",&p->z);
+
+            l->point = p;
+            l->type = 0;
+
+            const char *type;
+            type = element->Attribute("type");
+
+            if(!strcmp(type, "POINT")) l->type = 0;
+            else if(!strcmp(type, "DIRECTIONAL")) l->type = 1;
+            else if(!strcmp(type, "SPOT")) l->type = 2;
+
+            lights.push_back(l);
+
+            sequencia.push_back(5);
+          }
+
           if(element){
               element = element->NextSiblingElement();
           }
@@ -218,10 +274,10 @@ void SysState::readXML(char *pFilename){
     if (loadOkay) {
         TiXmlElement *l_pRootElement = doc.RootElement();
 
-        TiXmlElement *element = l_pRootElement->FirstChildElement("group");
+        TiXmlElement *element = l_pRootElement->FirstChildElement();
 
         if (element){
-            parserXML(element->FirstChildElement());
+            parserXML(element);
         }
 
         //procuramos o proximo filho 
@@ -252,9 +308,7 @@ void SysState::renderScene(void) {
 }
 
 void SysState::writeSeq(){
-  int numGeo = 0;
-  int numModelo = 0;
-  int numTranf = 0;
+  int numGeo = 0, numModelo = 0, numTranf = 0, numLigths = 0;
 
   //percorrer vector sequencia
   for(int i=0;i<sequencia.size();i++){
@@ -275,6 +329,8 @@ void SysState::writeSeq(){
       case 4:
         if(numTranf<tr.size()) writeTranslate(tr[numTranf++]);
         break;
+      case 5:
+        if(numLigths<lights.size()) writeLigth(lights[numLigths], numLigths++);
     }
   }
 }
