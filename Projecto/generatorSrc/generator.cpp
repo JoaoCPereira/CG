@@ -13,7 +13,9 @@ vector<int> patch;
 vector<struct point*> points;
 vector<struct point*> vectorFinal;
 
+
 void print_sphere(float radius,float slices,float stacks,char* file_name){
+    vector<char *> normals;
     FILE *fd = fopen(file_name,"w");
     if (fd){
         float alfa = 2*M_PI / (slices*4);
@@ -27,6 +29,8 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             fprintf(fd, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
             fprintf(fd, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
             fprintf(fd, "0 %f 0\n",radius); // topo da esfera
+            
+            
 
             fprintf(fd, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
             fprintf(fd, "0 %f 0\n",-radius); // base da esfera
@@ -84,12 +88,21 @@ void print_plane(float x,char* file_name){
         fprintf(fd,"%f 0 %f\n",-l,l); 
         fprintf(fd,"%f 0 %f\n",l,-l);
         fprintf(fd,"%f 0 %f\n",l,l);
-        
 
         // segundo triangulo
         fprintf(fd,"%f 0 %f\n",l,-l);
         fprintf(fd,"%f 0 %f\n",-l,l);
         fprintf(fd,"%f 0 %f\n",-l,-l);
+
+        for(int i = 0; i < 12; i++){
+            if(i<6){
+                fprintf(fd,"0 1 0\n");
+            }
+            else fprintf(fd,"0 -1 0\n");
+        }
+        
+
+
         
 
         
@@ -100,6 +113,7 @@ void print_plane(float x,char* file_name){
 
 
 void print_box(float x,float y,float z,float divisions,char* file_name){
+    vector<char *> normals;
     FILE *fd = fopen(file_name,"w");
 
     float div_x = x/divisions;
@@ -123,70 +137,111 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*j),z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*j),z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*(j+1)),z_div);
+                normals.push_back("0 0 1");
+                normals.push_back("0 0 1");
+                normals.push_back("0 0 1");
 
                 //segundo triangulo
                 
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*(j+1)),z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*(j+1)),z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*j),z_div);
+                normals.push_back("0 0 1");
+                normals.push_back("0 0 1");
+                normals.push_back("0 0 1");
 
                 //XY -Z axis
                 //primeiro triangulo
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*j),-z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*(j+1)),-z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*(j+1)),-z_div);
+                normals.push_back("0 0 -1");
+                normals.push_back("0 0 -1");
+                normals.push_back("0 0 -1");
 
                 //segundo triangulo
                 
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*(j+1)),-z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*j),-z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*j),-z_div);
+                normals.push_back("0 0 -1");
+                normals.push_back("0 0 -1");
+                normals.push_back("0 0 -1");
 
 				//XZ +Y axis
                 //primeiro triangulo
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),y_div,z_div-div_z*j);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),y_div,z_div-div_z*j);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),y_div,z_div-div_z*(j+1));
+                normals.push_back("0 1 0");
+                normals.push_back("0 1 0");
+                normals.push_back("0 1 0");
 
                 //segundo triangulo
                 
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),y_div,z_div-div_z*(j+1));
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),y_div,z_div-div_z*(j+1));
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),y_div,z_div-div_z*j);
+                normals.push_back("0 1 0");
+                normals.push_back("0 1 0");
+                normals.push_back("0 1 0");
 
                 //XZ -Y axis
                 //primeiro triangulo
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,z_div-div_z*j);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,z_div-div_z*(j+1));
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,z_div-div_z*(j+1));
+                normals.push_back("0 -1 0");
+                normals.push_back("0 -1 0");
+                normals.push_back("0 -1 0");
 
                 //segundo triangulo
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,z_div-div_z*(j+1));
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,z_div-div_z*j);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,z_div-div_z*j);
+                normals.push_back("0 -1 0");
+                normals.push_back("0 -1 0");
+                normals.push_back("0 -1 0");
 
+                //YZ+X
                 //primeiro triangulo
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*j),z_div-div_z*i);
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*j),z_div-div_z*(i+1));
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*(j+1)),z_div-div_z*(i+1));
+                normals.push_back("1 0 0");
+                normals.push_back("1 0 0");
+                normals.push_back("1 0 0");
 
                 //segundo triangulo
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*(j+1)),z_div-div_z*(i+1));
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*(j+1)),z_div-div_z*i);
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*j),z_div-div_z*i);
+                normals.push_back("1 0 0");
+                normals.push_back("1 0 0");
+                normals.push_back("1 0 0");
 
+                //YZ-X
                 //primeiro triangulo
                 fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),z_div-div_z*i);
                 fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),z_div-div_z*i);
                 fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),z_div-div_z*(i+1));
+                normals.push_back("-1 0 0");
+                normals.push_back("-1 0 0");
+                normals.push_back("-1 0 0");
 
                 //segundo triangulo
             
                 fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),z_div-div_z*(i+1));
                 fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),z_div-div_z*(i+1));
                 fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),z_div-div_z*i);
+                normals.push_back("-1 0 0");
+                normals.push_back("-1 0 0");
+                normals.push_back("-1 0 0");
             }
         }
+    }
+    for(int k = 0;k < normals.size(); k++){
+        fprintf(fd,"%s\n",normals[k]);
     }
     fclose(fd);
 }

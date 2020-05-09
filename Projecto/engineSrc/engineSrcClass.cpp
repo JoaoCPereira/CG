@@ -26,8 +26,9 @@ SysState::SysState(char *fileName){
 
     glEnable(GL_LIGHTING);
 
+    /*
     for(int n=0; n < lights.size(); n++){
-      /*
+      
       std::string lightNum;
       std::stringstream tmp;
 
@@ -35,13 +36,13 @@ SysState::SysState(char *fileName){
       lightNum = tmp.str();
       */
 
-      glEnable(n);
+      glEnable(GL_LIGHT0);
 
       // light colors
-      glLightfv(n, GL_AMBIENT, dark);
-      glLightfv(n, GL_DIFFUSE, white);
-      glLightfv(n, GL_SPECULAR, white);
-    }
+      glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
+      glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+      glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+    //}
 
 
 }
