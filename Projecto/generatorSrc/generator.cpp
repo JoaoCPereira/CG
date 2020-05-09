@@ -16,6 +16,7 @@ vector<struct point*> vectorFinal;
 
 void print_sphere(float radius,float slices,float stacks,char* file_name){
     vector<char *> normals;
+    char str1[100];
     FILE *fd = fopen(file_name,"w");
     if (fd){
         float alfa = 2*M_PI / (slices*4);
@@ -26,15 +27,32 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
         // desenhar topo e base
         for(int i=0; i< (slices*4) ; i++){
 
-            fprintf(fd, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
-            fprintf(fd, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
-            fprintf(fd, "0 %f 0\n",radius); // topo da esfera
-            
+            sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "0 %f 0\n",radius); // topo da esfera
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
             
 
-            fprintf(fd, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
-            fprintf(fd, "0 %f 0\n",-radius); // base da esfera
-            fprintf(fd, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
+            sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "0 %f 0\n",-radius); // base da esfera
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
         }
 
         if (stacks<2) stacks = 2;
@@ -43,28 +61,65 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             for(int i = 0;i< (slices*4);i++){ // ciclo interno alfa
             // metade superior
                 // primeiro trinagulo
-            fprintf(fd, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-            fprintf(fd, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
-            fprintf(fd, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-                // segundo triangulo
+            sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
+            fprintf(fd,str1);
+            normals.push_back(str1); 
+            memset(str1,'\0',100);   
+            // segundo triangulo
 
-            fprintf(fd, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-            fprintf(fd, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
-            fprintf(fd, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-
+            sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
             //metade inferior
                 // primeiro trinagulo
-            fprintf(fd, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-            fprintf(fd, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-            fprintf(fd, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
+            sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
                 // segundo triangulo
-            fprintf(fd, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-            fprintf(fd, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-            fprintf(fd, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
+            sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
+            sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
+            fprintf(fd,str1);
+            normals.push_back(str1);
+            memset(str1,'\0',100);
 
-                
             }
         }
+    }
+    for(int k = 0;k < normals.size(); k++){
+        fprintf(fd,"%s",normals[k]);
     }
     fclose(fd);
 }
@@ -247,6 +302,12 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
 }
 
 void print_cone(float radius,float height,float slices,float stacks,char* file_name){
+    vector<char*> normals;
+    /*
+    float hip =sqrt((height*height)+(radius*radius)); // Calculo da Hipotenusa
+    float n_x = height / hip;
+    float n_y = radius / hip;
+    */
     FILE *fd = fopen(file_name,"w");
     if (fd){
           // 1 slice vai dividir o cone em 8 partes 
@@ -273,8 +334,11 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
             fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*rR, height - d , cos(alfa*(i+1))*radius*rR);
             //ponto fixo do centro
             fprintf(fd, "0 %f 0\n",height);
-            
+            for(int k=0;k<6;k++){
+                normals.push_back("0 -1 0");
+            }
         }
+        
 
         /////////////////////////////////////// Criação do corpo //////////////////////////////////////////////
         for(int j=0; j < stacks-1; j++){ // camadas 
