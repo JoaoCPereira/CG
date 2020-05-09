@@ -11,6 +11,7 @@ class SysState {
   static vector<struct light*> lights;
   static vector<int> sequencia;
   static vector <float> preVBO;
+  static vector<float> preLig;
 
   public:
     SysState(char *fileName);

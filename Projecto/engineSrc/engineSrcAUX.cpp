@@ -1,6 +1,6 @@
 #include "engineSrcAUX.h"
 
-extern GLuint buffers; // variaveis globais externas do ficheiro main.cpp
+extern GLuint buffers[2]; // variaveis globais externas do ficheiro main.cpp
 
 float pos[4]{0}, deriv[4]{0};
 float y[3] = {0,1,0};
@@ -22,6 +22,12 @@ void writeModelo3D(Modelo *model){
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
 	glMaterialf(GL_FRONT, GL_SHININESS, 128);
+
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
+	glVertexPointer(3,GL_FLOAT,0,0);
+
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
+	glNormalPointer(GL_FLOAT,0,0);
 
 	// desenhar com vbo com indice
 	glDrawArrays(GL_TRIANGLES, model->posInitVBO, model->numPoints);
@@ -193,7 +199,10 @@ void writeTranslate(Translate *translate) {
 void writeLigth(Light *light, int numberLight){
 
 	// falta ver o caso DIRECTIONAL (1)
-	float pos[4] = {light->point->x, light->point->y, light->point->y, 0.0};
+	if(light->type==1){
+		float pos[4] = {light->point->x, light->point->y, light->point->y, 0.0};
+	}
+	else float pos[4] = {light->point->x, light->point->y, light->point->y, 1.0};
 
-	glLightfv(numberLight,GL_POSITION, pos);
+	glLightfv(GL_LIGHT0,GL_POSITION, pos);
 }

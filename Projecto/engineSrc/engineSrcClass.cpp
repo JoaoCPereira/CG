@@ -6,6 +6,7 @@ vector<struct translate*> SysState::tr;
 vector<struct light*> SysState::lights;
 vector<int> SysState::sequencia;
 vector <float> SysState::preVBO;
+vector<float> SysState::preLig;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
 extern GLuint buffers[2]; // variaveis globais externas do ficheiro main.cpp
@@ -13,11 +14,16 @@ extern GLuint buffers[2]; // variaveis globais externas do ficheiro main.cpp
 SysState::SysState(char *fileName){
     readXML(fileName);
 
-    //carregar os dados para o VBO
+
     glGenBuffers(2, buffers);
+    //carregar os dados para o VBO
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-    glVertexPointer(3,GL_FLOAT,0,0);
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preVBO.data(), GL_STATIC_DRAW);
+
+    //carregar os dados para o lig
+    glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
+    glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
+
 
     // Turn on lighting and Define light color
 
@@ -26,15 +32,12 @@ SysState::SysState(char *fileName){
 
     glEnable(GL_LIGHTING);
 
-    /*
     for(int n=0; n < lights.size(); n++){
-      
       std::string lightNum;
       std::stringstream tmp;
 
       tmp << "GL_LIGHT" << n;
       lightNum = tmp.str();
-      */
 
       glEnable(GL_LIGHT0);
 
@@ -42,7 +45,7 @@ SysState::SysState(char *fileName){
       glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
       glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
       glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-    //}
+    }
 
 
 }
@@ -83,7 +86,6 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
     if (!erro){
 
       mod->posInitVBO=preVBO.size()/3; // num pontos
-      mod->posInitNormal=preVBO.size()/3;
     
       while ((counterP < numPoints) && (read = getline(&line, &len, fp)) != -1) {
 
@@ -93,6 +95,30 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB){
         preVBO.push_back(x);
         preVBO.push_back(y);
         preVBO.push_back(z);
+
+        if (validArgs!=3) {
+          printf("Invalid point!! on line: %d (of %d)\n",counterP+1, numPoints+1);
+          erro = true;
+          break;
+        }
+        else {
+          ++counterP;
+          free(line);
+          line=NULL;
+        }
+      }
+
+      counterP=0;
+      //mod->posInitNormal=pre.size()/3;
+
+      while ((counterP < numPoints) && (read = getline(&line, &len, fp)) != -1) {
+
+        float x=0.0,y=0.0,z=0.0;
+        validArgs = sscanf(line,"%f %f %f",&x,&y,&z);
+
+        preLig.push_back(x);
+        preLig.push_back(y);
+        preLig.push_back(z);
 
         if (validArgs!=3) {
           printf("Invalid point!! on line: %d (of %d)\n",counterP+1, numPoints+1);
