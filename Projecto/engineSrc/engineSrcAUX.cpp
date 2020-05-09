@@ -197,3 +197,16 @@ void writeLigth(Light *light, int numberLight){
 
 	glLightfv(numberLight,GL_POSITION, pos);
 }
+
+void loadTexture(char *file){
+	unsigned int t, tw, th;
+	unsigned char *texData;
+	ilGenImages(1, &t);
+	ilBindImage(t);
+	ilLoadImage((ILstring)file);
+	tw = ilGetInteger(IL_IMAGE_WIDTH);
+	th = ilGetInteger(IL_IMAGE_HEIGHT);
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+	texData = ilGetData();
+
+}
