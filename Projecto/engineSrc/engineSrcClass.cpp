@@ -7,7 +7,7 @@ vector<struct light*> SysState::lights;
 vector<int> SysState::sequencia;
 vector <float> SysState::preVBO;
 vector<float> SysState::preNormal;
-vector<float> SysState::preTextures;
+vector<float> SysState::preTextCoord;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
 extern GLuint buffers[3]; // variaveis globais externas do ficheiro main.cpp
@@ -25,12 +25,12 @@ SysState::SysState(char *fileName){
     glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preNormal.data(), GL_STATIC_DRAW);
 
 
-    //glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
-    //glBufferData(GL_ARRAY_BUFFER, texCoord.size() * sizeof(float), &(texCoord[0]), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+    glBufferData(GL_ARRAY_BUFFER, preTextCoord.size() * sizeof(float), &(preTextCoord[0]), GL_STATIC_DRAW);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 
     // Turn on lighting and Define light color
@@ -134,6 +134,28 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
           line=NULL;
         }
       }
+
+      counterP=0;
+
+      while ((counterP < numPoints) && (read = getline(&line, &len, fp)) != -1) {
+
+        float x=0.0,y=0.0;
+        validArgs = sscanf(line,"%f %f",&x,&y);
+
+        preTextCoord.push_back(x);
+        preTextCoord.push_back(y);
+
+        if (validArgs!=2) {
+          printf("Invalid point!! on line: %d (of %d)\n",counterP+1, numPoints+1);
+          erro = true;
+          break;
+        }
+        else {
+          ++counterP;
+          free(line);
+          line=NULL;
+        }
+      }
     }
   }
   else{
@@ -153,7 +175,9 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
   mod->emiG=emiG;
   mod->emiB=emiB;
 
-  //loadTexture(texfile);
+  mod->texID = loadTexture(texfile);
+
+  cout << mod->texID << endl;
 
   modelos.push_back(mod);
   return 1;

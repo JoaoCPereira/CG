@@ -12,7 +12,7 @@ class SysState {
   static vector<int> sequencia;
   static vector <float> preVBO;
   static vector<float> preNormal;
-  static vector<float> preTextures;
+  static vector<float> preTextCoord;
 
   public:
     SysState(char *fileName);

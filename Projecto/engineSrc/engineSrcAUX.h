@@ -46,6 +46,7 @@ struct modelo
 	int numPoints;
 	int posInitVBO;
 	int posInitNormal;
+	GLuint texID;
 };
 
 struct geo_transf{
@@ -91,6 +92,6 @@ void renderCatmullRomCurve(Translate *);
 
 void writeTranslate(Translate *);
 void writeLigth(Light *, int );
-void loadTexture(char* texFilename);
+int loadTexture(std::string s);
 
 #endif
