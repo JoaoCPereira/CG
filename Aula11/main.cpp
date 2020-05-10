@@ -12,6 +12,7 @@
 #endif
 
 #include <IL/il.h>
+#include <iostream>
 
 
 
@@ -63,7 +64,8 @@ void changeSize(int w, int h) {
 void prepareCylinder(float altura, float raio, int lados) {
 	float *v,*n, *t;
 	float raio_figura = 0.625-0.4375;
-	float face = 1/lados;
+	float face = 1/(float)lados;
+	std::cout << lados << std::endl;
 
 	v = (float *)malloc(sizeof(float) * 4 * 3 * 3 * lados);
 	n = (float *)malloc(sizeof(float) * 4 * 3 * 3 * lados);
