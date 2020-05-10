@@ -23,7 +23,7 @@ void writeModelo3D(Modelo *model){
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	glMaterialf(GL_FRONT, GL_SHININESS, 100);
+	glMaterialf(GL_FRONT, GL_SHININESS, 0);
 	glMaterialfv(GL_FRONT, GL_EMISSION, emissive);
 
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
@@ -205,7 +205,7 @@ void writeLigth(Light *light, int numberLight){
 	  case 0: // POINT
 		{
 	    	GLfloat pos[4] = {light->point->x, light->point->y, light->point->z, 1.0};
-	    	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, light->quad_att);
+	    	//glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, light->quad_att);
 
 	    	glLightfv(GL_LIGHT0 + numberLight,GL_POSITION, pos);
 	    	break;

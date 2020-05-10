@@ -12,6 +12,7 @@ vector<int> patch;
 
 vector<struct point*> points;
 vector<struct point*> vectorFinal;
+vector<struct point*> vectorNorm;
 
 
 void print_sphere(float radius,float slices,float stacks,char* file_name){
@@ -377,11 +378,11 @@ void crossProduct(Point *A, Point *B, Point *R) {
     R->z = A->x * B->y - A->y * B->x;
 }
 
-void normalize(Point *a) {
+void normalize(Point *a, Point *n) {
     float l = sqrt(a->x*a->x + a->y * a->y + a->z * a->z);
-    a->x = a->x/l;
-    a->y = a->y/l;
-    a->z = a->z/l;
+    n->x = a->x/l;
+    n->y = a->y/l;
+    n->z = a->z/l;
 }
 
 float length(Point *a) {
@@ -415,6 +416,7 @@ void evalBezierPatch(const Point *controlPoints, const float &u, const float &v 
 void dUBezier(const Point *controlPoints, const float &u, const float &v, Point *du) { 
    Point *P = new Point[4];
    Point *vCurve = new Point[4];
+
    for (int i = 0; i < 4; ++i) { 
        P[0] = controlPoints[i]; 
        P[1] = controlPoints[4 + i]; 
@@ -430,7 +432,7 @@ void dUBezier(const Point *controlPoints, const float &u, const float &v, Point 
 
    float x = vCurve[0].x * b0 + vCurve[1].x * b1 + vCurve[2].x * b2 + vCurve[3].x * b3;
    float y = vCurve[0].y * b0 + vCurve[1].y * b1 + vCurve[2].y * b2 + vCurve[3].y * b3; 
-   float z = vCurve[0].z * b0 + vCurve[1].z * b1 + vCurve[2].z * b2 + vCurve[3].z * b3; 
+   float z = vCurve[0].z * b0 + vCurve[1].z * b1 + vCurve[2].z * b2 + vCurve[3].z * b3;
 
    du->x = x;
    du->y = y;
@@ -466,6 +468,8 @@ void calculate_surface(int tesselation) {
 
     Point *P = new Point[(divs + 1) * (divs + 1)];
 
+    Point *N = new Point[(divs + 1) * (divs + 1)];
+
     Point *controlPoints = new Point[16]; // matriz de 16 pontos de controlo
 
 
@@ -481,10 +485,22 @@ void calculate_surface(int tesselation) {
                 float v = j / (float)divs;
 
                 evalBezierPatch(controlPoints, u, v, &P[k]);
+
+
                 Point *du = new Point;
                 dUBezier(controlPoints, u, v, du);
+
                 Point *dv = new Point;
                 dVBezier(controlPoints, u, v, dv);
+
+                Point *n = new Point;
+                crossProduct(du,dv,n);
+
+
+                normalize(n, &N[k]);
+
+
+
                 //N[k] = dU.crossProduct(dV).normalize(); 
                 //st[k].x = u; 
                 //st[k].y = v; 
@@ -511,26 +527,44 @@ void calculate_surface(int tesselation) {
             }
         }
 
-        vector<struct point*> temp1;
-        temp1.clear();
+        vector<struct point*> tempVer;
+        vector<struct point*> tempNor;
+        tempVer.clear();
+        tempNor.clear();
 
         for(int i=0; i < nvertices; ++i){
         	Point *a = (struct point*) malloc(sizeof(struct point));
         	a->x = P[vertices[i]].x;
         	a->y = P[vertices[i]].y;
         	a->z = P[vertices[i]].z;
-        	temp1.push_back(a);
+        	
+            Point *n = (struct point*) malloc(sizeof(struct point));
+            n->x = N[vertices[i]].x;
+            n->y = N[vertices[i]].y;
+            n->z = N[vertices[i]].z;
+
+            tempVer.push_back(a);
+            tempNor.push_back(n);
         }
 
         // bezier to normal
-        for(int size=0; size < temp1.size()-3; size+=4){
-        	vectorFinal.push_back(temp1[size]); // v0
-        	vectorFinal.push_back(temp1[size+3]); // v3
-        	vectorFinal.push_back(temp1[size+1]); // v1
+        for(int size=0; size < tempVer.size()-3; size+=4){
+        	vectorFinal.push_back(tempVer[size]); // v0
+        	vectorFinal.push_back(tempVer[size+3]); // v3
+        	vectorFinal.push_back(tempVer[size+1]); // v1
 
-        	vectorFinal.push_back(temp1[size+1]); // v1
-        	vectorFinal.push_back(temp1[size+3]); // v3
-        	vectorFinal.push_back(temp1[size+2]); // v2
+        	vectorFinal.push_back(tempVer[size+1]); // v1
+        	vectorFinal.push_back(tempVer[size+3]); // v3
+        	vectorFinal.push_back(tempVer[size+2]); // v2
+
+            vectorNorm.push_back(tempNor[size]); // v0
+            vectorNorm.push_back(tempNor[size+3]); // v3
+            vectorNorm.push_back(tempNor[size+1]); // v1
+
+            vectorNorm.push_back(tempNor[size+1]); // v1
+            vectorNorm.push_back(tempNor[size+3]); // v3
+            vectorNorm.push_back(tempNor[size+2]); // v2
+
         }
     } 
 } 
@@ -603,6 +637,10 @@ void process_patch(char *filename, int tesselation){
         fprintf(fd,"%ld\n",vectorFinal.size());
         for(int i=0; i < vectorFinal.size() ; i++){
         	fprintf(fd,"%f %f %f\n",vectorFinal[i]->x,vectorFinal[i]->y,vectorFinal[i]->z);
+        }
+
+        for(int i=0; i < vectorNorm.size() ; i++){
+            fprintf(fd,"%f %f %f\n",vectorNorm[i]->x,vectorNorm[i]->y,vectorNorm[i]->z);
         }
              
     }
