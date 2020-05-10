@@ -19,13 +19,17 @@ Computação Gráfica 19/20
 ## Phase 3 – Curves, Cubic Surfaces and VBOs
   - [x] VBO's
   - [x] Curves, Translate and rotate with time
-      - [ ] garantir translate e rotate no tempo certo
-      - [ ] analisar os valores do ficheiro xml para garantir rotas mais ou menos realistas
+      - [x ] garantir translate e rotate no tempo certo
+      - [x ] analisar os valores do ficheiro xml para garantir rotas mais ou menos realistas
   - [x] Patch de Bezier para o teapot
-  - [ ] relatório
+  - [x ] relatório
   
 
 ## Phase 4 – Normals and Texture Coordinates
-  - [ ] Garantir o funcionamento de Debug
+  - [ ] Garantir que conseguimos trabalhar com debug
+  - [x] Iluminação
+  - [ ] Normais do cone
+  - [ ] Texturas
+  - [ ] Relatório
   
 
