@@ -61,24 +61,30 @@ void changeSize(int w, int h) {
 
 
 void prepareCylinder(float altura, float raio, int lados) {
-
-	float *v,*n;
+	float *v,*n, *t;
+	float raio_figura = 0.625-0.4375;
+	float face = 1/lados;
 
 	v = (float *)malloc(sizeof(float) * 4 * 3 * 3 * lados);
 	n = (float *)malloc(sizeof(float) * 4 * 3 * 3 * lados);
+	t = (float *)malloc(sizeof(float) * 4 * 3 * 2 * lados);
 
 	int vertex = 0;
 	float delta = 2.0f * _PI_ / lados;
-
+	glBindTexture(GL_TEXTURE_2D, texIDCylinder);
+	glBegin(GL_TRIANGLES);
 	for (int i = 0; i < lados; ++i) {
 		// topo
 		// ponto central
+		
 		n[vertex*3 + 0] = 0.0f; 
 		n[vertex*3 + 1] = 1.0f;
 		n[vertex*3 + 2] = 0.0f;
 		v[vertex*3 + 0] = 0.0f; 
 		v[vertex*3 + 1] = altura/2.0f;
 		v[vertex*3 + 2] = 0.0f;
+		t[vertex*2 + 0] = 0.4375;
+		t[vertex*2 + 1] = 0.1875;
 
 		vertex++;
 		n[vertex*3 + 0] = 0;
@@ -87,6 +93,10 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( i * delta);
 		v[vertex*3 + 1] = altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( i * delta);
+		t[vertex*2 + 0] = 0.4375+raio_figura * sin( i * delta);
+		t[vertex*2 + 1] = 0.1875+raio_figura * cos( i * delta);
+
+
 
 		vertex++;
 		n[vertex*3 + 0] = 0;
@@ -95,6 +105,9 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( (i+1) * delta);
 		v[vertex*3 + 1] = altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( (i+1) * delta);
+		t[vertex*2 + 0] = 0.4375+raio_figura * sin( (i+1) * delta);
+		t[vertex*2 + 1] = 0.1875+raio_figura * cos( (i+1) * delta);
+
 
 		// corpo
 
@@ -105,6 +118,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( (i+1) * delta);
 		v[vertex*3 + 1] = altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( (i+1) * delta);
+		t[vertex*2 + 0] = ((i+1)*face);
+		t[vertex*2 + 1] = 1;
 
 		vertex++;
 		n[vertex*3 + 0] = sin( i * delta);
@@ -113,6 +128,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( i * delta);
 		v[vertex*3 + 1] = altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( i * delta);
+		t[vertex*2 + 0] = (i*face);
+		t[vertex*2 + 1] = 1;
 
 		vertex++;
 		n[vertex*3 + 0] = sin( i * delta);
@@ -121,6 +138,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( i * delta);
 		v[vertex*3 + 1] = -altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( i * delta);
+		t[vertex*2 + 0] = (i*face);
+		t[vertex*2 + 1] = 0.375;
 
 		vertex++;
 		n[vertex*3 + 0] = sin( (i+1) * delta);
@@ -129,6 +148,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( (i+1) * delta);
 		v[vertex*3 + 1] = -altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( (i+1) * delta);
+		t[vertex*2 + 0] = ((i+1)*face);
+		t[vertex*2 + 1] = 0.375;
 
 		vertex++;
 		n[vertex*3 + 0] = sin( (i+1) * delta);
@@ -137,6 +158,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( (i+1) * delta);
 		v[vertex*3 + 1] = altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( (i+1) * delta);
+		t[vertex*2 + 0] = ((i+1)*face);
+		t[vertex*2 + 1] = 1;
 
 		vertex++;
 		n[vertex*3 + 0] = sin( i * delta);
@@ -145,6 +168,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( i * delta);
 		v[vertex*3 + 1] = -altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( i * delta);
+		t[vertex*2 + 0] = (i*face);
+		t[vertex*2 + 1] = 0.375;
 
 		//base
 		vertex++;
@@ -154,6 +179,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = 0.0f; 
 		v[vertex*3 + 1] = -altura/2.0f;
 		v[vertex*3 + 2] = 0.0f;
+		t[vertex*2 + 0] = 0.8125;
+		t[vertex*2 + 1] = 0.1875;
 
 		vertex++;
 		n[vertex*3 + 0] = 0.0f; 
@@ -162,6 +189,8 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( (i+1) * delta);
 		v[vertex*3 + 1] = -altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( (i+1) * delta);
+		t[vertex*2 + 0] = 0.8125+raio_figura * sin( (i+1) * delta);
+		t[vertex*2 + 1] = 0.1875+raio_figura * cos( (i+1) * delta);
 
 		vertex++;
 		n[vertex*3 + 0] = 0.0f; 
@@ -170,9 +199,15 @@ void prepareCylinder(float altura, float raio, int lados) {
 		v[vertex*3 + 0] = raio * sin( i * delta);
 		v[vertex*3 + 1] = -altura/2.0f;
 		v[vertex*3 + 2] = raio * cos( i * delta);
+		t[vertex*2 + 0] = 0.8125+raio_figura * sin( i * delta);
+		t[vertex*2 + 1] = 0.1875+raio_figura * cos( i * delta);
 
 		vertex++;
+		
 	}
+	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
 
 	vertexCount = vertex;
 
@@ -182,33 +217,47 @@ void prepareCylinder(float altura, float raio, int lados) {
 	glGenBuffers(1, &normals);
 	glBindBuffer(GL_ARRAY_BUFFER,normals);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexCount * 3, n,     GL_STATIC_DRAW);
-	free(v); free(n);
+	glGenBuffers(1, &texCoord);
+	glBindBuffer(GL_ARRAY_BUFFER,texCoord);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexCount * 2, t,     GL_STATIC_DRAW);
+	free(v); free(n);free(t);
 
 }
 
 
 void drawFloor(float xmin, float xmax, float zmin, float zmax) {
-
+	glBindTexture(GL_TEXTURE_2D, texIDFloor);
 	glBegin(GL_QUADS);
 		glNormal3f(0, 1, 0);
+		glTexCoord2f(1,0);
 		glVertex3f(xmax, 0, zmin);
+		glTexCoord2f(0,0);
 		glVertex3f(xmin, 0, zmin);
+		glTexCoord2f(0,1);
 		glVertex3f(xmin, 0, zmax);
+		glTexCoord2f(1,1);
 		glVertex3f(xmax, 0, zmax);
+	
 	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
 void drawCylinder() {
-		
+	
 	glBindBuffer(GL_ARRAY_BUFFER,vertices);
 	glVertexPointer(3,GL_FLOAT,0,0);
 
 	glBindBuffer(GL_ARRAY_BUFFER,normals);
 	glNormalPointer(GL_FLOAT,0,0);
-	
 
+	glBindBuffer(GL_ARRAY_BUFFER,texCoord);
+	glTexCoordPointer(2,GL_FLOAT,0,0);
+	
+	glBindTexture(GL_TEXTURE_2D, texIDCylinder);
 	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 
@@ -237,7 +286,9 @@ void renderScene(void) {
 
 	drawFloor(-5, 5, -5, 5);
 	glTranslatef(0, 1, -1);
+	prepareCylinder(2,1,10);
 	drawCylinder();
+	
 	glTranslatef(0, 0, 2);
 	drawCylinder();
 
@@ -309,6 +360,7 @@ void initGL() {
 	converte();
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glClearColor(0, 0, 0, 0);
 

@@ -1,0 +1,3 @@
+/home/apx5/Desktop/2 Semestre/CG/CG/Aula11/CMakeFiles/rebuild_cache.dir
+/home/apx5/Desktop/2 Semestre/CG/CG/Aula11/CMakeFiles/class11.dir
+/home/apx5/Desktop/2 Semestre/CG/CG/Aula11/CMakeFiles/edit_cache.dir

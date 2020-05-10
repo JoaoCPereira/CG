@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/apx5/Desktop/2 Semestre/CG/CG/Aula11/main.cpp
+stdlib.h
+-
+stdio.h
+-
+vector
+-
+string
+-
+math.h
+-
+GLUT/glut.h
+-
+GL/glew.h
+-
+GL/glut.h
+-
+IL/il.h
+-
+
