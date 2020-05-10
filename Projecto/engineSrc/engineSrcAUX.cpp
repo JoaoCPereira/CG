@@ -22,8 +22,8 @@ void writeModelo3D(Modelo *model){
 	float red[] = { 0.8, 0.2, 0.2, 1.0 };
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	glMaterialf(GL_FRONT, GL_SHININESS, 0);
+	//glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	//glMaterialf(GL_FRONT, GL_SHININESS, 0);
 	glMaterialfv(GL_FRONT, GL_EMISSION, emissive);
 
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
