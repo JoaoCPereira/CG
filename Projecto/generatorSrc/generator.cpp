@@ -18,6 +18,9 @@ vector<struct point*> vectorNorm;
 void print_sphere(float radius,float slices,float stacks,char* file_name){
     vector<string> normals;
     vector<string> texCoord;
+    texCoord.clear();
+    normals.clear();
+
     char str1[100];
     ofstream myfile;
     myfile.open (file_name);
@@ -30,7 +33,7 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
         myfile << numT << "\n";
 
         float lat = 1/ (float) (slices*4);
-        float lon = 1/ (float) (stacks);
+        float lon = 1/ (float) (stacks*2);
 
         // desenhar topo e base
         for(int i=0; i< (slices*4) ; i++){
@@ -38,23 +41,20 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
             myfile << str1;
             normals.push_back(str1);
-
-            sprintf(str1, "%f %f\n",lat*i, lon*(stacks-1));
+            sprintf(str1, "%f %f\n",lat*i, 1-lon);
             texCoord.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
             myfile << str1;
             normals.push_back(str1);
-
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*(stacks-1));
+            sprintf(str1, "%f %f\n",lat*(i+1), 1-lon);
             texCoord.push_back(str1);
              
             sprintf(str1, "0 %f 0\n",radius); // topo da esfera
             myfile << str1;
             normals.push_back(str1);
-            texCoord.push_back("0.5 1");
+            texCoord.push_back("0.5 1\n");
              
-            
 
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
             myfile << str1;
@@ -66,7 +66,7 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             sprintf(str1, "0 %f 0\n",-radius); // base da esfera
             myfile << str1;
             normals.push_back(str1);
-            texCoord.push_back("0.5 0");
+            texCoord.push_back("0.5 0\n");
              
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
             myfile << str1;
@@ -87,19 +87,19 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             myfile << str1;
             normals.push_back(str1);
 
-            sprintf(str1, "%f %f\n",lat*i, lon*j);
+            sprintf(str1, "%f %f\n",lat*i,0.5 + lon*j);
             texCoord.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*j);
+            sprintf(str1, "%f %f\n",lat*(i+1),0.5 + lon*j);
             texCoord.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
             myfile << str1;
             normals.push_back(str1); 
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*(j+1));
+            sprintf(str1, "%f %f\n",lat*(i+1),0.5 + lon*(j+1));
             texCoord.push_back(str1);
                 
             // segundo triangulo
@@ -107,39 +107,39 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*(j+1));
+            sprintf(str1, "%f %f\n",lat*(i+1),0.5 +  lon*(j+1));
             texCoord.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*i, lon*(j+1));
+            sprintf(str1, "%f %f\n",lat*i,0.5 +  lon*(j+1));
             texCoord.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*i, lon*j);
+            sprintf(str1, "%f %f\n",lat*i,0.5 +  lon*j);
             texCoord.push_back(str1);
-             
+
             //metade inferior
                 // primeiro trinagulo
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*i, lon*j);
+            sprintf(str1, "%f %f\n",lat*i,0.5 - lon*j);
             texCoord.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*(j+1));
+            sprintf(str1, "%f %f\n",lat*(i+1),0.5 - lon*(j+1));
             texCoord.push_back(str1);
-             
+
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*j);
+            sprintf(str1, "%f %f\n",lat*(i+1),0.5 - lon*j);
             texCoord.push_back(str1);
              
                 // segundo triangulo
@@ -147,20 +147,20 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*(j+1));
+            sprintf(str1, "%f %f\n",lat*(i+1),0.5 - lon*(j+1));
             texCoord.push_back(str1);
-             
+            
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
             
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*i, lon*j);
+            sprintf(str1, "%f %f\n",lat*i,0.5 - lon*j);
             texCoord.push_back(str1);
-             
+
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
             myfile << str1;
             normals.push_back(str1);
-            sprintf(str1, "%f %f\n",lat*(i+1), lon*(j+1));
+            sprintf(str1, "%f %f\n",lat*i,0.5 - lon*(j+1));
             texCoord.push_back(str1);
             }
         }
@@ -211,6 +211,23 @@ void print_plane(float x,char* file_name){
             }
             else fprintf(fd,"0 -1 0\n");
         }
+
+        fprintf(fd,"0 0\n");
+        fprintf(fd,"1 0\n");
+        fprintf(fd,"1 1\n"); 
+
+        fprintf(fd,"1 1\n");
+        fprintf(fd,"0 1\n");
+        fprintf(fd,"0 0\n");
+
+        fprintf(fd,"0 0\n");
+        fprintf(fd,"1 1\n");
+        fprintf(fd,"1 0\n"); 
+
+        fprintf(fd,"1 1\n");
+        fprintf(fd,"0 0\n");
+        fprintf(fd,"0 1\n");
+
     }
     fclose(fd);
 }
