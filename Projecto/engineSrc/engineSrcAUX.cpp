@@ -23,7 +23,7 @@ void writeModelo3D(Modelo *model){
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
 	//glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	//glMaterialf(GL_FRONT, GL_SHININESS, 0);
+	glMaterialf(GL_FRONT, GL_SHININESS, 128);
 	glMaterialfv(GL_FRONT, GL_EMISSION, emissive);
 
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
@@ -32,7 +32,10 @@ void writeModelo3D(Modelo *model){
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
 	glNormalPointer(GL_FLOAT,0,0);
 
-	// desenhar com vbo com indice
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[2]);
+	glTexCoordPointer(2,GL_FLOAT,0,0);
+
+	// desenhar com vbo
 	glBindTexture(GL_TEXTURE_2D, model->texID);
 	glDrawArrays(GL_TRIANGLES, model->posInitVBO, model->numPoints);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -257,8 +260,8 @@ int loadTexture(std::string s) {
 	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_WRAP_S,		GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_WRAP_T,		GL_REPEAT);
 
-	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_MAG_FILTER,   	GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 	glGenerateMipmap(GL_TEXTURE_2D);

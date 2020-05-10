@@ -46,7 +46,7 @@ struct modelo
 	int numPoints;
 	int posInitVBO;
 	int posInitNormal;
-	GLuint texID;
+	unsigned int texID;
 };
 
 struct geo_transf{

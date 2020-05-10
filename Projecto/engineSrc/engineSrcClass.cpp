@@ -53,7 +53,7 @@ SysState::SysState(char *fileName){
     }
 }
 
-int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float emiR,float emiG,float emiB,char *texfile){
+int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float emiR,float emiG,float emiB,string texfile){
 
   Modelo *mod =(struct modelo*) malloc(sizeof(struct modelo));
 
@@ -144,6 +144,7 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
 
         preTextCoord.push_back(x);
         preTextCoord.push_back(y);
+        
 
         if (validArgs!=2) {
           printf("Invalid point!! on line: %d (of %d)\n",counterP+1, numPoints+1);
@@ -177,8 +178,6 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
 
   mod->texID = loadTexture(texfile);
 
-  cout << mod->texID << endl;
-
   modelos.push_back(mod);
   return 1;
 }
@@ -203,7 +202,7 @@ void SysState::parserXML(TiXmlElement *element){
                 element->QueryFloatAttribute("emiR",&emiR);
                 element->QueryFloatAttribute("emiG",&emiG);
                 element->QueryFloatAttribute("emiB",&emiB);
-                char *texture = (char*) element->Attribute("texture");
+                string texture = (string) element->Attribute("texture");
         
                 if(read3D(name3D,diffR,diffG,diffB,emiR,emiG,emiB,texture)){
                   sequencia.push_back(3);
@@ -319,7 +318,7 @@ void SysState::parserXML(TiXmlElement *element){
             l->point = p;
             l->dir = d;
             l->angle = 90.0;
-            l->quad_att = 1.0;
+            l->quad_att = 0.0;
             l->exponent = 0.0;
             l->type = 0;
 
