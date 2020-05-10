@@ -1,12 +1,13 @@
 <scene>
+    <lights>
+        <light type="POINT" posX=0 posY=-100 posZ=0 />
+        <light type="POINT" posX=0 posY=10 posZ=0 />
+    </lights>
     <group>
         <!-sol->
         <group> 
             <scale X=5 Y=5 Z=5/>
             <model file="sphere.3d" texture="Textures/sunmap.jpg" emiR="1" emiG="1" emiB="1"/>
-            <lights>
-                <light type="POINT" posX=5 posY=5 posZ=5/>
-            </lights>
         </group>
         <!-mercurio->
         <group> 

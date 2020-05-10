@@ -377,7 +377,7 @@ void crossProduct(Point *A, Point *B, Point *R) {
     R->z = A->x * B->y - A->y * B->x;
 }
 
-void normalize(float *a) {
+void normalize(Point *a) {
     float l = sqrt(a->x*a->x + a->y * a->y + a->z * a->z);
     a->x = a->x/l;
     a->y = a->y/l;
@@ -484,7 +484,7 @@ void calculate_surface(int tesselation) {
                 Point *du = new Point;
                 dUBezier(controlPoints, u, v, du);
                 Point *dv = new Point;
-                dVBezier(controlPoints, u, v, dv); 
+                dVBezier(controlPoints, u, v, dv);
                 //N[k] = dU.crossProduct(dV).normalize(); 
                 //st[k].x = u; 
                 //st[k].y = v; 

@@ -63,7 +63,7 @@ void print_box(float x,float y,float z,float divisions,char* file_name);
 void print_cone(float radius,float height,float slices,float stacks,char* file_name);
 
 void crossProduct(Point *A, Point *B, Point *R);
-void normalize(float *a);
+void normalize(Point *a);
 float length(Point *a);
 
 void evalBezierCurve(const Point *P, const float &t, Point *res);
