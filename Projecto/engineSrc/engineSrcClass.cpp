@@ -6,7 +6,7 @@ vector<struct translate*> SysState::tr;
 vector<struct light*> SysState::lights;
 vector<int> SysState::sequencia;
 vector <float> SysState::preVBO;
-vector<float> SysState::preLig;
+vector<float> SysState::preNormal;
 vector<float> SysState::preTextures;
 
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
@@ -22,48 +22,35 @@ SysState::SysState(char *fileName){
 
     //carregar os dados para o lig
     glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
-    glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preNormal.data(), GL_STATIC_DRAW);
 
-    //carregar os dados para o buffer das normais
-    glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
-    glBufferData(GL_ARRAY_BUFFER,preVBO.size()*sizeof(float), preLig.data(), GL_STATIC_DRAW);
 
     //glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
     //glBufferData(GL_ARRAY_BUFFER, texCoord.size() * sizeof(float), &(texCoord[0]), GL_STATIC_DRAW);
 
-    //glEnableClientState(GL_VERTEX_ARRAY);
-    //glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-
-
 
 
     // Turn on lighting and Define light color
 
-    GLfloat dark[4] = {0.2, 0.2, 0.2, 1.0};
-    GLfloat white[4] = {0.9, 0.9, 0.9, 0.};
-
     glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
     glEnable(GL_TEXTURE_2D);
 
-    /*
-    for(int n=0; n < lights.size(); n++){
-      std::string lightNum;
-      std::stringstream tmp;
+    for(int i=0; i < lights.size(); i++){
 
-      tmp << "GL_LIGHT" << n;
-      lightNum = tmp.str();
-    */
-      glEnable(GL_LIGHT0);
+      glEnable(GL_LIGHT0 + i);
+
+      GLfloat dark[4] = {0.2, 0.2, 0.2, 1.0};
+      GLfloat white[4] = {0.9, 0.9, 0.9, 0.};
 
       // light colors
-      glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
-      glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-      glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-    //}
-
-
+      glLightfv(GL_LIGHT0 + i, GL_AMBIENT, dark);
+      glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, white);
+      glLightfv(GL_LIGHT0 + i, GL_SPECULAR, white);
+    }
 }
 
 int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float emiR,float emiG,float emiB,char *texfile){
@@ -132,9 +119,9 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
         float x=0.0,y=0.0,z=0.0;
         validArgs = sscanf(line,"%f %f %f",&x,&y,&z);
 
-        preLig.push_back(x);
-        preLig.push_back(y);
-        preLig.push_back(z);
+        preNormal.push_back(x);
+        preNormal.push_back(y);
+        preNormal.push_back(z);
 
         if (validArgs!=3) {
           printf("Invalid point!! on line: %d (of %d)\n",counterP+1, numPoints+1);
@@ -288,18 +275,33 @@ void SysState::parserXML(TiXmlElement *element){
             
             Light *l = (struct light*) malloc(sizeof(struct light));
             Point *p = (struct point*) malloc(sizeof(struct point));
+            Point *d = (struct point*) malloc(sizeof(struct point));
             p->x = 0;
             p->y = 0;
             p->z = 0;
+
+            d->x = 0;
+            d->y = 0;
+            d->z = 0;
             
             element->QueryFloatAttribute("posX",&p->x);
             element->QueryFloatAttribute("posY",&p->y);
             element->QueryFloatAttribute("posZ",&p->z);
 
-            cout << p->z << endl;
+            element->QueryFloatAttribute("dirX",&d->x);
+            element->QueryFloatAttribute("dirY",&d->y);
+            element->QueryFloatAttribute("dirZ",&d->z);
 
             l->point = p;
+            l->dir = d;
+            l->angle = 90.0;
+            l->quad_att = 1.0;
+            l->exponent = 0.0;
             l->type = 0;
+
+            element->QueryFloatAttribute("angle",&l->angle);
+            element->QueryFloatAttribute("attenuation",&l->quad_att);
+            element->QueryFloatAttribute("exponent",&l->exponent);
 
             const char *type;
             type = element->Attribute("type");
@@ -383,7 +385,9 @@ void SysState::writeSeq(){
         if(numTranf<tr.size()) writeTranslate(tr[numTranf++]);
         break;
       case 5:
-        if(numLigths<lights.size()) writeLigth(lights[numLigths], numLigths++);
+        if(numLigths<lights.size()) writeLigth(lights[numLigths], numLigths);
+        numLigths++;
+        break;
     }
   }
 }

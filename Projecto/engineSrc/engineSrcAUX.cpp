@@ -23,7 +23,7 @@ void writeModelo3D(Modelo *model){
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	glMaterialf(GL_FRONT, GL_SHININESS, 128);
+	glMaterialf(GL_FRONT, GL_SHININESS, 100);
 	glMaterialfv(GL_FRONT, GL_EMISSION, emissive);
 
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
@@ -201,15 +201,34 @@ void writeTranslate(Translate *translate) {
 
 void writeLigth(Light *light, int numberLight){
 
-	// falta ver o caso DIRECTIONAL (1)
-	if(light->type==1){
-		float pos[4] = {light->point->x, light->point->y, light->point->z, 0.0};
+	switch (light->type) {
+	  case 0: // POINT
+		{
+	    	GLfloat pos[4] = {light->point->x, light->point->y, light->point->z, 1.0};
+	    	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, light->quad_att);
+
+	    	glLightfv(GL_LIGHT0 + numberLight,GL_POSITION, pos);
+	    	break;
+	    }
+	  case 1: // DIRECTIONAL
+		{
+	    	GLfloat pos[4] = {light->point->x, light->point->y, light->point->z, 0.0};
+	    	glLightfv(GL_LIGHT0 + numberLight,GL_POSITION, pos);
+	    	break;
+	    }
+	  case 2: // SPOT
+		{
+	    	GLfloat pos[4] = {light->point->x, light->point->y, light->point->z, 1.0};
+	    	GLfloat spotDir[3] = {light->dir->x, light->dir->y, light->dir->z};
+
+	    	glLightfv(GL_LIGHT0 + numberLight,GL_POSITION, pos);
+	    	glLightfv(GL_LIGHT0 + numberLight, GL_SPOT_DIRECTION, spotDir);
+			glLightf(GL_LIGHT0 + numberLight, GL_SPOT_CUTOFF, light->angle);
+	    	glLightf(GL_LIGHT0 + numberLight,GL_SPOT_EXPONENT, light->exponent);
+	    	glLightf(GL_LIGHT0 + numberLight, GL_QUADRATIC_ATTENUATION, light->quad_att);
+	    	break;
+	    }
 	}
-	else float pos[4] = {light->point->x, light->point->y, light->point->z, 1.0};
-
-	//cout << light->point->x << " " << light->point->y << " " << light->point->z << endl;
-
-	glLightfv(GL_LIGHT0,GL_POSITION, pos);
 }
 
 

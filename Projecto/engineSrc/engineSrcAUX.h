@@ -21,6 +21,9 @@
 #include <iostream>
 #include<bits/stdc++.h> 
 #include <IL/il.h>
+#include <limits.h>
+#include<bits/stdc++.h> 
+
 using namespace std; 
 
 
@@ -61,6 +64,10 @@ struct translate{
 
 struct light{
 	Point *point;
+	Point *dir;
+	float angle;
+	float quad_att;
+	float exponent;
 	int type; // 0-Point, 1-Directional, 2-SPOT
 };
 

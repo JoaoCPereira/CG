@@ -46,6 +46,11 @@ int main(int argc, char* argv[]){
         }
         else {
             printf("Invalid arguments\n");
+            printf("\t \'./Generator \"name_file_in.patch\" \"tesselation\" \' \n");
+            printf("\t \'./Generator shpere \"radius\" \"slices\" \"stacks\" \"name_file\"\' \n ");
+            printf("\t \'./Generator plane \"width\" \"name_file\"\' \n ");
+            printf("\t \'./Generator box \"X\" \"Y\" \"Z\" ?\"divisions\" \"name_file\"\' \n ");
+            printf("\t \'./Generator cone \"radius\" \"height\" \"slices\" \"stacks\" \"name_file\"\' \n ");
         }
     }
 

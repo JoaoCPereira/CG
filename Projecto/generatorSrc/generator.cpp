@@ -17,40 +17,43 @@ vector<struct point*> vectorFinal;
 void print_sphere(float radius,float slices,float stacks,char* file_name){
     vector<string> normals;
     char str1[100];
-    FILE *fd = fopen(file_name,"w");
-    if (fd){
+    ofstream myfile;
+    myfile.open (file_name);
+
+    if (myfile.is_open()){
         float alfa = 2*M_PI / (slices*4);
         float beta = (M_PI/2) / stacks;
 
-        fprintf(fd, "%d\n", (int)(slices*4*6+(stacks-1)*slices*4*12)); // numero total de pontos
+        int numT = (int)(slices*4*6+(stacks-1)*slices*4*12); // numero total de pontos
+        myfile << numT << "\n";
 
         // desenhar topo e base
         for(int i=0; i< (slices*4) ; i++){
 
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "0 %f 0\n",radius); // topo da esfera
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             
 
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "0 %f 0\n",-radius); // base da esfera
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
         }
@@ -62,67 +65,72 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             // metade superior
                 // primeiro trinagulo
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1); 
                 
             // segundo triangulo
 
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             //metade inferior
                 // primeiro trinagulo
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*(i+1)),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*(i+1))); // canto inferior direito
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
                 // segundo triangulo
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*(i+1)),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*(i+1))); // canto superior esquerdo
-            fprintf(fd,str1);
+            
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
-            fprintf(fd,str1);
+            
+            myfile << str1;
             normals.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(j+1))*radius*sin(alfa*i),-sin(beta*(j+1))*radius,cos(beta*(j+1))*radius*cos(alfa*i)); // canto superior esquero
-            fprintf(fd,str1);
+            myfile << str1;
             normals.push_back(str1);
              
 
             }
         }
-    }
 
     for(int k = 0;k < normals.size(); k++){
-        fprintf(fd,"%s",normals[k].c_str());
+        //fprintf(fd,"%s",normals[k].c_str());
+        myfile << normals[k].c_str();
     }
-    fclose(fd);
+    myfile.close();
+    //fclose(fd);
+
+    } else cout << "Unable to open file";
 }
 
 void print_plane(float x,char* file_name){
@@ -156,20 +164,13 @@ void print_plane(float x,char* file_name){
             }
             else fprintf(fd,"0 -1 0\n");
         }
-        
-
-
-        
-
-        
-
     }
     fclose(fd);
 }
 
 
 void print_box(float x,float y,float z,float divisions,char* file_name){
-    vector<char *> normals;
+    vector<string> normals;
     FILE *fd = fopen(file_name,"w");
 
     float div_x = x/divisions;
@@ -297,7 +298,7 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
         }
     }
     for(int k = 0;k < normals.size(); k++){
-        fprintf(fd,"%s\n",normals[k]);
+        fprintf(fd,"%s\n",normals[k].c_str());
     }
     fclose(fd);
 }
@@ -336,7 +337,7 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
             //ponto fixo do centro
             fprintf(fd, "0 %f 0\n",height);
             for(int k=0;k<6;k++){
-                normals.push_back("0 -1 0");
+                //normals.push_back("0 -1 0");
             }
         }
         
@@ -361,6 +362,33 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
     fclose(fd);
 }
 
+/*
+void cross(float *a, float *b, float *res) {
+
+    res[0] = a[1]*b[2] - a[2]*b[1];
+    res[1] = a[2]*b[0] - a[0]*b[2];
+    res[2] = a[0]*b[1] - a[1]*b[0];
+}
+*/
+
+void crossProduct(Point *A, Point *B, Point *R) {
+    R->x = A->y * B->z - A->z * B->y;
+    R->y = -(A->x * B->z - A->z * B->x);
+    R->z = A->x * B->y - A->y * B->x;
+}
+
+void normalize(float *a) {
+    float l = sqrt(a->x*a->x + a->y * a->y + a->z * a->z);
+    a->x = a->x/l;
+    a->y = a->y/l;
+    a->z = a->z/l;
+}
+
+float length(Point *a) {
+    float res = sqrt(a->x*a->x + a->y * a->y + a->z * a->z);
+    return res;
+}
+
 void evalBezierCurve(const Point *P, const float &t, Point *res) { 
     float b0 = (1 - t) * (1 - t) * (1 - t); 
     float b1 = 3 * t * (1 - t) * (1 - t); 
@@ -382,6 +410,51 @@ void evalBezierPatch(const Point *controlPoints, const float &u, const float &v 
     	evalBezierCurve(controlPoints + 4 * i, u, &uCurve[i]);
     }
     evalBezierCurve(uCurve, v, res); 
+}
+
+void dUBezier(const Point *controlPoints, const float &u, const float &v, Point *du) { 
+   Point *P = new Point[4];
+   Point *vCurve = new Point[4];
+   for (int i = 0; i < 4; ++i) { 
+       P[0] = controlPoints[i]; 
+       P[1] = controlPoints[4 + i]; 
+       P[2] = controlPoints[8 + i]; 
+       P[3] = controlPoints[12 + i]; 
+       evalBezierCurve(P, v, &vCurve[i]); 
+   }
+
+   float b0 = -3 * (1 - u) * (1 - u);
+   float b1 = (3 * (1 - u) * (1 - u) - 6 * u * (1 - u)); 
+   float b2 = (6 * u * (1 - u) - 3 * u * u);
+   float b3 = 3 * u * u;
+
+   float x = vCurve[0].x * b0 + vCurve[1].x * b1 + vCurve[2].x * b2 + vCurve[3].x * b3;
+   float y = vCurve[0].y * b0 + vCurve[1].y * b1 + vCurve[2].y * b2 + vCurve[3].y * b3; 
+   float z = vCurve[0].z * b0 + vCurve[1].z * b1 + vCurve[2].z * b2 + vCurve[3].z * b3; 
+
+   du->x = x;
+   du->y = y;
+   du->z = z;
+}
+
+void dVBezier(const Point *controlPoints, const float &u, const float &v, Point *dv) { 
+   Point uCurve[4]; 
+   for (int i = 0; i < 4; ++i) { 
+       evalBezierCurve(controlPoints + 4 * i, u, &uCurve[i]);
+   }
+
+   float b0 = -3 * (1 - v) * (1 - v);
+   float b1 = (3 * (1 - v) * (1 - v) - 6 * v * (1 - v)); 
+   float b2 = (6 * v * (1 - v) - 3 * v * v);
+   float b3 = 3 * v * v;
+
+   float x = uCurve[0].x * b0 + uCurve[1].x * b1 + uCurve[2].x * b2 + uCurve[3].x * b3;
+   float y = uCurve[0].y * b0 + uCurve[1].y * b1 + uCurve[2].y * b2 + uCurve[3].y * b3; 
+   float z = uCurve[0].z * b0 + uCurve[1].z * b1 + uCurve[2].z * b2 + uCurve[3].z * b3; 
+
+   dv->x = x;
+   dv->y = y;
+   dv->z = z;
 } 
 
 void calculate_surface(int tesselation) { 
@@ -404,7 +477,17 @@ void calculate_surface(int tesselation) {
         // generate grid     
         for (int j=0, k=0; j <= divs; ++j){                 
         	for (int i=0 ; i <= divs; ++i, ++k ){
-                evalBezierPatch(controlPoints, i / (float)divs, j / (float)divs , &P[k]);
+                float u = i / (float)divs; 
+                float v = j / (float)divs;
+
+                evalBezierPatch(controlPoints, u, v, &P[k]);
+                Point *du = new Point;
+                dUBezier(controlPoints, u, v, du);
+                Point *dv = new Point;
+                dVBezier(controlPoints, u, v, dv); 
+                //N[k] = dU.crossProduct(dV).normalize(); 
+                //st[k].x = u; 
+                //st[k].y = v; 
             } 
         }
         int o=0;

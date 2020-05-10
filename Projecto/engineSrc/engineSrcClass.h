@@ -11,7 +11,7 @@ class SysState {
   static vector<struct light*> lights;
   static vector<int> sequencia;
   static vector <float> preVBO;
-  static vector<float> preLig;
+  static vector<float> preNormal;
   static vector<float> preTextures;
 
   public:

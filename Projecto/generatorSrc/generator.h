@@ -62,11 +62,15 @@ void print_box(float x,float y,float z,float divisions,char* file_name);
 */
 void print_cone(float radius,float height,float slices,float stacks,char* file_name);
 
+void crossProduct(Point *A, Point *B, Point *R);
+void normalize(float *a);
+float length(Point *a);
 
 void evalBezierCurve(const Point *P, const float &t, Point *res);
 void evalBezierPatch(const Point *controlPoints, const float &u, const float &v , Point *res);
-void generate3D(int tesselation);
-
+void dUBezier(const Point *controlPoints, const float &u, const float &v, Point *du);
+void dVBezier(const Point *controlPoints, const float &u, const float &v, Point *dv);
+void calculate_surface(int tesselation);
 /**
 *@brief Process Bezier patches from a file
 * @param filename File name where to read the patches

@@ -6,18 +6,7 @@
 #endif
 
 #define _USE_MATH_DEFINES
-#include <math.h>
-#include "tinyxml.h"
-#include "tinystr.h"
 #include "engineSrcClass.h"
-#include <unistd.h>
-#include <limits.h>
-#include <iostream>
-#include <stdio.h>
-#include<bits/stdc++.h> 
-
-
-using namespace std; 
 
 // variáveis globais
 float scale = 1;
