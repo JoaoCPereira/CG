@@ -53,7 +53,7 @@ SysState::SysState(char *fileName){
     }
 }
 
-int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float emiR,float emiG,float emiB,string texfile){
+int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float emiR,float emiG,float emiB,char *texfile){
 
   Modelo *mod =(struct modelo*) malloc(sizeof(struct modelo));
 
@@ -176,7 +176,13 @@ int SysState::read3D(char *filename,float diffR, float diffG, float diffB,float 
   mod->emiG=emiG;
   mod->emiB=emiB;
 
-  mod->texID = loadTexture(texfile);
+  mod->texID = 0;
+
+  if(texfile){  
+    mod->texID = loadTexture(texfile);
+  }
+
+  //cout << mod->texID << endl;
 
   modelos.push_back(mod);
   return 1;
@@ -202,7 +208,17 @@ void SysState::parserXML(TiXmlElement *element){
                 element->QueryFloatAttribute("emiR",&emiR);
                 element->QueryFloatAttribute("emiG",&emiG);
                 element->QueryFloatAttribute("emiB",&emiB);
-                string texture = (string) element->Attribute("texture");
+
+                char *texture=NULL;
+                if(element->Attribute("texture")){
+                  texture = (char *) element->Attribute("texture");
+                }
+
+                //texture = (string) element->Attribute("texture");
+                //if(texture){
+                  //cout << texture << endl;
+                //}
+                
         
                 if(read3D(name3D,diffR,diffG,diffB,emiR,emiG,emiB,texture)){
                   sequencia.push_back(3);

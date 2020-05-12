@@ -12,16 +12,20 @@ unsigned int texture;
 
 void writeModelo3D(Modelo *model){
 	// cor do objecto
-	glColor3f(model->diffR,model->diffG,model->diffB);
+	//glColor3f(model->diffR,model->diffG,model->diffB);
 	float emissive[]= {model->emiR,model->emiG,model->emiB,1};
-
 	// Define a material
 
 	float dark[] = { 0.2, 0.2, 0.2, 1.0 };
 	float white[] = { 0.8, 0.8, 0.8, 1.0 };
-	float red[] = { 0.8, 0.2, 0.2, 1.0 };
+	float red[] = { model->diffR,model->diffG,model->diffB, 1.0 };
 
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+	if(model->texID == 0){
+		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
+	}else {
+		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+	}
+
 	//glMaterialfv(GL_FRONT, GL_SPECULAR, white);
 	glMaterialf(GL_FRONT, GL_SHININESS, 128);
 	glMaterialfv(GL_FRONT, GL_EMISSION, emissive);
@@ -32,13 +36,14 @@ void writeModelo3D(Modelo *model){
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
 	glNormalPointer(GL_FLOAT,0,0);
 
+	// desenhar com vbo
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[2]);
 	glTexCoordPointer(2,GL_FLOAT,0,0);
-
-	// desenhar com vbo
 	glBindTexture(GL_TEXTURE_2D, model->texID);
+
 	glDrawArrays(GL_TRIANGLES, model->posInitVBO, model->numPoints);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
 }
 
 void writeGeo(Geo_Transf *transf){

@@ -13,6 +13,7 @@ vector<int> patch;
 vector<struct point*> points;
 vector<struct point*> vectorFinal;
 vector<struct point*> vectorNorm;
+vector<string> texCoord;
 
 
 void print_sphere(float radius,float slices,float stacks,char* file_name){
@@ -149,7 +150,7 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             normals.push_back(str1);
             sprintf(str1, "%f %f\n",lat*(i+1),0.5 - lon*(j+1));
             texCoord.push_back(str1);
-            
+
             sprintf(str1, "%f %f %f\n",cos(beta*j)*radius*sin(alfa*i),-sin(beta*j)*radius,cos(beta*j)*radius*cos(alfa*i)); // canto inferior esquero
             
             myfile << str1;
@@ -235,6 +236,13 @@ void print_plane(float x,char* file_name){
 
 void print_box(float x,float y,float z,float divisions,char* file_name){
     vector<string> normals;
+    vector<string> texCoord;
+    normals.clear();
+    texCoord.clear();
+
+    float face = 1/ (float) divisions;
+    char str1[100];
+
     FILE *fd = fopen(file_name,"w");
 
     float div_x = x/divisions;
@@ -244,16 +252,18 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
     float y_div = y/2;
     float z_div = z/2;
 
+    int total_de_pontos = (int)(divisions*divisions*3*12);
+
     if (fd){
 
-        fprintf(fd, "%d\n", (int)(divisions*divisions*3*12)); // total de pontos
+        fprintf(fd, "%d\n", total_de_pontos); // total de pontos
 
         int i, j = 0;
         for(j = 0; j< divisions;j++){
             for(i = 0;i< divisions;i++){
 
                     // calcular pontos e depois reutilizar 3/2 vezes
-            	//XY +Z axis
+                //XY +Z axis
                 //primeiro triangulo
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*j),z_div);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*j),z_div);
@@ -261,6 +271,13 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
                 normals.push_back("0 0 1");
                 normals.push_back("0 0 1");
                 normals.push_back("0 0 1");
+
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
 
                 //segundo triangulo
                 
@@ -271,25 +288,46 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
                 normals.push_back("0 0 1");
                 normals.push_back("0 0 1");
 
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*i,face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*i,face*j);
+                texCoord.push_back(str1);
+
                 //XY -Z axis
                 //primeiro triangulo
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*j),-z_div);
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*(j+1)),-z_div);
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*(j+1)),-z_div);
+                fprintf(fd, "%f %f %f\n",(x_div-div_x*i),(-y_div+div_y*j),-z_div);
+                fprintf(fd, "%f %f %f\n",(x_div-div_x*(i+1)),(-y_div+div_y*(j+1)),-z_div);
+                fprintf(fd, "%f %f %f\n",(x_div-div_x*i),(-y_div+div_y*(j+1)),-z_div);
                 normals.push_back("0 0 -1");
                 normals.push_back("0 0 -1");
                 normals.push_back("0 0 -1");
+
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j+1));
+                texCoord.push_back(str1);
 
                 //segundo triangulo
                 
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*(j+1)),-z_div);
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),(-y_div+div_y*j),-z_div);
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),(-y_div+div_y*j),-z_div);
+                fprintf(fd, "%f %f %f\n",(x_div-div_x*(i+1)),(-y_div+div_y*(j+1)),-z_div);
+                fprintf(fd, "%f %f %f\n",(x_div-div_x*i),(-y_div+div_y*j),-z_div);
+                fprintf(fd, "%f %f %f\n",(x_div-div_x*(i+1)),(-y_div+div_y*j),-z_div);
                 normals.push_back("0 0 -1");
                 normals.push_back("0 0 -1");
                 normals.push_back("0 0 -1");
 
-				//XZ +Y axis
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j));
+                texCoord.push_back(str1);
+
+                //XZ +Y axis
                 //primeiro triangulo
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),y_div,z_div-div_z*j);
                 fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),y_div,z_div-div_z*j);
@@ -297,6 +335,13 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
                 normals.push_back("0 1 0");
                 normals.push_back("0 1 0");
                 normals.push_back("0 1 0");
+
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
 
                 //segundo triangulo
                 
@@ -307,22 +352,43 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
                 normals.push_back("0 1 0");
                 normals.push_back("0 1 0");
 
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+
                 //XZ -Y axis
                 //primeiro triangulo
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,z_div-div_z*j);
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,z_div-div_z*(j+1));
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,z_div-div_z*(j+1));
+                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,-z_div+div_z*j);
+                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,-z_div+div_z*(j+1));
+                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,-z_div+div_z*(j+1));
                 normals.push_back("0 -1 0");
                 normals.push_back("0 -1 0");
                 normals.push_back("0 -1 0");
 
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j+1));
+                texCoord.push_back(str1);
+
                 //segundo triangulo
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,z_div-div_z*(j+1));
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,z_div-div_z*j);
-                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,z_div-div_z*j);
+                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,-z_div+div_z*(j+1));
+                fprintf(fd, "%f %f %f\n",(-x_div+div_x*i),-y_div,-z_div+div_z*j);
+                fprintf(fd, "%f %f %f\n",(-x_div+div_x*(i+1)),-y_div,-z_div+div_z*j);
                 normals.push_back("0 -1 0");
                 normals.push_back("0 -1 0");
                 normals.push_back("0 -1 0");
+
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j));
+                texCoord.push_back(str1);
 
                 //YZ+X
                 //primeiro triangulo
@@ -333,6 +399,13 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
                 normals.push_back("1 0 0");
                 normals.push_back("1 0 0");
 
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+
                 //segundo triangulo
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*(j+1)),z_div-div_z*(i+1));
                 fprintf(fd, "%f %f %f\n",(x_div),(-y_div+div_y*(j+1)),z_div-div_z*i);
@@ -341,29 +414,53 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
                 normals.push_back("1 0 0");
                 normals.push_back("1 0 0");
 
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+
                 //YZ-X
                 //primeiro triangulo
-                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),z_div-div_z*i);
-                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),z_div-div_z*i);
-                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),z_div-div_z*(i+1));
+                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),(-z_div)+div_z*i);
+                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),(-z_div)+div_z*(i+1));
+                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),(-z_div)+div_z*(i+1));
                 normals.push_back("-1 0 0");
                 normals.push_back("-1 0 0");
                 normals.push_back("-1 0 0");
 
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*j);
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+
                 //segundo triangulo
-            
-                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),z_div-div_z*(i+1));
-                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),z_div-div_z*(i+1));
-                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),z_div-div_z*i);
+                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*j),(-z_div)+div_z*i);
+                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),(-z_div)+div_z*(i+1));
+                fprintf(fd, "%f %f %f\n",(-x_div),(-y_div+div_y*(j+1)),(-z_div)+div_z*(i));
                 normals.push_back("-1 0 0");
                 normals.push_back("-1 0 0");
                 normals.push_back("-1 0 0");
+
+                sprintf(str1, "%f %f\n",face*(i),face*(j));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i+1),face*(j+1));
+                texCoord.push_back(str1);
+                sprintf(str1, "%f %f\n",face*(i),face*(j+1));
+                texCoord.push_back(str1);
             }
         }
     }
-    for(int k = 0;k < normals.size(); k++){
+    for(int k = 0;k < total_de_pontos; k++){
         fprintf(fd,"%s\n",normals[k].c_str());
     }
+    for(int k = 0;k < total_de_pontos; k++){
+        fprintf(fd,"%s",texCoord[k].c_str());
+    }
+
     fclose(fd);
 }
 
@@ -426,15 +523,6 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
     fclose(fd);
 }
 
-/*
-void cross(float *a, float *b, float *res) {
-
-    res[0] = a[1]*b[2] - a[2]*b[1];
-    res[1] = a[2]*b[0] - a[0]*b[2];
-    res[2] = a[0]*b[1] - a[1]*b[0];
-}
-*/
-
 void crossProduct(Point *A, Point *B, Point *R) {
     R->x = A->y * B->z - A->z * B->y;
     R->y = -(A->x * B->z - A->z * B->x);
@@ -469,9 +557,9 @@ void evalBezierCurve(const Point *P, const float &t, Point *res) {
 } 
 
 void evalBezierPatch(const Point *controlPoints, const float &u, const float &v , Point *res) { 
-	Point uCurve[4];
+    Point uCurve[4];
     for (int i = 0; i < 4; ++i) {
-    	evalBezierCurve(controlPoints + 4 * i, u, &uCurve[i]);
+        evalBezierCurve(controlPoints + 4 * i, u, &uCurve[i]);
     }
     evalBezierCurve(uCurve, v, res); 
 }
@@ -523,8 +611,14 @@ void dVBezier(const Point *controlPoints, const float &u, const float &v, Point 
 } 
 
 void calculate_surface(int tesselation) { 
-	vectorFinal.clear();
-	int divs = tesselation;
+    vectorFinal.clear();
+    vectorNorm.clear();
+    texCoord.clear();
+
+    vector<string> texCoordTemp;
+    char str[100];
+
+    int divs = tesselation;
 
     int vertices[divs * divs * 4];
     int nvertices = (divs) * (divs) * 4;
@@ -537,19 +631,18 @@ void calculate_surface(int tesselation) {
 
 
     for (int np=0; np < patches.size(); ++np) {
+        texCoordTemp.clear();
         // set the control points for the current patch
         for (int i =0 ; i < 16 ; ++i) {
-        	controlPoints[i] = *points[patches[np][i]];
+            controlPoints[i] = *points[patches[np][i]];
         }
         // generate grid     
         for (int j=0, k=0; j <= divs; ++j){                 
-        	for (int i=0 ; i <= divs; ++i, ++k ){
+            for (int i=0 ; i <= divs; ++i, ++k ){
                 float u = i / (float)divs; 
                 float v = j / (float)divs;
 
                 evalBezierPatch(controlPoints, u, v, &P[k]);
-
-
                 Point *du = new Point;
                 dUBezier(controlPoints, u, v, du);
 
@@ -558,31 +651,27 @@ void calculate_surface(int tesselation) {
 
                 Point *n = new Point;
                 crossProduct(du,dv,n);
-
-
                 normalize(n, &N[k]);
 
+                sprintf(str,"%f %f\n",1-u,1-v);
 
-
-                //N[k] = dU.crossProduct(dV).normalize(); 
-                //st[k].x = u; 
-                //st[k].y = v; 
+                texCoordTemp.push_back(str);
             } 
         }
         int o=0;
 
         for (int j=0, k=0; j < divs; ++j) {
-        	for (int i=0; i < divs; ++i, ++k) {
-        		/*
-        			v3______v0
-					|        |
-					|        |
-					|		 |
-					|		 |
-					v2------v1
-				
-				*/
-        		o +=4;
+            for (int i=0; i < divs; ++i, ++k) {
+                /*
+                    v3______v0
+                    |        |
+                    |        |
+                    |        |
+                    |        |
+                    v2------v1
+                
+                */
+                o +=4;
                 vertices[k * 4] = (divs + 1) * j + i;
                 vertices[k * 4 + 1] = (divs + 1) * (j + 1) + i;
                 vertices[k * 4 + 2] = (divs + 1) * (j + 1) + i + 1; 
@@ -592,19 +681,24 @@ void calculate_surface(int tesselation) {
 
         vector<struct point*> tempVer;
         vector<struct point*> tempNor;
+        vector<string> texCoordTempTemp;
         tempVer.clear();
         tempNor.clear();
+        texCoordTempTemp.clear();
 
         for(int i=0; i < nvertices; ++i){
-        	Point *a = (struct point*) malloc(sizeof(struct point));
-        	a->x = P[vertices[i]].x;
-        	a->y = P[vertices[i]].y;
-        	a->z = P[vertices[i]].z;
-        	
+            Point *a = (struct point*) malloc(sizeof(struct point));
+            a->x = P[vertices[i]].x;
+            a->y = P[vertices[i]].y;
+            a->z = P[vertices[i]].z;
+            
             Point *n = (struct point*) malloc(sizeof(struct point));
             n->x = N[vertices[i]].x;
             n->y = N[vertices[i]].y;
             n->z = N[vertices[i]].z;
+
+            ///cout << texCoordTemp[vertices[i]];
+            texCoordTempTemp.push_back( texCoordTemp[vertices[i]] );
 
             tempVer.push_back(a);
             tempNor.push_back(n);
@@ -612,13 +706,13 @@ void calculate_surface(int tesselation) {
 
         // bezier to normal
         for(int size=0; size < tempVer.size()-3; size+=4){
-        	vectorFinal.push_back(tempVer[size]); // v0
-        	vectorFinal.push_back(tempVer[size+3]); // v3
-        	vectorFinal.push_back(tempVer[size+1]); // v1
+            vectorFinal.push_back(tempVer[size]); // v0
+            vectorFinal.push_back(tempVer[size+3]); // v3
+            vectorFinal.push_back(tempVer[size+1]); // v1
 
-        	vectorFinal.push_back(tempVer[size+1]); // v1
-        	vectorFinal.push_back(tempVer[size+3]); // v3
-        	vectorFinal.push_back(tempVer[size+2]); // v2
+            vectorFinal.push_back(tempVer[size+1]); // v1
+            vectorFinal.push_back(tempVer[size+3]); // v3
+            vectorFinal.push_back(tempVer[size+2]); // v2
 
             vectorNorm.push_back(tempNor[size]); // v0
             vectorNorm.push_back(tempNor[size+3]); // v3
@@ -627,7 +721,14 @@ void calculate_surface(int tesselation) {
             vectorNorm.push_back(tempNor[size+1]); // v1
             vectorNorm.push_back(tempNor[size+3]); // v3
             vectorNorm.push_back(tempNor[size+2]); // v2
+            
+            texCoord.push_back(texCoordTempTemp[size]); // v0
+            texCoord.push_back(texCoordTempTemp[size+3]); // v3
+            texCoord.push_back(texCoordTempTemp[size+1]); // v1
 
+            texCoord.push_back(texCoordTempTemp[size+1]); // v1
+            texCoord.push_back(texCoordTempTemp[size+3]); // v3
+            texCoord.push_back(texCoordTempTemp[size+2]); // v2
         }
     } 
 } 
@@ -699,7 +800,7 @@ void process_patch(char *filename, int tesselation){
     if(fd){
         fprintf(fd,"%ld\n",vectorFinal.size());
         for(int i=0; i < vectorFinal.size() ; i++){
-        	fprintf(fd,"%f %f %f\n",vectorFinal[i]->x,vectorFinal[i]->y,vectorFinal[i]->z);
+            fprintf(fd,"%f %f %f\n",vectorFinal[i]->x,vectorFinal[i]->y,vectorFinal[i]->z);
         }
 
         for(int i=0; i < vectorNorm.size() ; i++){
