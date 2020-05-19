@@ -17,6 +17,19 @@ float distanciaCamera = 230.0f;
 
 int frame=0,timefps=0,timebase=0,fps=0;
 
+int alpha = 0, beta = 0;
+float r = -200, camX = 1, camY = 1, camZ = 1, radius=1,sensitivity = 0.00000005;;
+
+// constante da camara para deslocações
+float k_X=1, k_Z=1;
+
+// iniciar Px, Pz
+float Px = camX*r,Py = 50, Pz = camY*r;
+//iniciar lookAt
+float Lx = 0, Lz = 0, Ly = 0;
+int startX = 0, startY = 0, tracking = 0;
+
+
 GLuint buffers[3];
 
 void changeSize(int w, int h) {
@@ -100,6 +113,85 @@ void processKeys(unsigned char key, int x, int y) {
 
 }
 
+void processMouseButtons(int button, int state, int xx, int yy) {
+	
+	if (state == GLUT_DOWN)  {
+		//cout << "Buttons" << " xx " << xx << " yy " << yy << endl;
+		startX = xx;
+		startY = yy;
+		if (button == GLUT_LEFT_BUTTON)
+			tracking = 1;
+		else if (button == GLUT_RIGHT_BUTTON)
+			tracking = 2;
+		else
+			tracking = 0;
+	}
+	else if (state == GLUT_UP) {
+		if (tracking == 1) {
+			alpha += (xx - startX);
+			beta += (yy - startY);
+		}
+		else if (tracking == 2) {
+			
+			r -= yy - startY;
+			if (r < 3)
+				r = 3.0;
+		}
+		tracking = 0;
+	}
+}
+
+void processMouseMotion(int xx, int yy) {
+
+
+	int deltaX, deltaY;
+	int alphaAux, betaAux;
+	float rAux;
+
+	if (!tracking)
+		return;
+	deltaX = (xx - startX)*sensitivity;
+	deltaY = (yy - startY)*sensitivity;
+
+	if (tracking == 1) {
+		alphaAux = alpha - deltaX;
+        betaAux = beta - deltaY;
+
+		
+		if (betaAux > 85.0)
+			betaAux = 85.0;
+		else if (betaAux < -85.0)
+			betaAux = -85.0;
+		
+		rAux = r;
+	}
+	else if (tracking == 2) {
+
+		alphaAux = alpha;
+		rAux = r - deltaY*sensitivity;
+
+
+		if (rAux < 3){
+			rAux = 3;
+		}
+		else if (rAux > 200){
+			rAux = 200;
+		}
+	}
+
+	alpha = alphaAux;
+
+	Px = (Px/r)*rAux;
+	Pz = (Pz/r)*rAux;
+
+	r = rAux;
+
+	Lx = Px+sin(alpha* 3.14 / 180.0)*cos(beta * 3.14 / 180.0);
+	Lz = Pz+cos(alpha* 3.14 / 180.0)*cos(beta * 3.14 / 180.0);
+    Ly = Py+sin(beta* 3.14 / 180.0);    
+	
+}
+
 void fpsshow(void){
     frame++;
     timefps=glutGet(GLUT_ELAPSED_TIME);
@@ -151,8 +243,8 @@ int main(int argc, char **argv) {
 // put here the registration of the keyboard callbacks
     glutKeyboardFunc(processKeys);
     glutSpecialFunc(processSpecialKeys);
-
-
+    glutMotionFunc(processMouseMotion);
+    glutMouseFunc(processMouseButtons);
 
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
