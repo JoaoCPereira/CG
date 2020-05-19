@@ -54,7 +54,8 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             sprintf(str1, "0 %f 0\n",radius); // topo da esfera
             myfile << str1;
             normals.push_back(str1);
-            texCoord.push_back("0.5 1\n");
+            sprintf(str1, "%f 1\n",lat*(i+1));
+            texCoord.push_back(str1);
              
 
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*i),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*i));
@@ -67,7 +68,8 @@ void print_sphere(float radius,float slices,float stacks,char* file_name){
             sprintf(str1, "0 %f 0\n",-radius); // base da esfera
             myfile << str1;
             normals.push_back(str1);
-            texCoord.push_back("0.5 0\n");
+            sprintf(str1, "%f 0\n",lat*(i+1));
+            texCoord.push_back(str1);
              
             sprintf(str1, "%f %f %f\n",cos(beta*(stacks-1))*radius*sin(alfa*(i+1)),-sin(beta*(stacks-1))*radius,cos(beta*(stacks-1))*radius*cos(alfa*(i+1)));
             myfile << str1;
@@ -681,10 +683,8 @@ void calculate_surface(int tesselation) {
 
         vector<struct point*> tempVer;
         vector<struct point*> tempNor;
-        vector<string> texCoordTempTemp;
         tempVer.clear();
         tempNor.clear();
-        texCoordTempTemp.clear();
 
         for(int i=0; i < nvertices; ++i){
             Point *a = (struct point*) malloc(sizeof(struct point));
@@ -696,9 +696,6 @@ void calculate_surface(int tesselation) {
             n->x = N[vertices[i]].x;
             n->y = N[vertices[i]].y;
             n->z = N[vertices[i]].z;
-
-            ///cout << texCoordTemp[vertices[i]];
-            texCoordTempTemp.push_back( texCoordTemp[vertices[i]] );
 
             tempVer.push_back(a);
             tempNor.push_back(n);
@@ -722,13 +719,27 @@ void calculate_surface(int tesselation) {
             vectorNorm.push_back(tempNor[size+3]); // v3
             vectorNorm.push_back(tempNor[size+2]); // v2
             
-            texCoord.push_back(texCoordTempTemp[size]); // v0
-            texCoord.push_back(texCoordTempTemp[size+3]); // v3
-            texCoord.push_back(texCoordTempTemp[size+1]); // v1
+        }
 
-            texCoord.push_back(texCoordTempTemp[size+1]); // v1
-            texCoord.push_back(texCoordTempTemp[size+3]); // v3
-            texCoord.push_back(texCoordTempTemp[size+2]); // v2
+        float face = 1/ (float) divs;
+
+        for(int i=0; i < divs; i++){
+            for(int j=0; j <divs; j++){
+                sprintf(str, "%f %f\n",1-(j*face), 1-(i*face));
+                texCoord.push_back(str);
+                sprintf(str, "%f %f\n",1-((j+1)*face), 1-(i*face));
+                texCoord.push_back(str);
+                sprintf(str, "%f %f\n",1-((j)*face), 1-((i+1)*face));
+                texCoord.push_back(str);
+
+
+                sprintf(str, "%f %f\n",1-((j)*face), 1-((i+1)*face));
+                texCoord.push_back(str);
+                sprintf(str, "%f %f\n",1-((j+1)*face), 1-((i)*face));
+                texCoord.push_back(str);
+                sprintf(str, "%f %f\n",1-((j+1)*face), 1-((i+1)*face));
+                texCoord.push_back(str);
+            }
         }
     } 
 } 
@@ -805,6 +816,9 @@ void process_patch(char *filename, int tesselation){
 
         for(int i=0; i < vectorNorm.size() ; i++){
             fprintf(fd,"%f %f %f\n",vectorNorm[i]->x,vectorNorm[i]->y,vectorNorm[i]->z);
+        }
+        for(int k = 0;k < texCoord.size(); k++){
+            fprintf(fd,"%s",texCoord[k].c_str());
         }
              
     }
