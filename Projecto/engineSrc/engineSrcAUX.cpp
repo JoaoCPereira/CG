@@ -5,6 +5,7 @@ extern GLuint buffers[3]; // variaveis globais externas do ficheiro main.cpp
 float pos[4]{0}, deriv[4]{0};
 float y[3] = {0,1,0};
 
+
 typedef struct modelo Modelo;
 typedef struct geo_transf Geo_Transf;
 float scaleTime = 0.001; // passar de segundos para milissegundos

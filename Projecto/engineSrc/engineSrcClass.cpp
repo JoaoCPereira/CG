@@ -12,6 +12,20 @@ vector<float> SysState::preTextCoord;
 extern float angleBeta,angleAlfa,distanciaCamera; // variaveis globais externas do ficheiro main.cpp
 extern GLuint buffers[3]; // variaveis globais externas do ficheiro main.cpp
 
+extern int alpha, beta;
+extern float r, camX, camY, camZ, radius, sensitivity;
+
+// constante da camara para deslocações
+extern float k_X, k_Z;
+
+// iniciar Px, Pz
+extern float Px,Py,Pz;
+
+//iniciar lookAt
+extern float Lx,Ly,Lz;
+
+extern int startX, startY, tracking;
+
 SysState::SysState(char *fileName){
     readXML(fileName);
 
@@ -388,9 +402,9 @@ void SysState::renderScene(void) {
     // set the camera
     //glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluLookAt(sin(angleAlfa)*cos(angleBeta)*distanciaCamera,sin(angleBeta)*distanciaCamera,cos(angleAlfa)*(cos(angleBeta)*distanciaCamera),
-              0.0,0.0,0.0,
-              0.0f,1.0f,0.0f);
+    gluLookAt(Px, Py, Pz, 
+		      	Lx,Py,Lz,
+			  	0.0f,1.0f,0.0f);
 
     // put the geometric transformations here
     

@@ -28,8 +28,8 @@ Computação Gráfica 19/20
 ## Phase 4 – Normals and Texture Coordinates
   - [ ] Garantir que conseguimos trabalhar com debug
   - [x] Iluminação
-  - [ ] Normais do cone
-  - [ ] Texturas
-  - [ ] Relatório
+  - [ ] Normais  e texturas do cone
+  - [x] Texturas
+  - [x] Relatório
   
 

@@ -18,7 +18,7 @@ float distanciaCamera = 230.0f;
 int frame=0,timefps=0,timebase=0,fps=0;
 
 int alpha = 0, beta = 0;
-float r = -200, camX = 1, camY = 1, camZ = 1, radius=1,sensitivity = 0.00000005;;
+float r = -200, camX = 1, camY = 1, camZ = 1, radius=1,sensitivity = 0.0005;;
 
 // constante da camara para deslocações
 float k_X=1, k_Z=1;
