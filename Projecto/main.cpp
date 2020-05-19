@@ -94,12 +94,6 @@ void processKeys(unsigned char key, int x, int y) {
         case 'f' :
             distanciaCamera -=1;
             break;
-        case '1' :
-            glPolygonMode(GL_FRONT,GL_LINE);
-            break;
-        case '2' :
-            glPolygonMode(GL_FRONT,GL_FILL);
-            break;
     }
 
     glutPostRedisplay();
@@ -163,7 +157,7 @@ int main(int argc, char **argv) {
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glPolygonMode(GL_FRONT,GL_LINE);
+    glPolygonMode(GL_FRONT,GL_FILL);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
