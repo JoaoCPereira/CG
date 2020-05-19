@@ -243,8 +243,8 @@ int main(int argc, char **argv) {
 // put here the registration of the keyboard callbacks
     glutKeyboardFunc(processKeys);
     glutSpecialFunc(processSpecialKeys);
-    glutMotionFunc(processMouseMotion);
-    glutMouseFunc(processMouseButtons);
+    //glutMotionFunc(processMouseMotion);
+    //glutMouseFunc(processMouseButtons);
 
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);

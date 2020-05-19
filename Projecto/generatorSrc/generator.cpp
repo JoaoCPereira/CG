@@ -467,7 +467,12 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
 }
 
 void print_cone(float radius,float height,float slices,float stacks,char* file_name){
-    vector<char*> normals;
+    vector<string> normals;
+    float normal_x;
+    float normal_z;
+    float norm;
+
+    char to_normals[128];
     /*
     float hip =sqrt((height*height)+(radius*radius)); // Calculo da Hipotenusa
     float n_x = height / hip;
@@ -500,7 +505,7 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
             //ponto fixo do centro
             fprintf(fd, "0 %f 0\n",height);
             for(int k=0;k<6;k++){
-                //normals.push_back("0 -1 0");
+                normals.push_back("0 -1 0");
             }
         }
         
@@ -511,18 +516,82 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
             for(int i=0;i < slices*3;i++) { // circunferencia
                                                                           // 1-(rR*0) = 1 primeira camada
                 fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*(1-(rR*j))  ,j*d, cos(alfa*i)*radius*(1-(rR*j))); // canto inferior esquerdo
+                normal_x = sin(alfa*i)*radius*(1-(rR*j));
+                normal_z = cos(alfa*i)*radius*(1-(rR*j));
+                norm = sqrt(normal_x*normal_x+normal_z*normal_z);
+                normal_x /= norm;
+                normal_z /= norm;
+                normal_x *= (height/rR);
+                normal_z *= (height/rR);
+                sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
+                normals.push_back(to_normals);
+
+
                 fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*(1-(rR*j)),j*d, cos(alfa*(i+1))*radius*(1-(rR*j))); // canto inferior direito
+                normal_x = sin(alfa*(i+1))*radius*(1-(rR*j));
+                normal_z = cos(alfa*(i+1))*radius*(1-(rR*j));
+                norm = sqrt(normal_x*normal_x+normal_z*normal_z);
+                normal_x /= norm;
+                normal_z /= norm;
+                normal_x *= (height/rR);
+                normal_z *= (height/rR);
+                sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
+                normals.push_back(to_normals);
+               
                 fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*(i+1))*radius*(1-(rR*(j+1)))); // canto superior direito
+                normal_x = sin(alfa*(i+1))*radius*(1-(rR*(j+1)));
+                normal_z = cos(alfa*(i+1))*radius*(1-(rR*(j+1)));
+                norm = sqrt(normal_x*normal_x+normal_z*normal_z);
+                normal_x /= norm;
+                normal_z /= norm;
+                normal_x *= (height/rR);
+                normal_z *= (height/rR);
+                sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
+                normals.push_back(to_normals);
 
                 fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*(i+1))*radius*(1-(rR*(j+1)))); // canto superior direito
+                normal_x = sin(alfa*(i+1))*radius*(1-(rR*(j+1)));
+                normal_z = cos(alfa*(i+1))*radius*(1-(rR*(j+1)));
+                norm = sqrt(normal_x*normal_x+normal_z*normal_z);
+                normal_x /= norm;
+                normal_z /= norm;
+                normal_x *= (height/rR);
+                normal_z *= (height/rR);
+                sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
+                normals.push_back(to_normals);
+                
                 fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*i)*radius*(1-(rR*(j+1)))); // canto superior esquerdo
+                normal_x = sin(alfa*i)*radius*(1-(rR*(j+1)));
+                normal_z = cos(alfa*i)*radius*(1-(rR*(j+1)));
+                norm = sqrt(normal_x*normal_x+normal_z*normal_z);
+                normal_x /= norm;
+                normal_z /= norm;
+                normal_x *= (height/rR);
+                normal_z *= (height/rR);
+                sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
+                normals.push_back(to_normals);
+                
+                
                 fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*(1-(rR*j)),j*d, cos(alfa*i)*radius*(1-(rR*j))); // canto inferior esquerdo
+                normal_x = sin(alfa*i)*radius*(1-(rR*j));
+                normal_z = cos(alfa*i)*radius*(1-(rR*j));
+                norm = sqrt(normal_x*normal_x+normal_z*normal_z);
+                normal_x /= norm;
+                normal_z /= norm;
+                normal_x *= (height/rR);
+                normal_z *= (height/rR);
+                sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
+                normals.push_back(to_normals);
+
+
             }
         }
-
-
+    for(int k = 0;k < normals.size(); k++){
+        fprintf(fd,"%s",normals[k].c_str());
     }
+
     fclose(fd);
+    }
 }
 
 void crossProduct(Point *A, Point *B, Point *R) {
