@@ -22,7 +22,7 @@ extern float k_X, k_Z;
 extern float Px,Py,Pz;
 
 //iniciar lookAt
-extern float Lx,Lz;
+extern float Lx,Lz,Ly;
 
 extern int startX, startY, tracking;
 
@@ -402,9 +402,16 @@ void SysState::renderScene(void) {
     // set the camera
     //glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+
+    /*
     gluLookAt(sin(angleAlfa)*cos(angleBeta)*distanciaCamera, sin(angleBeta)*distanciaCamera, cos(angleAlfa)*cos(angleBeta)*distanciaCamera, 
 		      	0,0,0,
 			  	0.0f,1.0f,0.0f);
+    */
+
+    gluLookAt(  Px, Py, Pz, 
+            Lx,Ly,Lz,
+          0.0f,1.0f,0.0f);
 
     // put the geometric transformations here
     
