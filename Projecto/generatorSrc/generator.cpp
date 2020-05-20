@@ -468,11 +468,15 @@ void print_box(float x,float y,float z,float divisions,char* file_name){
 
 void print_cone(float radius,float height,float slices,float stacks,char* file_name){
     vector<string> normals;
+    vector<string> texture_vec;
     float normal_x;
     float normal_z;
     float norm;
+    float faces = 1/(slices*3);
+    float height_divisions = 1/stacks;
 
     char to_normals[128];
+    char to_texture[128];
     /*
     float hip =sqrt((height*height)+(radius*radius)); // Calculo da Hipotenusa
     float n_x = height / hip;
@@ -496,16 +500,30 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
         for(int i=0;i<(slices*3);i++){
 
             fprintf(fd, "%f 0 %f\n", sin(alfa*i)*radius, cos(alfa*i)*radius);
+            sprintf(to_texture,"%f %f\n",(0.5+0.5*sin(alfa*(i))),(0.5+0.5*cos(alfa*(i))));
+            texture_vec.push_back(to_texture);
             //ponto fixo do centro
             fprintf(fd, "0 0 0\n");
+            texture_vec.push_back("0.5 0.5\n");
+
             fprintf(fd, "%f 0 %f\n", sin(alfa*(i+1))*radius, cos(alfa*(i+1))*radius);
+            sprintf(to_texture,"%f %f\n",(0.5+0.5*sin(alfa*(i+1))),(0.5+0.5*cos(alfa*(i+1))));
+            texture_vec.push_back(to_texture);
 
             fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*rR, height - d, cos(alfa*i)*radius*rR);
+            sprintf(to_texture,"%f %f\n",(0.5+0.5*sin(alfa*i)),(0.5+0.5*cos(alfa*i)));
+            texture_vec.push_back(to_texture);
+
+
             fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*rR, height - d , cos(alfa*(i+1))*radius*rR);
+            sprintf(to_texture,"%f %f\n",(0.5+0.5*sin(alfa*(i+1))),(0.5+0.5*cos(alfa*(i+1))));
+            texture_vec.push_back(to_texture);
             //ponto fixo do centro
             fprintf(fd, "0 %f 0\n",height);
+            texture_vec.push_back("0.5 0.5\n");
+
             for(int k=0;k<6;k++){
-                normals.push_back("0 -1 0");
+                normals.push_back("0 -1 0\n");
             }
         }
         
@@ -514,7 +532,7 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
         for(int j=0; j < stacks-1; j++){ // camadas 
             //começamos da base e vamos subindo i é a camada inferior
             for(int i=0;i < slices*3;i++) { // circunferencia
-                                                                          // 1-(rR*0) = 1 primeira camada
+                // 1-(rR*0) = 1 primeira camada
                 fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*(1-(rR*j))  ,j*d, cos(alfa*i)*radius*(1-(rR*j))); // canto inferior esquerdo
                 normal_x = sin(alfa*i)*radius*(1-(rR*j));
                 normal_z = cos(alfa*i)*radius*(1-(rR*j));
@@ -523,8 +541,12 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
                 normal_z /= norm;
                 normal_x *= (height/rR);
                 normal_z *= (height/rR);
+                //normals
                 sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
                 normals.push_back(to_normals);
+                //textures
+                sprintf(to_texture,"%f %f\n",i*faces,j*height_divisions);
+                texture_vec.push_back(to_texture);
 
 
                 fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*(1-(rR*j)),j*d, cos(alfa*(i+1))*radius*(1-(rR*j))); // canto inferior direito
@@ -537,6 +559,9 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
                 normal_z *= (height/rR);
                 sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
                 normals.push_back(to_normals);
+
+                sprintf(to_texture,"%f %f\n",(i+1)*faces,j*height_divisions);
+                texture_vec.push_back(to_texture);
                
                 fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*(i+1))*radius*(1-(rR*(j+1)))); // canto superior direito
                 normal_x = sin(alfa*(i+1))*radius*(1-(rR*(j+1)));
@@ -549,6 +574,9 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
                 sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
                 normals.push_back(to_normals);
 
+                sprintf(to_texture,"%f %f\n",(i+1)*faces,(j+1)*height_divisions);
+                texture_vec.push_back(to_texture);
+
                 fprintf(fd, "%f %f %f\n", sin(alfa*(i+1))*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*(i+1))*radius*(1-(rR*(j+1)))); // canto superior direito
                 normal_x = sin(alfa*(i+1))*radius*(1-(rR*(j+1)));
                 normal_z = cos(alfa*(i+1))*radius*(1-(rR*(j+1)));
@@ -559,6 +587,9 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
                 normal_z *= (height/rR);
                 sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
                 normals.push_back(to_normals);
+
+                sprintf(to_texture,"%f %f\n",(i+1)*faces,(j+1)*height_divisions);
+                texture_vec.push_back(to_texture);
                 
                 fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*(1-(rR*(j+1))),(j+1)*d, cos(alfa*i)*radius*(1-(rR*(j+1)))); // canto superior esquerdo
                 normal_x = sin(alfa*i)*radius*(1-(rR*(j+1)));
@@ -570,6 +601,9 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
                 normal_z *= (height/rR);
                 sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
                 normals.push_back(to_normals);
+
+                sprintf(to_texture,"%f %f\n",(i)*faces,(j+1)*height_divisions);
+                texture_vec.push_back(to_texture);
                 
                 
                 fprintf(fd, "%f %f %f\n", sin(alfa*i)*radius*(1-(rR*j)),j*d, cos(alfa*i)*radius*(1-(rR*j))); // canto inferior esquerdo
@@ -583,12 +617,20 @@ void print_cone(float radius,float height,float slices,float stacks,char* file_n
                 sprintf(to_normals,"%f 0 %f\n",normal_x,normal_z);
                 normals.push_back(to_normals);
 
+                sprintf(to_texture,"%f %f\n",(i)*faces,(j)*height_divisions);
+                texture_vec.push_back(to_texture);
+
 
             }
         }
     for(int k = 0;k < normals.size(); k++){
         fprintf(fd,"%s",normals[k].c_str());
     }
+
+    for(int k = 0;k < texture_vec.size(); k++){
+        fprintf(fd,"%s",texture_vec[k].c_str());
+    }
+
 
     fclose(fd);
     }
