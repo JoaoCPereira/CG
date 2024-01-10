@@ -1,0 +1,4 @@
+/Users/joao/Documents/Universidade/Github/CG/Projecto/xcode/CMakeFiles/Engine.dir
+/Users/joao/Documents/Universidade/Github/CG/Projecto/xcode/CMakeFiles/Generator.dir
+/Users/joao/Documents/Universidade/Github/CG/Projecto/xcode/CMakeFiles/ALL_BUILD.dir
+/Users/joao/Documents/Universidade/Github/CG/Projecto/xcode/CMakeFiles/ZERO_CHECK.dir
